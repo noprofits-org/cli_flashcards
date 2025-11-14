@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1f2937">
+  <title>Clasp Commands Flashcards</title>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* CSS Variables - Mobile First */
+    :root {
+      /* Light mode colors */
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f3f4f6;
+      --color-text: #1f2937;
+      --color-text-secondary: #6b7280;
+      --color-primary: #3b82f6;
+      --color-primary-dark: #2563eb;
+      --color-success: #10b981;
+      --color-error: #ef4444;
+      --color-border: #e5e7eb;
+      --color-card-bg: #ffffff;
+      --color-input-bg: #f9fafb;
+
+      /* Mobile-first spacing */
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+      --spacing-xl: 20px;
+      --spacing-2xl: 24px;
+
+      /* Mobile-first typography */
+      --font-xs: 11px;
+      --font-sm: 12px;
+      --font-md: 14px;
+      --font-lg: 16px;
+      --font-xl: 18px;
+      --font-2xl: 20px;
+      --font-3xl: 24px;
+      --font-4xl: 32px;
+    }
+
+    /* Dark mode override */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #111827;
+        --color-bg-secondary: #1f2937;
+        --color-text: #f3f4f6;
+        --color-text-secondary: #d1d5db;
+        --color-primary: #60a5fa;
+        --color-primary-dark: #3b82f6;
+        --color-success: #34d399;
+        --color-error: #f87171;
+        --color-border: #374151;
+        --color-card-bg: #1f2937;
+        --color-input-bg: #111827;
+      }
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.5;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* Main Container - Mobile First */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      padding: var(--spacing-md);
+      padding-top: max(var(--spacing-md), env(safe-area-inset-top));
+      padding-bottom: max(var(--spacing-md), env(safe-area-inset-bottom));
+      padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+      padding-right: max(var(--spacing-md), env(safe-area-inset-right));
+      gap: var(--spacing-md);
+    }
+
+    /* Header - Mobile First */
+    .header {
+      flex-shrink: 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 3px;
+      background-color: var(--color-bg-secondary);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: var(--color-primary);
+      transition: width 0.3s ease;
+    }
+
+    /* Card Container - Mobile First */
+    .card-container {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 0 var(--spacing-sm);
+      min-height: 0;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 900px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-2xl);
+      position: relative;
+      max-height: 100%;
+      overflow-y: auto;
+      padding: var(--spacing-lg) 0;
+    }
+
+    .card-context-top,
+    .card-context-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .card-context-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
+    .card-context-label {
+      font-size: var(--font-xs);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-primary);
+    }
+
+    .card-context-text {
+      font-size: var(--font-md);
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    .card-scenarios {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin: 0;
+      padding: 0;
+    }
+
+    .card-scenarios li {
+      font-size: var(--font-md);
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+      padding-left: var(--spacing-lg);
+      position: relative;
+    }
+
+    .card-scenarios li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--color-primary);
+      font-weight: bold;
+    }
+
+    .card-main {
+      background-color: var(--color-card-bg);
+      border: 2px solid var(--color-border);
+      border-radius: 12px;
+      padding: var(--spacing-2xl);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .card-nav-hints {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--font-xs);
+      color: var(--color-text-secondary);
+      opacity: 0.6;
+      padding: 0 var(--spacing-md);
+    }
+
+    .card-description {
+      font-size: var(--font-xl);
+      font-weight: 500;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+
+    .card-input-section {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+
+    .card-input {
+      width: 100%;
+      padding: var(--spacing-md);
+      border: 2px solid var(--color-border);
+      border-radius: 8px;
+      font-size: var(--font-md);
+      background-color: var(--color-input-bg);
+      color: var(--color-text);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      transition: border-color 0.2s ease;
+    }
+
+    .card-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+
+    .card-answer {
+      display: none;
+      padding: var(--spacing-md);
+      background-color: var(--color-bg-secondary);
+      border-radius: 8px;
+      border-left: 4px solid var(--color-primary);
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: var(--font-sm);
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .card-answer.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-feedback {
+      display: none;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 8px;
+      font-size: var(--font-sm);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    .card-feedback.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    .card-feedback.correct {
+      background-color: rgba(16, 185, 129, 0.1);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+    }
+
+    .card-feedback.incorrect {
+      background-color: rgba(239, 68, 68, 0.1);
+      color: var(--color-error);
+      border: 1px solid var(--color-error);
+    }
+
+
+    /* Screens */
+    .screen {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .welcome-screen,
+    .results-screen {
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-xl);
+      text-align: center;
+      padding: var(--spacing-lg);
+    }
+
+    .welcome-title,
+    .results-title {
+      font-size: var(--font-3xl);
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .welcome-subtitle {
+      font-size: var(--font-md);
+      color: var(--color-text-secondary);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-xl);
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .stat-box {
+      background-color: var(--color-card-bg);
+      padding: var(--spacing-lg);
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-value {
+      font-size: var(--font-3xl);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .stat-label {
+      font-size: var(--font-xs);
+      color: var(--color-text-secondary);
+      margin-top: var(--spacing-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .results-score {
+      font-size: var(--font-4xl);
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .results-message {
+      font-size: var(--font-lg);
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+    }
+
+    .mode-selector {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-md);
+      width: 100%;
+      max-width: 500px;
+      margin-top: var(--spacing-2xl);
+    }
+
+    .mode-btn {
+      background-color: var(--color-card-bg);
+      border: 2px solid var(--color-border);
+      border-radius: 12px;
+      padding: var(--spacing-lg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
+    .mode-btn:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .mode-btn.active {
+      border-color: var(--color-primary);
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+
+    .mode-title {
+      font-size: var(--font-lg);
+      font-weight: 600;
+      color: var(--color-text);
+    }
+
+    .mode-description {
+      font-size: var(--font-sm);
+      color: var(--color-text-secondary);
+    }
+
+    .mode-count {
+      font-size: var(--font-xs);
+      color: var(--color-primary);
+      font-weight: 600;
+      margin-top: var(--spacing-xs);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Tablet breakpoint */
+    @media (min-width: 768px) {
+      :root {
+        --font-sm: 14px;
+        --font-md: 16px;
+        --font-lg: 18px;
+        --font-xl: 22px;
+        --font-2xl: 24px;
+        --font-3xl: 32px;
+        --font-4xl: 48px;
+      }
+
+      .app-container {
+        padding: var(--spacing-xl);
+        gap: var(--spacing-xl);
+      }
+
+      .card {
+        padding: var(--spacing-2xl) 0;
+        max-width: 900px;
+      }
+
+      .card-description {
+        font-size: var(--font-2xl);
+      }
+
+      .card-input {
+        font-size: var(--font-lg);
+        padding: var(--spacing-md) var(--spacing-lg);
+      }
+
+      .card-answer {
+        font-size: var(--font-md);
+        padding: var(--spacing-lg);
+      }
+
+      .card-context-text,
+      .card-scenarios li {
+        font-size: var(--font-md);
+      }
+
+      .stats-grid {
+        max-width: 400px;
+      }
+
+      .welcome-title,
+      .results-title {
+        font-size: var(--font-4xl);
+      }
+
+      .welcome-subtitle {
+        font-size: var(--font-lg);
+      }
+
+      .mode-selector {
+        grid-template-columns: 1fr 1fr;
+        max-width: 700px;
+      }
+    }
+
+    /* Desktop breakpoint */
+    @media (min-width: 1024px) {
+      .card {
+        max-width: 1000px;
+      }
+
+      .card-main {
+        padding: var(--spacing-2xl) var(--spacing-2xl);
+      }
+    }
+
+    /* Landscape mobile optimization */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .app-container {
+        padding: var(--spacing-sm);
+        gap: var(--spacing-sm);
+      }
+
+      .card {
+        padding: var(--spacing-sm) 0;
+        gap: var(--spacing-sm);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="header">
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+    </div>
+
+    <div class="screen active" id="welcome-screen">
+      <div class="welcome-screen">
+        <div class="welcome-title">Master Clasp Commands</div>
+        <div class="welcome-subtitle">Learn Google Apps Script deployment with interactive flashcards</div>
+
+        <div class="mode-selector">
+          <button class="mode-btn active" id="basic-mode-btn" data-mode="basic">
+            <div class="mode-title">Basic Commands</div>
+            <div class="mode-description">Learn fundamental clasp commands</div>
+            <div class="mode-count" id="basic-count">29 cards</div>
+          </button>
+          <button class="mode-btn" id="advanced-mode-btn" data-mode="advanced">
+            <div class="mode-title">Advanced Options</div>
+            <div class="mode-description">Master command flags and options</div>
+            <div class="mode-count" id="advanced-count">27 cards</div>
+          </button>
+        </div>
+
+        <div style="margin-top: 2rem; font-size: 14px; opacity: 0.7;">Select a mode and press Enter to start</div>
+      </div>
+    </div>
+
+    <div class="screen" id="cards-screen">
+      <div class="card-container">
+        <div class="card" id="card">
+          <!-- Context above card -->
+          <div class="card-context-top">
+            <div class="card-context-section">
+              <div class="card-context-label">What it does</div>
+              <div class="card-context-text" id="card-description-text"></div>
+            </div>
+            <div class="card-context-section">
+              <div class="card-context-label">When to use it</div>
+              <div class="card-context-text" id="card-when-to-use"></div>
+            </div>
+          </div>
+
+          <!-- Main card -->
+          <div class="card-main">
+            <div class="card-description" id="card-description"></div>
+            <div class="card-input-section" id="input-section">
+              <input type="text" class="card-input" id="card-input"
+                     autocomplete="off" autocorrect="off"
+                     autocapitalize="off" spellcheck="false"
+                     placeholder="clasp ...">
+            </div>
+            <div class="card-answer" id="card-answer"></div>
+            <div class="card-feedback" id="card-feedback"></div>
+          </div>
+
+          <!-- Context below card -->
+          <div class="card-context-bottom">
+            <div class="card-context-section">
+              <div class="card-context-label">Example scenarios</div>
+              <ul class="card-scenarios" id="card-scenarios"></ul>
+            </div>
+          </div>
+
+          <!-- Navigation hints -->
+          <div class="card-nav-hints">
+            <span>← Previous</span>
+            <span>Enter to submit/continue</span>
+            <span>Next →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="results-screen">
+      <div class="results-screen">
+        <div class="results-title">Session Complete! 🎉</div>
+        <div class="results-score" id="results-score">0/0</div>
+        <div class="results-message" id="results-message"></div>
+        <div style="margin-top: 2rem; font-size: 14px; opacity: 0.7;">Press Enter to start over</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced flashcard data with context and scenarios
+    const flashcards = [
+      {
+        task: "Authenticate with your Google Account",
+        answer: "clasp login [options]",
+        description: "Authorizes clasp to manage your Google account's Apps Script projects. This creates a credentials file that allows clasp to interact with your scripts.",
+        whenToUse: "Required before using any other clasp commands. Run this when you first install clasp or need to switch Google accounts.",
+        scenarios: [
+          "First-time setup: After installing clasp globally, run this to authorize access to your Apps Script projects",
+          "Switching accounts: Use --creds flag to manage multiple Google accounts for different client projects",
+          "CI/CD setup: Use --no-localhost flag when setting up automated deployments on headless servers"
+        ]
+      },
+      {
+        task: "Sign out from your Google Account",
+        answer: "clasp logout",
+        description: "Removes the stored credentials from your local machine, terminating the current session. You'll need to login again to use clasp commands.",
+        whenToUse: "When switching between different Google accounts, securing a shared computer, or troubleshooting authentication issues.",
+        scenarios: [
+          "Account switching: Logging out before authenticating with a different Google account for a new project",
+          "Security: Removing credentials from a shared development machine before stepping away",
+          "Troubleshooting: Clearing stored credentials when experiencing permission errors or authentication issues"
+        ]
+      },
+      {
+        task: "Open the OAuth 2.0 credentials setup",
+        answer: "clasp open-credentials-setup",
+        description: "Opens the Google Cloud Console page where you can create OAuth 2.0 credentials needed for advanced clasp features like running functions remotely.",
+        whenToUse: "When you need to set up credentials for clasp run or want to use a custom OAuth client instead of the default one.",
+        scenarios: [
+          "Advanced setup: Creating OAuth credentials before using 'clasp run' to execute functions remotely",
+          "Custom authentication: Setting up organization-specific OAuth clients for enterprise deployments",
+          "API enablement: Accessing the console to enable additional Google APIs for your project"
+        ]
+      },
+      {
+        task: "Clone an existing Apps Script project",
+        answer: "clasp clone [options] [scriptId] [versionNumber]",
+        description: "Downloads an existing Apps Script project from Google Drive to your local filesystem. Creates a .clasp.json file linking your local directory to the remote project.",
+        whenToUse: "When you want to work locally on a project created in the online editor, collaborate on a shared project, or set up version control for an existing script.",
+        scenarios: [
+          "Team collaboration: Cloning a colleague's shared script to contribute code from your local development environment",
+          "Local development: Moving an existing web-based script to your preferred IDE with Git version control",
+          "Version management: Using --versionNumber to clone a specific historical version for debugging or rollback purposes"
+        ]
+      },
+      {
+        task: "Create a new Apps Script project",
+        answer: "clasp create [options]",
+        description: "Creates a new Apps Script project in your current directory and on Google Drive. Generates .clasp.json (with script ID) and appsscript.json (manifest) files.",
+        whenToUse: "When starting a new Apps Script project from scratch with local development in mind.",
+        scenarios: [
+          "New standalone project: Creating a standalone script for a custom automation tool",
+          "Container-bound script: Using --type sheets to create a script bound to a specific Google Sheet",
+          "Add-on development: Starting a new Google Workspace add-on with --title and --type flags for proper setup"
+        ]
+      },
+      {
+        task: "Push local files to the script",
+        answer: "clasp push [options]",
+        description: "Uploads your local code files to Google Apps Script. This syncs your local changes to the cloud, making them available in the online editor.",
+        whenToUse: "After making local code changes that you want to deploy to the cloud version of your script.",
+        scenarios: [
+          "Development workflow: Pushing code changes after testing locally to make them available in the script editor",
+          "Continuous deployment: Using --watch flag to automatically push changes as you save files during development",
+          "Force update: Using --force to overwrite cloud changes when you know your local version is correct"
+        ]
+      },
+      {
+        task: "Pull script files from the cloud",
+        answer: "clasp pull [options]",
+        description: "Downloads the latest version of your Apps Script project from Google Drive to your local filesystem, overwriting local files.",
+        whenToUse: "When you need to sync cloud changes made in the online editor to your local environment, or when collaborating with others.",
+        scenarios: [
+          "Sync after web edits: Pulling changes you or a teammate made in the online Apps Script editor",
+          "Collaboration: Retrieving updates from collaborators who pushed changes to the shared project",
+          "Version retrieval: Using --versionNumber to pull a specific historical version for comparison or recovery"
+        ]
+      },
+      {
+        task: "Create a new deployment version",
+        answer: "clasp deploy [options]",
+        description: "Publishes your script as a versioned deployment that can be used as a web app, API executable, or add-on. Each deployment has a unique ID and URL.",
+        whenToUse: "When you want to create a production version of your script that end-users can access.",
+        scenarios: [
+          "Web app release: Deploying a new version of your web application for users to access via URL",
+          "API deployment: Creating an API executable deployment that can be called by external services",
+          "Add-on publishing: Deploying a new version of your Workspace add-on for testing or production use"
+        ]
+      },
+      {
+        task: "Delete an Apps Script project",
+        answer: "clasp delete [options] [scriptId]",
+        description: "Permanently removes an Apps Script project from Google Drive. This action cannot be undone.",
+        whenToUse: "When you need to completely remove a script project that's no longer needed.",
+        scenarios: [
+          "Project cleanup: Removing test or prototype projects that are no longer relevant",
+          "Resource management: Deleting duplicate or obsolete projects to keep your script library organized",
+          "Security: Removing scripts containing sensitive code that should no longer be accessible"
+        ]
+      },
+      {
+        task: "Remove a deployment version",
+        answer: "clasp undeploy [options] [deploymentId]",
+        description: "Removes a specific deployment of your script, making it inaccessible to users. The script code remains, but the deployed version is retired.",
+        whenToUse: "When you need to retire an old version or remove a deployment that has critical bugs.",
+        scenarios: [
+          "Version retirement: Undeploying old versions after all users have migrated to a newer release",
+          "Emergency rollback: Quickly removing a buggy deployment while you fix the issues",
+          "Deployment cleanup: Using --all flag to remove all deployments when starting fresh"
+        ]
+      },
+      {
+        task: "List all deployment versions for a script",
+        answer: "clasp deployments [scriptId]",
+        description: "Displays all active deployments for your script, showing deployment IDs, versions, and descriptions.",
+        whenToUse: "When you need to see what versions are currently deployed and accessible to users.",
+        scenarios: [
+          "Version audit: Checking which versions are currently live before deploying a new update",
+          "Deployment management: Getting deployment IDs to undeploy or redeploy specific versions",
+          "Troubleshooting: Verifying that users are accessing the intended version of your web app"
+        ]
+      },
+      {
+        task: "Update an existing deployment version",
+        answer: "clasp redeploy [options] <deploymentId>",
+        description: "Updates an existing deployment to point to a new version of your code while maintaining the same deployment ID and URL.",
+        whenToUse: "When you want to update a deployed version without changing the URL that users access.",
+        scenarios: [
+          "Seamless updates: Updating your web app without requiring users to change their bookmarked URL",
+          "Production releases: Pushing new features to your production deployment while maintaining the same endpoint",
+          "Bug fixes: Quickly updating a live deployment with a critical fix without deployment URL changes"
+        ]
+      },
+      {
+        task: "Disable a Google API for the script",
+        answer: "clasp disable-api <api>",
+        description: "Removes access to a specific Google API from your Apps Script project's advanced services.",
+        whenToUse: "When you no longer need a particular API and want to reduce your project's permissions.",
+        scenarios: [
+          "Security hardening: Removing unused APIs to follow principle of least privilege",
+          "Permission cleanup: Disabling APIs after refactoring code that no longer requires them",
+          "Troubleshooting: Temporarily disabling an API to isolate permission or quota issues"
+        ]
+      },
+      {
+        task: "Enable a Google API for the script",
+        answer: "clasp enable-api <api>",
+        description: "Adds access to a specific Google API (like Drive, Gmail, Calendar) to your Apps Script project, allowing your code to use advanced API features.",
+        whenToUse: "When your script needs to use Google services beyond the basic built-in Apps Script services.",
+        scenarios: [
+          "Advanced features: Enabling Drive API to access advanced file management features not in DriveApp",
+          "External integrations: Enabling Admin SDK for G Suite domain management scripts",
+          "Service expansion: Adding Calendar API when building a scheduling automation tool"
+        ]
+      },
+      {
+        task: "List all available Google APIs",
+        answer: "clasp list-apis",
+        description: "Shows all Google APIs that can be enabled for your Apps Script project, along with their current status (enabled/disabled).",
+        whenToUse: "When you need to discover which APIs are available or check which ones are currently enabled.",
+        scenarios: [
+          "API discovery: Finding the exact API name needed for enable-api command",
+          "Project audit: Reviewing which APIs are enabled to understand script dependencies",
+          "Planning: Checking API availability before designing new script features"
+        ]
+      },
+      {
+        task: "Open the Google Cloud Console for the project",
+        answer: "clasp open-api-console",
+        description: "Opens the Google Cloud Platform Console for your script's associated cloud project in your web browser.",
+        whenToUse: "When you need to manage advanced cloud settings, view API quotas, or configure OAuth consent screens.",
+        scenarios: [
+          "Quota management: Checking API usage limits and requesting quota increases",
+          "OAuth configuration: Setting up consent screens for add-ons or web apps with external users",
+          "Service accounts: Creating service accounts for server-to-server authentication scenarios"
+        ]
+      },
+      {
+        task: "Display the authorized Google Account email",
+        answer: "clasp show-authorized-user",
+        description: "Shows which Google account is currently authenticated and being used by clasp for all operations.",
+        whenToUse: "When you need to verify which account you're operating under, especially when managing multiple accounts.",
+        scenarios: [
+          "Account verification: Confirming you're using the correct account before pushing sensitive changes",
+          "Multi-account management: Checking which account is active when switching between client projects",
+          "Troubleshooting: Verifying authentication when experiencing permission errors"
+        ]
+      },
+      {
+        task: "Show the current file status",
+        answer: "clasp status",
+        description: "Displays the synchronization status between your local files and the cloud version, showing which files have been modified.",
+        whenToUse: "When you want to see what changes will be pushed before running clasp push.",
+        scenarios: [
+          "Pre-push review: Checking which files have changed before pushing to avoid unintended updates",
+          "Sync verification: Confirming your local and cloud versions are in sync after pulling",
+          "Change tracking: Identifying which files were modified during a development session"
+        ]
+      },
+      {
+        task: "Open the Apps Script execution logs",
+        answer: "clasp open-logs",
+        description: "Opens the Stackdriver Logging page in your browser where you can view detailed execution logs for your script.",
+        whenToUse: "When you need to debug issues or view detailed execution history using the web interface.",
+        scenarios: [
+          "Detailed debugging: Accessing the full web interface for complex log filtering and analysis",
+          "Historical review: Viewing execution logs from several days or weeks ago",
+          "Log export: Using the web interface to export logs for reporting or long-term storage"
+        ]
+      },
+      {
+        task: "Set up StackDriver logging configuration",
+        answer: "clasp setup-logs",
+        description: "Configures Stackdriver (Cloud Logging) for your script, enabling enhanced logging capabilities and log retention.",
+        whenToUse: "When you need advanced logging features beyond the basic Apps Script logs.",
+        scenarios: [
+          "Production monitoring: Setting up enhanced logging for a production web app to track usage patterns",
+          "Log retention: Configuring longer log retention periods for compliance or audit requirements",
+          "Advanced debugging: Enabling detailed log levels for troubleshooting complex issues"
+        ]
+      },
+      {
+        task: "Stream the script execution logs in real-time",
+        answer: "clasp logs [options]",
+        description: "Streams execution logs directly to your terminal in real-time, showing console.log output and errors as they occur.",
+        whenToUse: "When debugging your script and you want to see logs without leaving the terminal.",
+        scenarios: [
+          "Live debugging: Watching logs in real-time while testing your script's functionality",
+          "Error monitoring: Using --watch flag to continuously monitor for errors in a running web app",
+          "Development workflow: Viewing console.log output while developing without switching to the browser"
+        ]
+      },
+      {
+        task: "Open the Apps Script editor in browser",
+        answer: "clasp open-script [scriptId]",
+        description: "Opens your Apps Script project in the online editor in your default web browser.",
+        whenToUse: "When you need to quickly access the web editor for visual editing, project settings, or features not available in clasp.",
+        scenarios: [
+          "Visual editing: Opening the editor to use the UI builder for creating custom menus or dialogs",
+          "Project settings: Accessing the web interface to configure triggers, libraries, or permissions",
+          "Quick checks: Verifying how your code appears in the online editor or testing the script there"
+        ]
+      },
+      {
+        task: "Open the container-bound document/sheet",
+        answer: "clasp open-container",
+        description: "Opens the Google Doc, Sheet, Form, or Slides presentation that your script is bound to in your web browser.",
+        whenToUse: "When working with container-bound scripts and you need to access the parent document.",
+        scenarios: [
+          "Sheet testing: Opening the bound spreadsheet to test custom menu items or sheet functions",
+          "Form configuration: Accessing the form that your script processes submissions for",
+          "Document context: Viewing the document structure while developing container-bound automation"
+        ]
+      },
+      {
+        task: "Open the deployed web app in browser",
+        answer: "clasp open-web-app [deploymentId]",
+        description: "Opens a specific deployment of your web app in your browser, using the deployment's public URL.",
+        whenToUse: "When you want to quickly test or view a deployed version of your web application.",
+        scenarios: [
+          "Deployment testing: Opening a new deployment to verify it's working correctly before sharing with users",
+          "Version comparison: Opening different deployment IDs to compare behavior between versions",
+          "Quick access: Launching your web app without manually copying and pasting the deployment URL"
+        ]
+      },
+      {
+        task: "Execute a function in the script",
+        answer: "clasp run [options] [functionName]",
+        description: "Remotely executes a specific function in your Apps Script project directly from the command line, returning the results to your terminal.",
+        whenToUse: "When you want to test functions or run one-off scripts without manually triggering them in the editor.",
+        scenarios: [
+          "Function testing: Running and testing individual functions during development without the web editor",
+          "One-off tasks: Executing data migration or cleanup functions from your terminal",
+          "CI/CD integration: Running test functions as part of automated deployment pipelines"
+        ]
+      },
+      {
+        task: "List all Apps Script projects for current user",
+        answer: "clasp list [options]",
+        description: "Displays all Apps Script projects accessible by your currently authenticated Google account, showing script IDs and titles.",
+        whenToUse: "When you need to find a script ID or see all your available projects.",
+        scenarios: [
+          "Script discovery: Finding the script ID of a project you want to clone",
+          "Project inventory: Viewing all your scripts to decide which ones to work on locally",
+          "Account audit: Checking what script projects are associated with your Google account"
+        ]
+      },
+      {
+        task: "Create a new version of the script",
+        answer: "clasp version [description]",
+        description: "Creates an immutable snapshot of your current script code as a numbered version. This version can then be deployed.",
+        whenToUse: "When you want to create a stable reference point before deploying or making major changes.",
+        scenarios: [
+          "Pre-deployment: Creating a version with a description before deploying to production",
+          "Release tagging: Marking significant milestones like 'v2.0 - Added user authentication'",
+          "Safe refactoring: Creating a version before major code changes so you can easily revert if needed"
+        ]
+      },
+      {
+        task: "List all versions of a script project",
+        answer: "clasp versions [scriptId]",
+        description: "Shows all saved versions of your script with their version numbers, descriptions, and creation dates.",
+        whenToUse: "When you need to review version history or find a specific version number for deployment or rollback.",
+        scenarios: [
+          "Version audit: Reviewing the history of your project to understand when changes were made",
+          "Rollback planning: Finding the version number of a stable release to redeploy",
+          "Documentation: Getting version information for release notes or change logs"
+        ]
+      },
+      {
+        task: "Start the Model Context Protocol server",
+        answer: "clasp mcp",
+        description: "Starts a Model Context Protocol (MCP) server that allows AI assistants and tools to interact with your Apps Script projects through a standardized interface.",
+        whenToUse: "When you want to enable AI-assisted development or integrate your Apps Script projects with MCP-compatible tools.",
+        scenarios: [
+          "AI development: Enabling an AI assistant like Claude to help write and modify your Apps Script code",
+          "Tool integration: Connecting automated development tools that use the MCP protocol",
+          "Enhanced workflows: Using MCP-compatible IDEs that provide enhanced Apps Script development features"
+        ]
+      }
+    ];
+
+    // Advanced flashcards focusing on command options and flags
+    const advancedFlashcards = [
+      // LOGIN OPTIONS
+      {
+        task: "Authenticate for CI/CD pipeline on a headless server",
+        answer: "clasp login --no-localhost",
+        description: "Disables the local redirect server during authentication, requiring manual code entry instead. Essential for environments without a display or browser.",
+        whenToUse: "When setting up clasp authentication in CI/CD pipelines, Docker containers, or remote servers without GUI access.",
+        scenarios: [
+          "GitHub Actions workflow: Using --no-localhost to authenticate in a CI runner where you can't launch a browser",
+          "Docker container: Setting up clasp in a containerized build environment without display capabilities",
+          "Cloud Build: Authenticating in Google Cloud Build or similar headless CI/CD systems"
+        ]
+      },
+      {
+        task: "Use custom OAuth credentials for running functions",
+        answer: "clasp login --creds client_secret.json",
+        description: "Uses a custom OAuth client ID/secret file instead of clasp's default credentials. Required for clasp run and organization-specific deployments.",
+        whenToUse: "When you need to use organization-specific OAuth credentials or when setting up clasp run functionality.",
+        scenarios: [
+          "Enterprise deployment: Using your company's OAuth client to comply with security policies",
+          "Function execution: Setting up credentials required for 'clasp run' to work properly",
+          "Multiple environments: Different credentials for dev, staging, and production environments"
+        ]
+      },
+      {
+        task: "Manage multiple Google accounts for different projects",
+        answer: "clasp login --user client-a",
+        description: "Stores credentials under a named key, allowing you to switch between multiple Google accounts without re-authenticating each time.",
+        whenToUse: "When you work with multiple clients or maintain projects across different Google accounts.",
+        scenarios: [
+          "Freelance developer: Switching between client accounts with 'clasp login --user client-a' and 'clasp login --user client-b'",
+          "Agency work: Managing separate credentials for different organizational accounts",
+          "Personal vs work: Keeping personal projects and work projects separate with named credential sets"
+        ]
+      },
+      {
+        task: "Specify custom port for OAuth redirect during login",
+        answer: "clasp login --redirect-port 8888",
+        description: "Sets a custom port for the local OAuth redirect server instead of the default. Useful when the default port is blocked or in use.",
+        whenToUse: "When port conflicts exist with other services or when firewall rules require specific ports.",
+        scenarios: [
+          "Port conflict: Default port 3000 is already used by your React dev server, so use 8888 instead",
+          "Firewall restrictions: Company firewall only allows specific ports for OAuth redirects",
+          "Multiple simultaneous logins: Running multiple clasp login sessions on different ports"
+        ]
+      },
+
+      // CREATE OPTIONS
+      {
+        task: "Create a script bound to a specific Google Sheet",
+        answer: "clasp create --type sheets --parentId 1abc...xyz",
+        description: "Creates a container-bound script attached to a specific Google Sheet, Form, Doc, or Slides. The script has special access to the container document.",
+        whenToUse: "When building custom functions, menus, or automation for a specific Google Workspace document.",
+        scenarios: [
+          "Custom sheet functions: Creating a script bound to a sales tracking sheet to add custom formulas and automation",
+          "Form processor: Binding a script to a Google Form to process responses with custom logic",
+          "Document automation: Creating a script bound to a template document for mail merge functionality"
+        ]
+      },
+      {
+        task: "Create project in a subdirectory instead of current folder",
+        answer: "clasp create --rootDir ./apps-scripts/my-project",
+        description: "Specifies where clasp stores project files locally, instead of using the current directory. Keeps your workspace organized.",
+        whenToUse: "When organizing multiple scripts in a monorepo or when the current directory isn't the right location.",
+        scenarios: [
+          "Monorepo structure: Creating script in './packages/gas-automation' within a larger project",
+          "Clean separation: Keeping scripts in './src/apps-script' separate from other code",
+          "Multiple scripts: Organizing different scripts in './scripts/email-sender', './scripts/sheet-updater', etc."
+        ]
+      },
+      {
+        task: "Create a new Apps Script project with a specific title and type",
+        answer: "clasp create --title \"Sales Dashboard\" --type sheets",
+        description: "Creates a new Apps Script project with a custom title and type. Valid types are: standalone, sheets, docs, slides, and forms. Note: 'web app' is a deployment type (how you publish), not a project type. Use --type sheets when you want the script bound to a Sheet. Any project type can later be deployed as a web app.",
+        whenToUse: "When you want a descriptive name and need to specify whether the script should be standalone or bound to a specific Google Workspace document type.",
+        scenarios: [
+          "Sheet-bound app: Creating 'Sales Dashboard' bound to Sheets so it can access spreadsheet data and add custom menus",
+          "Team collaboration: Using descriptive titles like 'Q4 Report Generator' for team projects to make them easily identifiable",
+          "Form automation: Creating 'Survey Processor' with --type forms to handle form submissions with custom logic"
+        ]
+      },
+
+      // CLONE OPTIONS
+      {
+        task: "Clone a specific historical version of a script",
+        answer: "clasp clone scriptId 42",
+        description: "Clones a specific version number instead of the latest code. Useful for auditing, debugging, or rolling back.",
+        whenToUse: "When you need to examine or work with an older version of a script.",
+        scenarios: [
+          "Bug investigation: Cloning version 38 to see what the code looked like before a bug was introduced",
+          "Audit requirements: Retrieving the exact code version that was deployed on a specific date",
+          "Rollback preparation: Cloning the last known good version (v42) to restore functionality"
+        ]
+      },
+      {
+        task: "Clone a script into a specific directory",
+        answer: "clasp clone scriptId --rootDir ./legacy-scripts",
+        description: "Clones a script into a specific local directory instead of the current folder.",
+        whenToUse: "When organizing cloned scripts or when you don't want files in your current directory.",
+        scenarios: [
+          "Archive old scripts: Cloning deprecated scripts to './archive/2024' for reference",
+          "Team structure: Each developer clones to their own folder like './developers/john/scripts'",
+          "Clean workspace: Cloning to './temp/review' for quick code review without cluttering main directory"
+        ]
+      },
+
+      // PUSH OPTIONS
+      {
+        task: "Auto-push code changes whenever files are saved",
+        answer: "clasp push --watch",
+        description: "Monitors local files and automatically pushes changes to Apps Script whenever you save. Eliminates manual push commands during development.",
+        whenToUse: "During active development when you want instant synchronization with the cloud version.",
+        scenarios: [
+          "Rapid development: Making frequent small changes and testing immediately in the web editor",
+          "Live debugging: Watching logs in browser while editing locally with auto-sync",
+          "Paired programming: One person codes locally while another tests in the Apps Script editor"
+        ]
+      },
+      {
+        task: "Force push to overwrite cloud changes without confirmation",
+        answer: "clasp push --force",
+        description: "Pushes local code and overwrites cloud changes without asking for confirmation. Use with caution.",
+        whenToUse: "When you're certain your local version is correct and want to overwrite cloud changes.",
+        scenarios: [
+          "Undo web edits: You accidentally edited in the web editor and want to restore from local",
+          "CI/CD pipeline: Automated deployments where manual confirmation isn't possible",
+          "Solo development: You know you're the only one working on it and don't need confirmation prompts"
+        ]
+      },
+
+      // PULL OPTIONS
+      {
+        task: "Pull a specific version number to your local machine",
+        answer: "clasp pull --versionNumber 15",
+        description: "Downloads a specific historical version instead of the latest code. The version number corresponds to versions created with 'clasp version'.",
+        whenToUse: "When you need to recover or examine a specific saved version of your code.",
+        scenarios: [
+          "Time travel debugging: Pulling version 15 to see what the code looked like before refactoring",
+          "Production recovery: Pulling the version currently deployed to production for emergency fixes",
+          "Comparison: Pulling version 10 to compare against current code to understand changes"
+        ]
+      },
+
+      // DEPLOY OPTIONS
+      {
+        task: "Deploy a specific version number",
+        answer: "clasp deploy --versionNumber 23 --description \"Production release v2.0\"",
+        description: "Creates a new deployment using a specific saved version. Ensures you deploy tested, versioned code rather than the latest changes.",
+        whenToUse: "When deploying to production and you want to use a specific tested version.",
+        scenarios: [
+          "Controlled releases: Deploying version 23 that passed QA, not the latest untested code",
+          "Rollback capability: Creating deployment from version 20 which was the last stable release",
+          "Multi-environment: Deploying version 22 to staging while production stays on version 20"
+        ]
+      },
+      {
+        task: "Update an existing deployment with new code",
+        answer: "clasp deploy --deploymentId AKfyc...xyz --description \"Bug fix release\"",
+        description: "Updates an existing deployment instead of creating a new one. Maintains the same deployment URL.",
+        whenToUse: "When you want to update a deployment without changing its URL or creating a new deployment entry.",
+        scenarios: [
+          "Production update: Updating the production deployment without breaking user bookmarks",
+          "Web app fix: Pushing a hotfix to the live web app while keeping the same public URL",
+          "Client delivery: Updating the client's deployment ID without requiring them to change their integration"
+        ]
+      },
+
+      // UNDEPLOY OPTIONS
+      {
+        task: "Remove all deployments at once",
+        answer: "clasp undeploy --all",
+        description: "Removes every deployment for the script in one command, instead of removing them one by one.",
+        whenToUse: "When you want to clean up all deployments and start fresh.",
+        scenarios: [
+          "Fresh start: Removing all old test deployments before creating clean production deployment",
+          "Project sunset: Decommissioning a project by removing all its deployments at once",
+          "Deployment cleanup: Too many test deployments accumulated, easier to remove all and redeploy"
+        ]
+      },
+
+      // LOGS OPTIONS
+      {
+        task: "Stream logs continuously in real-time",
+        answer: "clasp logs --watch",
+        description: "Continuously monitors and displays new log entries as they occur, refreshing every 5 seconds. Like 'tail -f' for Apps Script logs.",
+        whenToUse: "When debugging a running script or monitoring production web app activity.",
+        scenarios: [
+          "Live debugging: Watching logs while triggering your web app to see real-time execution flow",
+          "Production monitoring: Keeping logs open to watch for errors in a live deployment",
+          "Trigger testing: Monitoring logs while time-based or event triggers fire to verify behavior"
+        ]
+      },
+      {
+        task: "View logs in JSON format for parsing",
+        answer: "clasp logs --json",
+        description: "Outputs logs as JSON instead of human-readable format. Useful for programmatic processing or log aggregation tools.",
+        whenToUse: "When integrating logs with monitoring tools or when you need to parse log data programmatically.",
+        scenarios: [
+          "Log aggregation: Piping JSON logs to Elasticsearch or Splunk for centralized monitoring",
+          "Automated analysis: Using jq to filter and analyze error patterns in JSON log output",
+          "CI/CD testing: Parsing JSON logs in test scripts to verify function execution"
+        ]
+      },
+      {
+        task: "View simplified logs without timestamps",
+        answer: "clasp logs --simplified",
+        description: "Removes timestamps and metadata from log output, showing only the actual log messages.",
+        whenToUse: "When you only care about the log messages themselves, not when they occurred.",
+        scenarios: [
+          "Quick scanning: Removing clutter to quickly scan for specific error messages",
+          "Copy-paste: Getting clean log messages without timestamps for pasting into documentation",
+          "Pattern matching: Easier to spot repeated messages without timestamp noise"
+        ]
+      },
+      {
+        task: "Combine multiple log options for customized output",
+        answer: "clasp logs --watch --simplified",
+        description: "Multiple flags can be combined. This watches logs in real-time while showing simplified output.",
+        whenToUse: "When you want real-time monitoring with cleaner output format.",
+        scenarios: [
+          "Development flow: Watching simplified logs while coding to focus on messages, not timestamps",
+          "Error hunting: Real-time simplified logs make it easier to spot error patterns",
+          "Team debugging: Sharing clean, continuous log output in screen sharing sessions"
+        ]
+      },
+
+      // RUN OPTIONS
+      {
+        task: "Run a function with specific user credentials",
+        answer: "clasp run --user prod-account myFunction",
+        description: "Executes a function using a specific named credential set. Useful when different accounts have different permissions.",
+        whenToUse: "When you need to run functions with specific account permissions or test multi-account scenarios.",
+        scenarios: [
+          "Permission testing: Running with --user admin to test admin-only functions vs --user standard for regular users",
+          "Production execution: Using --user prod-account with production credentials for safe deployments",
+          "Client impersonation: Running as a specific client account to debug their specific issues"
+        ]
+      },
+
+      // GLOBAL OPTIONS
+      {
+        task: "Use a different .clasp.json configuration file",
+        answer: "clasp push --project .clasp.production.json",
+        description: "Reads settings from an alternate configuration file instead of .clasp.json. Enables managing multiple environments.",
+        whenToUse: "When managing multiple deployment targets or environments for the same codebase.",
+        scenarios: [
+          "Multi-environment: 'clasp push --project .clasp.dev.json' for dev, '.clasp.prod.json' for production",
+          "A/B testing: Maintaining separate script IDs for experimental and stable versions",
+          "Client variants: Different .clasp files for different client customizations of the same base code"
+        ]
+      },
+      {
+        task: "Use application default credentials for service accounts",
+        answer: "clasp push --adc",
+        description: "Uses Application Default Credentials from the environment instead of user credentials. Essential for service account authentication in CI/CD.",
+        whenToUse: "When running clasp commands in automated environments with service account authentication.",
+        scenarios: [
+          "Cloud Build: Using --adc with service account credentials in Google Cloud Build pipelines",
+          "Kubernetes: Running clasp commands in pods with workload identity",
+          "Automated deployments: GitHub Actions using service account key from environment variables"
+        ]
+      },
+      {
+        task: "Use custom .claspignore file location",
+        answer: "clasp push --ignore ./config/.claspignore.production",
+        description: "Specifies a different file containing ignore patterns instead of the default .claspignore.",
+        whenToUse: "When you need different ignore rules for different environments or build targets.",
+        scenarios: [
+          "Production builds: Using stricter ignore rules that exclude test files and dev dependencies",
+          "Development: Different ignore file that includes test files for development deployments",
+          "Multi-config: Separate ignore rules for different deployment targets in monorepo"
+        ]
+      },
+      {
+        task: "Get command output in JSON format for scripting",
+        answer: "clasp deployments --json",
+        description: "Returns command output as JSON instead of human-readable format. Works with most clasp commands.",
+        whenToUse: "When integrating clasp with scripts, CI/CD pipelines, or other automation tools.",
+        scenarios: [
+          "Deployment automation: Parsing JSON output to extract deployment IDs for scripted workflows",
+          "Monitoring dashboard: Feeding clasp status info into monitoring tools via JSON",
+          "Build scripts: Using jq to extract specific values from clasp command output in bash scripts"
+        ]
+      },
+
+      // ADVANCED WORKFLOWS
+      {
+        task: "Set up clasp for team development with Git",
+        answer: "clasp clone scriptId --rootDir ./src && echo '.clasp.json' >> .gitignore",
+        description: "Clones to a source directory and excludes .clasp.json from Git so each developer can have their own script ID.",
+        whenToUse: "When setting up a collaborative development workflow with version control.",
+        scenarios: [
+          "Team onboarding: Each developer clones to their own test script using their own .clasp.json",
+          "Fork development: Multiple team members work on feature branches with separate script instances",
+          "Safe collaboration: .clasp.json in .gitignore prevents accidentally pushing to wrong script"
+        ]
+      },
+      {
+        task: "Deploy with version control best practices",
+        answer: "clasp push && clasp version \"v2.1.0\" && clasp deploy --versionNumber <number> --description \"Release v2.1.0\"",
+        description: "Complete workflow: push code, create version with semantic versioning, deploy that specific version.",
+        whenToUse: "When following deployment best practices with proper version tracking.",
+        scenarios: [
+          "Release process: Push changes, tag version 'v2.1.0', deploy that version to production",
+          "Audit trail: Create versions with descriptions matching Git tags for traceability",
+          "Rollback safety: Always deploy from versions, never from HEAD, so you can easily rollback"
+        ]
+      },
+      {
+        task: "Watch and auto-push with force to override confirmations",
+        answer: "clasp push --watch --force",
+        description: "Combines watch mode with force flag to auto-push changes without any prompts or confirmations.",
+        whenToUse: "During solo rapid development when you want zero friction between code and deployment.",
+        scenarios: [
+          "Prototype iteration: Rapidly testing ideas with instant push and no interruptions",
+          "Solo project: You're the only developer and don't need safety prompts",
+          "Live coding: Demonstrating code changes in real-time during presentations or teaching"
+        ]
+      }
+    ];
+
+    // Application state
+    let state = {
+      mode: 'basic', // 'basic' or 'advanced'
+      currentIndex: 0,
+      currentScore: 0,
+      totalAttempts: 0,
+      cardStates: [], // Track which cards have been answered
+      shuffledCards: [],
+      isAnswered: false
+    };
+
+    // Elements
+    const elements = {
+      cardContainer: document.querySelector('.card-container'),
+      cardDescription: document.getElementById('card-description'),
+      cardDescriptionText: document.getElementById('card-description-text'),
+      cardWhenToUse: document.getElementById('card-when-to-use'),
+      cardScenarios: document.getElementById('card-scenarios'),
+      cardInput: document.getElementById('card-input'),
+      cardAnswer: document.getElementById('card-answer'),
+      cardFeedback: document.getElementById('card-feedback'),
+      progressFill: document.getElementById('progress-fill'),
+      welcomeScreen: document.getElementById('welcome-screen'),
+      cardsScreen: document.getElementById('cards-screen'),
+      resultsScreen: document.getElementById('results-screen'),
+      resultsScore: document.getElementById('results-score'),
+      resultsMessage: document.getElementById('results-message'),
+      basicModeBtn: document.getElementById('basic-mode-btn'),
+      advancedModeBtn: document.getElementById('advanced-mode-btn'),
+      basicCount: document.getElementById('basic-count'),
+      advancedCount: document.getElementById('advanced-count')
+    };
+
+    // Initialize the application
+    function init() {
+      elements.basicCount.textContent = `${flashcards.length} cards`;
+      elements.advancedCount.textContent = `${advancedFlashcards.length} cards`;
+      shuffleCards();
+      showWelcome();
+      setupEventListeners();
+    }
+
+    // Get current flashcard set based on mode
+    function getCurrentFlashcards() {
+      return state.mode === 'basic' ? flashcards : advancedFlashcards;
+    }
+
+    // Shuffle cards for a new session
+    function shuffleCards() {
+      const cards = getCurrentFlashcards();
+      state.shuffledCards = [...cards].sort(() => Math.random() - 0.5);
+      state.cardStates = new Array(state.shuffledCards.length).fill(null);
+    }
+
+    // Setup all event listeners
+    function setupEventListeners() {
+      // Mode selection buttons
+      elements.basicModeBtn.addEventListener('click', () => setMode('basic'));
+      elements.advancedModeBtn.addEventListener('click', () => setMode('advanced'));
+
+      // Universal Enter key handling
+      document.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const screen = getCurrentScreen();
+          if (screen === 'welcome') {
+            startSession();
+          } else if (screen === 'results') {
+            showWelcome();
+          } else if (screen === 'cards') {
+            if (state.isAnswered) {
+              nextCard();
+            } else {
+              handleSubmit();
+            }
+          }
+        }
+      });
+
+      // Arrow key navigation
+      document.addEventListener('keydown', (e) => {
+        const screen = getCurrentScreen();
+        if (screen === 'cards') {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevCard();
+          } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextCard();
+          }
+        }
+      });
+    }
+
+    // Set the learning mode (basic or advanced)
+    function setMode(mode) {
+      state.mode = mode;
+
+      // Update button states
+      if (mode === 'basic') {
+        elements.basicModeBtn.classList.add('active');
+        elements.advancedModeBtn.classList.remove('active');
+      } else {
+        elements.advancedModeBtn.classList.add('active');
+        elements.basicModeBtn.classList.remove('active');
+      }
+
+      // Reshuffle cards for the new mode
+      shuffleCards();
+    }
+
+    // Get current active screen
+    function getCurrentScreen() {
+      if (elements.welcomeScreen.classList.contains('active')) return 'welcome';
+      if (elements.cardsScreen.classList.contains('active')) return 'cards';
+      if (elements.resultsScreen.classList.contains('active')) return 'results';
+      return null;
+    }
+
+    // Show welcome screen
+    function showWelcome() {
+      elements.welcomeScreen.classList.add('active');
+      elements.cardsScreen.classList.remove('active');
+      elements.resultsScreen.classList.remove('active');
+      resetState();
+    }
+
+    // Reset state for new session
+    function resetState() {
+      state.currentIndex = 0;
+      state.currentScore = 0;
+      state.totalAttempts = 0;
+      state.isAnswered = false;
+      state.cardStates = [];
+    }
+
+    // Start a new session
+    function startSession() {
+      resetState();
+      shuffleCards();
+      showCards();
+      displayCard();
+    }
+
+    // Show cards screen
+    function showCards() {
+      elements.welcomeScreen.classList.remove('active');
+      elements.cardsScreen.classList.add('active');
+      elements.resultsScreen.classList.remove('active');
+    }
+
+    // Display current card
+    function displayCard() {
+      const card = state.shuffledCards[state.currentIndex];
+      const cardState = state.cardStates[state.currentIndex];
+
+      // Populate card content
+      elements.cardDescription.textContent = card.task;
+      elements.cardAnswer.textContent = card.answer;
+
+      // Populate context information
+      elements.cardDescriptionText.textContent = card.description;
+      elements.cardWhenToUse.textContent = card.whenToUse;
+
+      // Populate scenarios
+      elements.cardScenarios.innerHTML = '';
+      card.scenarios.forEach(scenario => {
+        const li = document.createElement('li');
+        li.textContent = scenario;
+        elements.cardScenarios.appendChild(li);
+      });
+
+      // Restore previous state if card was already answered
+      if (cardState) {
+        elements.cardInput.value = cardState.userAnswer;
+        elements.cardAnswer.classList.add('show');
+        elements.cardFeedback.classList.add('show', cardState.isCorrect ? 'correct' : 'incorrect');
+        elements.cardFeedback.textContent = cardState.isCorrect ? '✓ Correct!' : '✗ Incorrect';
+        state.isAnswered = true;
+      } else {
+        elements.cardInput.value = '';
+        elements.cardAnswer.classList.remove('show');
+        elements.cardFeedback.classList.remove('show', 'correct', 'incorrect');
+        state.isAnswered = false;
+      }
+
+      updateProgress();
+
+      // Focus input on new cards
+      if (!state.isAnswered) {
+        setTimeout(() => elements.cardInput.focus(), 100);
+      }
+    }
+
+    // Handle answer submission
+    function handleSubmit() {
+      if (state.isAnswered) return;
+
+      const userAnswer = elements.cardInput.value.trim();
+      const correctAnswer = state.shuffledCards[state.currentIndex].answer;
+
+      // More flexible comparison - ignore case and normalize spaces
+      const normalizeAnswer = (answer) => {
+        return answer.toLowerCase()
+          .replace(/\s+/g, ' ')
+          .replace(/\[options\]/g, '')
+          .replace(/\[([^\]]+)\]/g, '') // Remove all bracketed content for comparison
+          .replace(/<([^>]+)>/g, '') // Remove angle brackets
+          .trim();
+      };
+
+      const isCorrect = normalizeAnswer(userAnswer) === normalizeAnswer(correctAnswer);
+
+      elements.cardAnswer.classList.add('show');
+      elements.cardFeedback.classList.add('show');
+
+      if (isCorrect) {
+        elements.cardFeedback.classList.add('correct');
+        elements.cardFeedback.textContent = '✓ Correct!';
+        state.currentScore++;
+      } else {
+        elements.cardFeedback.classList.add('incorrect');
+        elements.cardFeedback.textContent = '✗ Incorrect';
+      }
+
+      state.totalAttempts++;
+      state.isAnswered = true;
+
+      // Save card state
+      state.cardStates[state.currentIndex] = {
+        userAnswer,
+        isCorrect
+      };
+
+      updateProgress();
+    }
+
+    // Navigate to next card
+    function nextCard() {
+      if (state.currentIndex < state.shuffledCards.length - 1) {
+        state.currentIndex++;
+        displayCard();
+      } else {
+        showResults();
+      }
+    }
+
+    // Navigate to previous card
+    function prevCard() {
+      if (state.currentIndex > 0) {
+        state.currentIndex--;
+        displayCard();
+      }
+    }
+
+    // Update progress indicators
+    function updateProgress() {
+      const progress = ((state.currentIndex + 1) / state.shuffledCards.length) * 100;
+      elements.progressFill.style.width = progress + '%';
+    }
+
+
+    // Show results screen
+    function showResults() {
+      const percentage = state.totalAttempts > 0
+        ? Math.round((state.currentScore / state.totalAttempts) * 100)
+        : 0;
+
+      elements.resultsScore.textContent = `${state.currentScore}/${state.totalAttempts}`;
+
+      let message = '';
+      if (percentage === 100) {
+        message = `Perfect! You mastered all commands! 🏆`;
+      } else if (percentage >= 80) {
+        message = `Excellent work! You know most commands! 🌟`;
+      } else if (percentage >= 60) {
+        message = `Good effort! Keep practicing! 💪`;
+      } else if (percentage >= 40) {
+        message = `Nice try! Review and try again! 📖`;
+      } else {
+        message = `Keep learning! You'll get there! 🚀`;
+      }
+
+      elements.resultsMessage.textContent = `${percentage}% Correct • ${message}`;
+
+      elements.welcomeScreen.classList.remove('active');
+      elements.cardsScreen.classList.remove('active');
+      elements.resultsScreen.classList.add('active');
+    }
+
+    // Initialize the application on load
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+# Files to ignore when pushing to Google Apps Script
+README.md
+.git/
+.gitignore
+node_modules/
+.DS_Store
