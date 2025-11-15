@@ -2,6 +2,10 @@
 
 A static web app for learning essential command-line tools through interactive flashcards. Hosted on GitHub Pages for easy access and maintenance.
 
+> **Current Version**: v3 - Static HTML/CSS/JS hosted on GitHub Pages
+> **Location**: `/docs/` directory
+> **Previous versions** (deprecated): v1 Apps Script (`/src/`), v2 Next.js + Supabase (`/nextjs-app/`)
+
 ## Features
 
 - **56 Interactive Flashcards** - Master clasp commands (basic + advanced)
@@ -26,6 +30,29 @@ A static web app for learning essential command-line tools through interactive f
 - Linux
 - FreeBSD
 
+## Architecture
+
+This is a **pure static web application** with no backend, no database, and no build process:
+
+- **Frontend**: Single HTML file with embedded CSS and JavaScript
+- **Data Storage**: JSON file (`data.json`) containing all flashcard content
+- **Hosting**: GitHub Pages (free, reliable, fast CDN)
+- **Deployment**: Git push to main branch automatically updates the live site
+
+### Why Static?
+
+We migrated from Next.js + Supabase to a static architecture because:
+
+1. **Simplicity** - No server, no database, no API routes to maintain
+2. **Easy Content Updates** - Edit JSON file directly, no SQL migrations needed
+3. **Zero Cost** - GitHub Pages is free and reliable
+4. **No Build Step** - Pure HTML/CSS/JS means instant changes
+5. **Version Control** - All content changes tracked in Git with full history
+6. **Performance** - Static files served from GitHub's global CDN
+7. **Reliability** - Can't go down, no moving parts to break
+
+For a flashcard app with static content, a database was overkill. This approach is faster to develop, easier to maintain, and simpler to contribute to.
+
 ## Quick Start
 
 ### View Live
@@ -45,13 +72,14 @@ open docs/index.html
 
 ```
 claspcards/
-├── docs/                 # GitHub Pages root
+├── docs/                 # ✅ Current version (v3) - GitHub Pages root
 │   ├── index.html       # Main app (static HTML/CSS/JS)
 │   ├── data.json        # Flashcard data
 │   └── styles.css       # Styles (if separated)
-├── src/                 # Legacy Apps Script version
-├── nextjs-app/          # Legacy Next.js version (being phased out)
-└── README.md
+├── src/                 # ⚠️ Deprecated v1 (Apps Script) - see src/README.md
+├── nextjs-app/          # ⚠️ Deprecated v2 (Next.js + Supabase) - see nextjs-app/README.md
+├── refactorToJson.md    # Migration rationale and plan
+└── README.md            # This file
 ```
 
 ## Usage
@@ -102,10 +130,46 @@ Simply edit the JSON file and refresh the page. No build step needed!
 
 ## Deployment to GitHub Pages
 
-1. **Enable GitHub Pages** in repository settings
-2. **Set source** to `/docs` folder from main branch
-3. **Push changes** to main branch
-4. **Access** at `https://[username].github.io/[repo]/`
+### Initial Setup
+
+1. **Go to Repository Settings**
+   - Navigate to your repository on GitHub
+   - Click "Settings" tab
+
+2. **Enable GitHub Pages**
+   - Scroll to "Pages" section in sidebar
+   - Under "Build and deployment":
+     - Source: Deploy from a branch
+     - Branch: `main` (or your default branch)
+     - Folder: `/docs`
+   - Click "Save"
+
+3. **Wait for Deployment**
+   - GitHub will build and deploy automatically
+   - Check "Actions" tab to see deployment status
+   - Usually takes 1-2 minutes
+
+4. **Access Your Site**
+   - Visit `https://[username].github.io/[repo]/`
+   - Bookmark it for easy access
+
+### Updating Content
+
+Making changes is simple:
+
+```bash
+# 1. Edit the flashcard data
+vim docs/data.json
+
+# 2. Commit and push
+git add docs/data.json
+git commit -m "Add new flashcards for Git commands"
+git push origin main
+
+# 3. GitHub Pages auto-deploys (1-2 minutes)
+```
+
+No build process, no deployment configuration, no CI/CD setup needed. Just edit, commit, push.
 
 ## Customization
 
@@ -147,14 +211,48 @@ Modify CSS variables in `index.html`:
 - Firefox 88+
 - Mobile browsers (iOS Safari, Chrome Mobile, etc.)
 
-## Migration Notes
+## Version History & Migration
 
-This project was migrated from:
-1. **v1**: Apps Script hosted web app
-2. **v2**: Next.js + Supabase (overly complex)
-3. **v3**: Static site on GitHub Pages (current - simple & maintainable)
+This project has evolved through three versions, each learning from the previous:
 
-See `refactorToJson.md` for migration details.
+### v3: Static HTML/CSS/JS on GitHub Pages (Current)
+**Location**: `/docs/`
+**Status**: Active and recommended
+
+- Pure static site with no dependencies
+- JSON-based data storage
+- Zero infrastructure costs
+- Instant updates via Git
+
+### v2: Next.js + Supabase (Deprecated)
+**Location**: `/nextjs-app/`
+**Status**: Deprecated - kept for reference only
+
+**Why deprecated?**
+- Database was overkill for static flashcard content
+- Required Supabase account and Vercel deployment
+- SQL migrations needed for simple content updates
+- Over-engineered for the use case
+- Maintenance overhead not justified by features
+
+**See**: `/nextjs-app/README.md` for setup if you want to explore this version
+
+### v1: Google Apps Script (Deprecated)
+**Location**: `/src/`
+**Status**: Deprecated - original version
+
+- Hosted as Google Apps Script web app
+- All logic embedded in single HTML file
+- Required Google account for hosting
+- Limited customization options
+
+**See**: `/src/README.md` for historical context
+
+### Migration Details
+
+For detailed migration rationale and technical decisions, see:
+- `refactorToJson.md` - Migration plan from v2 to v3
+- Commit history for implementation details
 
 ## Contributing
 

@@ -1,5 +1,25 @@
 # CLI Flashcards - Next.js + Supabase
 
+> **⚠️ DEPRECATED - Version 2**
+>
+> This version is **no longer actively maintained**. It has been replaced by a simpler static version.
+>
+> **Use instead**: `/docs/` directory (v3 - Static HTML/CSS/JS)
+>
+> **Why deprecated?**
+> - Database was overkill for static flashcard data
+> - Required external services (Supabase, Vercel)
+> - SQL migrations needed for simple content updates
+> - Over-engineered for the use case
+>
+> This version is kept for reference and learning purposes. If you want to see a production-ready Next.js + Supabase implementation, feel free to explore the code.
+>
+> See the main [README.md](../README.md) for the current recommended version.
+
+---
+
+## Original Documentation (v2)
+
 A modern flashcard application for learning CLI commands, migrated from Google Apps Script to Next.js + Supabase stack.
 
 ## Features
