@@ -24,6 +24,9 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
   // In hard mode: show answer on attempts 1 and 2, hide on attempt 3
   const shouldShowAnswer = isAnswered && (!hardMode || retryAttempt !== 3)
 
+  // In hard mode attempt 3, always hide the answer (whether answered or not)
+  const shouldHideAnswer = hardMode && retryAttempt === 3
+
   // Clear input and focus when flashcard changes (unless it's already been answered)
   useEffect(() => {
     if (cardState) {
@@ -83,36 +86,36 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
               className="text-base md:text-lg py-3"
             />
 
+            {/* Hard Mode: Show retry progress (show even when not answered if in retry mode) */}
+            {hardMode && retryAttempt > 0 && (
+              <div className="p-3 bg-primary/10 border border-primary rounded-lg text-sm">
+                <div className="font-semibold text-primary mb-1">Hard Mode - Retry Challenge</div>
+                <div className="text-muted-foreground">
+                  {retryAttempt === 3 ? (
+                    <span>Attempt 3/3 - Type from memory (answer hidden)</span>
+                  ) : (
+                    <span>Attempt {retryAttempt}/3 - Type the correct answer shown below</span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Show answer (unless hard mode attempt 3) */}
+            {shouldShowAnswer && (
+              <div className="p-4 bg-muted rounded-lg border-l-4 border-primary font-mono text-sm">
+                {flashcard.answer}
+              </div>
+            )}
+
+            {/* Hide answer on 3rd attempt in hard mode */}
+            {shouldHideAnswer && (
+              <div className="p-4 bg-muted/50 rounded-lg border-l-4 border-muted text-sm text-center text-muted-foreground italic">
+                Answer hidden - type from memory
+              </div>
+            )}
+
             {isAnswered && (
               <>
-                {/* Hard Mode: Show retry progress */}
-                {hardMode && retryAttempt > 0 && (
-                  <div className="p-3 bg-primary/10 border border-primary rounded-lg text-sm">
-                    <div className="font-semibold text-primary mb-1">Hard Mode Active</div>
-                    <div className="text-muted-foreground">
-                      {retryAttempt === 3 ? (
-                        <span>Attempt 3/3 - Type from memory (answer hidden)</span>
-                      ) : (
-                        <span>Attempt {retryAttempt}/3 - Type the correct answer shown below</span>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Show answer (unless hard mode attempt 3) */}
-                {shouldShowAnswer && (
-                  <div className="p-4 bg-muted rounded-lg border-l-4 border-primary font-mono text-sm">
-                    {flashcard.answer}
-                  </div>
-                )}
-
-                {/* Hide answer on 3rd attempt in hard mode */}
-                {hardMode && retryAttempt === 3 && isAnswered && (
-                  <div className="p-4 bg-muted/50 rounded-lg border-l-4 border-muted text-sm text-center text-muted-foreground italic">
-                    Answer hidden - type from memory
-                  </div>
-                )}
-
                 {/* Feedback - only show if not in retry mode OR they got it wrong */}
                 {(!hardMode || retryAttempt === 0 || !cardState?.isCorrect) && (
                   <div
@@ -128,9 +131,9 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
                 )}
 
                 {/* Show success message when all retries completed */}
-                {hardMode && retryAttempt === 3 && cardState?.isCorrect && (
+                {hardMode && retryAttempt === 0 && cardState?.isCorrect && cardState.retryCount && cardState.retryCount >= 3 && (
                   <div className="p-3 rounded-lg text-sm font-medium text-center bg-success/10 text-success border border-success">
-                    🎉 All 3 retries completed! Press Enter to continue.
+                    🎉 All 3 retries completed successfully! Press Enter to continue.
                   </div>
                 )}
               </>

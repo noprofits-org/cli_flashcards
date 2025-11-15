@@ -75,11 +75,11 @@ export default function FlashcardsPage({ params }: PageProps) {
 
   const handleSubmit = (answer: string, isCorrect: boolean) => {
     const currentCardState = state.cardStates[state.currentIndex]
-    const retryCount = currentCardState?.retryCount || 0
+    const currentRetry = state.currentRetryAttempt || 0
 
     // Hard mode logic: wrong answer requires 3 correct retries
     if (state.hardMode && !isCorrect) {
-      // Wrong answer in hard mode - reset retry counter
+      // Wrong answer in hard mode - start/restart retry sequence from attempt 1
       const newCardStates = [...state.cardStates]
       newCardStates[state.currentIndex] = {
         userAnswer: answer,
@@ -91,43 +91,42 @@ export default function FlashcardsPage({ params }: PageProps) {
         ...prev,
         cardStates: newCardStates,
         isAnswered: true,
-        currentRetryAttempt: 1, // Start retry sequence
+        currentRetryAttempt: 1, // Start retry sequence at attempt 1
         totalAttempts: prev.totalAttempts + 1,
       }))
       return
     }
 
     // Hard mode: user got it right, check if they're in retry mode
-    if (state.hardMode && (state.currentRetryAttempt || 0) > 0) {
-      const newRetryCount = retryCount + 1
-
-      if (newRetryCount < 3) {
-        // Still need more retries
+    if (state.hardMode && currentRetry > 0) {
+      // They got it correct during a retry attempt
+      if (currentRetry < 3) {
+        // Still need more retries (attempts 1 and 2 completed, need attempt 3)
         const newCardStates = [...state.cardStates]
         newCardStates[state.currentIndex] = {
           userAnswer: answer,
           isCorrect: true,
-          retryCount: newRetryCount
+          retryCount: currentRetry
         }
 
         setState(prev => ({
           ...prev,
           cardStates: newCardStates,
           isAnswered: true,
-          currentRetryAttempt: newRetryCount + 1,
+          currentRetryAttempt: currentRetry + 1, // Move to next retry attempt
           totalAttempts: prev.totalAttempts + 1,
         }))
         return
       }
-      // Completed 3 retries successfully - fall through to normal flow
+      // currentRetry === 3: Completed all 3 retries successfully - fall through to mark card as complete
     }
 
-    // Normal mode or successful completion of hard mode retries
+    // Normal mode or successful completion of hard mode retries (all 3 attempts)
     const newCardStates = [...state.cardStates]
     newCardStates[state.currentIndex] = {
       userAnswer: answer,
       isCorrect,
-      retryCount: 0
+      retryCount: currentRetry
     }
 
     setState(prev => ({
@@ -136,7 +135,7 @@ export default function FlashcardsPage({ params }: PageProps) {
       isAnswered: true,
       currentScore: prev.currentScore + (isCorrect ? 1 : 0),
       totalAttempts: prev.totalAttempts + 1,
-      currentRetryAttempt: 0,
+      currentRetryAttempt: 0, // Reset retry counter
     }))
   }
 
