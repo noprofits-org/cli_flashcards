@@ -41,6 +41,7 @@ export interface UserSession {
 export interface CardState {
   userAnswer: string
   isCorrect: boolean
+  retryCount?: number // For hard mode: tracks how many times user has retried this card
 }
 
 export interface AppState {
@@ -49,4 +50,6 @@ export interface AppState {
   totalAttempts: number
   cardStates: (CardState | null)[]
   isAnswered: boolean
+  hardMode: boolean
+  currentRetryAttempt?: number // Current retry attempt (1-3) for hard mode
 }

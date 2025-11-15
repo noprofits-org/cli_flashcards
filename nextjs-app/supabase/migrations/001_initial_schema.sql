@@ -1,9 +1,9 @@
 -- Enable UUID extension
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- Flashcard sets/categories table
 CREATE TABLE flashcard_sets (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL UNIQUE,
   description TEXT,
   card_count INTEGER DEFAULT 0,
@@ -13,7 +13,7 @@ CREATE TABLE flashcard_sets (
 
 -- Individual flashcards table
 CREATE TABLE flashcards (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   set_id UUID NOT NULL REFERENCES flashcard_sets(id) ON DELETE CASCADE,
   task TEXT NOT NULL,
   answer TEXT NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE flashcards (
 
 -- User progress tracking table
 CREATE TABLE user_progress (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   flashcard_id UUID NOT NULL REFERENCES flashcards(id) ON DELETE CASCADE,
   session_id UUID,
@@ -38,7 +38,7 @@ CREATE TABLE user_progress (
 
 -- User sessions table
 CREATE TABLE user_sessions (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   set_id UUID NOT NULL REFERENCES flashcard_sets(id) ON DELETE CASCADE,
   score INTEGER DEFAULT 0,

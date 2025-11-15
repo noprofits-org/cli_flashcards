@@ -19,12 +19,19 @@ export default function FlashcardsPage({ params }: PageProps) {
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [loading, setLoading] = useState(true)
   const [sessionId, setSessionId] = useState<string | null>(null)
+
+  // Get hard mode from URL params
+  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '')
+  const hardMode = searchParams.get('hardMode') === 'true'
+
   const [state, setState] = useState<AppState>({
     currentIndex: 0,
     currentScore: 0,
     totalAttempts: 0,
     cardStates: [],
     isAnswered: false,
+    hardMode,
+    currentRetryAttempt: 0,
   })
 
   useEffect(() => {
@@ -67,8 +74,61 @@ export default function FlashcardsPage({ params }: PageProps) {
   }
 
   const handleSubmit = (answer: string, isCorrect: boolean) => {
+    const currentCardState = state.cardStates[state.currentIndex]
+    const retryCount = currentCardState?.retryCount || 0
+
+    // Hard mode logic: wrong answer requires 3 correct retries
+    if (state.hardMode && !isCorrect) {
+      // Wrong answer in hard mode - reset retry counter
+      const newCardStates = [...state.cardStates]
+      newCardStates[state.currentIndex] = {
+        userAnswer: answer,
+        isCorrect: false,
+        retryCount: 0
+      }
+
+      setState(prev => ({
+        ...prev,
+        cardStates: newCardStates,
+        isAnswered: true,
+        currentRetryAttempt: 1, // Start retry sequence
+        totalAttempts: prev.totalAttempts + 1,
+      }))
+      return
+    }
+
+    // Hard mode: user got it right, check if they're in retry mode
+    if (state.hardMode && (state.currentRetryAttempt || 0) > 0) {
+      const newRetryCount = retryCount + 1
+
+      if (newRetryCount < 3) {
+        // Still need more retries
+        const newCardStates = [...state.cardStates]
+        newCardStates[state.currentIndex] = {
+          userAnswer: answer,
+          isCorrect: true,
+          retryCount: newRetryCount
+        }
+
+        setState(prev => ({
+          ...prev,
+          cardStates: newCardStates,
+          isAnswered: true,
+          currentRetryAttempt: newRetryCount + 1,
+          totalAttempts: prev.totalAttempts + 1,
+        }))
+        return
+      }
+      // Completed 3 retries successfully - fall through to normal flow
+    }
+
+    // Normal mode or successful completion of hard mode retries
     const newCardStates = [...state.cardStates]
-    newCardStates[state.currentIndex] = { userAnswer: answer, isCorrect }
+    newCardStates[state.currentIndex] = {
+      userAnswer: answer,
+      isCorrect,
+      retryCount: 0
+    }
 
     setState(prev => ({
       ...prev,
@@ -76,15 +136,28 @@ export default function FlashcardsPage({ params }: PageProps) {
       isAnswered: true,
       currentScore: prev.currentScore + (isCorrect ? 1 : 0),
       totalAttempts: prev.totalAttempts + 1,
+      currentRetryAttempt: 0,
     }))
   }
 
   const nextCard = () => {
+    // In hard mode, if in retry mode, clear answer and stay on same card
+    if (state.hardMode && (state.currentRetryAttempt || 0) > 0) {
+      setState(prev => ({
+        ...prev,
+        isAnswered: false,
+        // Keep currentRetryAttempt as is
+      }))
+      return
+    }
+
+    // Normal navigation to next card
     if (state.currentIndex < flashcards.length - 1) {
       setState(prev => ({
         ...prev,
         currentIndex: prev.currentIndex + 1,
         isAnswered: prev.cardStates[prev.currentIndex + 1] !== null,
+        currentRetryAttempt: 0,
       }))
     } else {
       // Navigate to results
@@ -118,6 +191,9 @@ export default function FlashcardsPage({ params }: PageProps) {
       } else if (e.key === 'ArrowRight') {
         e.preventDefault()
         nextCard()
+      } else if (e.key === 'Escape') {
+        e.preventDefault()
+        router.push('/')
       }
     }
 
@@ -170,6 +246,8 @@ export default function FlashcardsPage({ params }: PageProps) {
             cardState={state.cardStates[state.currentIndex]}
             onSubmit={handleSubmit}
             isAnswered={state.isAnswered}
+            hardMode={state.hardMode}
+            retryAttempt={state.currentRetryAttempt || 0}
           />
         </div>
       </div>

@@ -1,166 +1,144 @@
-# Clasp Commands Flashcard Web App
+# Master CLI Commands - Interactive Flashcards
 
-A mobile-first Google Apps Script web app for learning clasp commands through interactive flashcards.
+A static web app for learning essential command-line tools through interactive flashcards. Hosted on GitHub Pages for easy access and maintenance.
 
 ## Features
 
-- **29 Interactive Flashcards** - Master all major clasp commands
-- **Mobile-First Design** - Optimized for phones and tablets with swipe navigation
+- **56 Interactive Flashcards** - Master clasp commands (basic + advanced)
+- **Hard Mode** - Wrong answers require 3 correct retries before proceeding
+- **Keyboard Navigation** - Arrow keys, Enter, and Escape shortcuts
 - **Dark Mode Support** - Auto-detects system preference
 - **Real-Time Score Tracking** - See your progress throughout each session
 - **Randomized Decks** - Cards shuffle every session for better learning
-- **Touch-Optimized UI** - Large buttons and inputs for easy mobile interaction
-- **Swipe Navigation** - Swipe left/right to navigate between cards
-- **Instant Feedback** - Immediate answer checking with visual feedback
+- **Context-Rich Learning** - Each card shows what it does, when to use it, and real-world scenarios
+- **Zero Dependencies** - Pure HTML/CSS/JavaScript, no build tools required
 
-## Flashcard Topics
+## CLI Tools Covered
 
-All 29 clasp commands including:
-- Authentication (login, logout)
-- Project Management (create, clone, delete)
-- Deployment (push, pull, deploy, undeploy)
-- API Management (enable-api, disable-api, list-apis)
-- Logging (open-logs, tail-logs)
-- Version Control (create-version, list-versions)
-- Script Management (open-script, open-container, run-function)
-- And more!
+### Clasp (Google Apps Script CLI)
+- **Basic Commands** (29 cards) - Authentication, project management, deployment, API management, logging, version control
+- **Advanced Options** (27 cards) - Command flags, CI/CD integration, multi-environment workflows
 
-## Setup & Deployment
+### Coming Soon
+- Git
+- Vercel
+- Supabase
+- Linux
+- FreeBSD
 
-### Prerequisites
+## Quick Start
 
-- Google Account
-- Node.js and npm installed
-- Clasp CLI installed globally
+### View Live
+Visit: `https://[your-username].github.io/claspcards/`
 
+### Local Development
 ```bash
-npm install -g @google/clasp
-```
-
-### Installation Steps
-
-1. **Clone this project**
-```bash
-git clone <repository-url>
+# Clone the repository
+git clone https://github.com/[your-org]/claspcards.git
 cd claspcards
-```
 
-2. **Create a new Google Apps Script project**
-
-   Option A: If starting fresh
-   ```bash
-   clasp create --type webapp --title "Clasp Flashcards"
-   ```
-
-   Option B: If updating existing project
-   - Update the `scriptId` in `.clasp.json` with your existing script ID
-
-3. **Authenticate with Google**
-```bash
-clasp login
-```
-
-4. **Deploy the web app**
-```bash
-clasp push
-clasp deploy
-```
-
-5. **Access the app**
-   - The deployment will provide a URL to your web app
-   - Open it in your browser (works best on mobile!)
-
-### Configuration
-
-Edit `.clasp.json` to specify your script ID:
-```json
-{
-  "scriptId": "YOUR_SCRIPT_ID",
-  "rootDir": "."
-}
+# Open in browser
+open docs/index.html
 ```
 
 ## File Structure
 
 ```
 claspcards/
-├── Code.gs              # Backend Google Apps Script
-├── Index.html           # Main app with inline CSS/JS
-├── appsscript.json      # GAS project configuration
-├── .clasp.json          # Clasp CLI configuration
-├── .claspignore         # Files to exclude from push
-└── README.md            # This file
+├── docs/                 # GitHub Pages root
+│   ├── index.html       # Main app (static HTML/CSS/JS)
+│   ├── data.json        # Flashcard data
+│   └── styles.css       # Styles (if separated)
+├── src/                 # Legacy Apps Script version
+├── nextjs-app/          # Legacy Next.js version (being phased out)
+└── README.md
 ```
 
 ## Usage
 
-1. **Start Learning** - Click the start button on the welcome screen
-2. **Read the Task** - Each card shows a task description
-3. **Type Your Answer** - Enter the clasp command (or alias) you think is correct
-4. **Submit** - Click "Submit Answer" or press Enter
-5. **Review** - See the correct answer and if you got it right
-6. **Navigate** - Swipe left/right or use Previous/Next buttons
-7. **Track Progress** - Watch your score and progress bar update
-8. **Finish** - Complete all cards to see your final score
+1. **Select Mode** - Choose between Basic and Advanced commands
+2. **Enable Hard Mode** (optional) - Wrong answers require 3 retries
+3. **Read the Task** - Each card shows what the command does and when to use it
+4. **Type Your Answer** - Enter the command you think is correct
+5. **Submit** - Press Enter to check your answer
+6. **Learn** - See the correct answer and real-world scenarios
+7. **Navigate** - Use arrow keys or click to move between cards
+8. **Track Progress** - Watch your score and progress bar update
 
 ## Keyboard Shortcuts
 
-- **Enter** - Submit answer (when focused on input field)
-- **Arrow Keys** - Navigate between cards (on desktop)
-- **Swipe** - Navigate between cards (on mobile)
+- **Enter** - Submit answer / Continue to next card
+- **←/→** - Navigate between cards
+- **Esc** - Return to home page
+
+## Hard Mode
+
+When enabled, wrong answers trigger a learning sequence:
+1. **Attempt 1 & 2**: Type the correct answer while viewing it (muscle memory)
+2. **Attempt 3**: Type from memory (answer hidden)
+3. **Wrong on any attempt**: Restart sequence
+
+This reinforcement ensures true mastery of commands you struggle with.
+
+## Editing Flashcards
+
+All flashcard data is stored in `/docs/data.json`:
+
+```json
+{
+  "clasp-basics": [
+    {
+      "task": "Authenticate with your Google Account",
+      "answer": "clasp login [options]",
+      "description": "Authorizes clasp to manage your Google account's Apps Script projects...",
+      "whenToUse": "Required before using any other clasp commands...",
+      "scenarios": ["First-time setup: ...", "Switching accounts: ...", "CI/CD setup: ..."]
+    }
+  ]
+}
+```
+
+Simply edit the JSON file and refresh the page. No build step needed!
+
+## Deployment to GitHub Pages
+
+1. **Enable GitHub Pages** in repository settings
+2. **Set source** to `/docs` folder from main branch
+3. **Push changes** to main branch
+4. **Access** at `https://[username].github.io/[repo]/`
 
 ## Customization
 
-### Adding More Commands
+### Adding New CLI Tools
 
-Edit the `flashcards` array in `Index.html`:
-
-```javascript
-const flashcards = [
-  { 
-    task: "Your task description", 
-    answer: "clasp command" 
-  },
-  // Add more cards...
-];
+1. Add new set to `data.json`:
+```json
+{
+  "git-basics": [
+    {
+      "task": "...",
+      "answer": "...",
+      "description": "...",
+      "whenToUse": "...",
+      "scenarios": []
+    }
+  ]
+}
 ```
+
+2. Cards will automatically appear in the UI grouped by tool
 
 ### Styling
 
-Modify CSS variables in the `<style>` section:
+Modify CSS variables in `index.html`:
 
 ```css
 :root {
   --color-primary: #3b82f6;
   --color-success: #10b981;
   --color-error: #ef4444;
-  /* ... more variables ... */
 }
 ```
-
-### Dark Mode
-
-The app automatically detects system preference:
-- Light mode variables override dark mode in `@media (prefers-color-scheme: dark)`
-- Users' system settings control the appearance
-
-## Troubleshooting
-
-### "Script not found" error
-- Ensure `.clasp.json` has the correct `scriptId`
-- Run `clasp pull` to sync with the cloud
-
-### App not loading
-- Check that `appsscript.json` has `"access": "ANYONE"`
-- Verify the deployment is active in Apps Script editor
-
-### Touch gestures not working
-- Ensure you're on a touch-enabled device
-- Try using the Previous/Next buttons as fallback
-
-### Dark mode not working
-- Check your system color scheme preference
-- Try the alternative in your browser settings
 
 ## Browser Compatibility
 
@@ -169,18 +147,25 @@ The app automatically detects system preference:
 - Firefox 88+
 - Mobile browsers (iOS Safari, Chrome Mobile, etc.)
 
-## Performance
+## Migration Notes
 
-The app loads in under 2 seconds and works offline once cached. All 29 flashcards are pre-loaded for instant navigation.
+This project was migrated from:
+1. **v1**: Apps Script hosted web app
+2. **v2**: Next.js + Supabase (overly complex)
+3. **v3**: Static site on GitHub Pages (current - simple & maintainable)
 
-## License
-
-Free to use and modify. Share with other developers learning clasp!
+See `refactorToJson.md` for migration details.
 
 ## Contributing
 
-Have suggestions or found issues? Let me know!
+1. Edit `docs/data.json` to fix or add flashcards
+2. Test locally by opening `docs/index.html`
+3. Submit a pull request
+
+## License
+
+Free to use and modify. Share with other developers!
 
 ---
 
-**Happy Learning! Master clasp commands one card at a time.** 📚
+**Happy Learning! Master CLI commands one card at a time.** 📚

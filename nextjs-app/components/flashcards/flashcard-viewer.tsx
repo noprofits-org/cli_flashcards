@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Flashcard, CardState } from '@/lib/types/flashcard'
 import { isAnswerCorrect } from '@/lib/utils/flashcard'
 import { Card, CardContent } from '@/components/ui/card'
@@ -12,10 +12,29 @@ interface FlashcardViewerProps {
   cardState: CardState | null
   onSubmit: (answer: string, isCorrect: boolean) => void
   isAnswered: boolean
+  hardMode: boolean
+  retryAttempt: number
 }
 
-export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered }: FlashcardViewerProps) {
+export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, hardMode, retryAttempt }: FlashcardViewerProps) {
   const [userAnswer, setUserAnswer] = useState(cardState?.userAnswer || '')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  // Determine if we should show the answer
+  // In hard mode: show answer on attempts 1 and 2, hide on attempt 3
+  const shouldShowAnswer = isAnswered && (!hardMode || retryAttempt !== 3)
+
+  // Clear input and focus when flashcard changes (unless it's already been answered)
+  useEffect(() => {
+    if (cardState) {
+      // Card was previously answered, restore the answer
+      setUserAnswer(cardState.userAnswer)
+    } else {
+      // New card, clear the input and focus
+      setUserAnswer('')
+      setTimeout(() => inputRef.current?.focus(), 100)
+    }
+  }, [flashcard.id, cardState])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,6 +71,7 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered }: 
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
+              ref={inputRef}
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
               placeholder="clasp ..."
@@ -65,20 +85,54 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered }: 
 
             {isAnswered && (
               <>
-                <div className="p-4 bg-muted rounded-lg border-l-4 border-primary font-mono text-sm">
-                  {flashcard.answer}
-                </div>
+                {/* Hard Mode: Show retry progress */}
+                {hardMode && retryAttempt > 0 && (
+                  <div className="p-3 bg-primary/10 border border-primary rounded-lg text-sm">
+                    <div className="font-semibold text-primary mb-1">Hard Mode Active</div>
+                    <div className="text-muted-foreground">
+                      {retryAttempt === 3 ? (
+                        <span>Attempt 3/3 - Type from memory (answer hidden)</span>
+                      ) : (
+                        <span>Attempt {retryAttempt}/3 - Type the correct answer shown below</span>
+                      )}
+                    </div>
+                  </div>
+                )}
 
-                <div
-                  className={cn(
-                    'p-3 rounded-lg text-sm font-medium text-center',
-                    cardState?.isCorrect
-                      ? 'bg-success/10 text-success border border-success'
-                      : 'bg-error/10 text-error border border-error'
-                  )}
-                >
-                  {cardState?.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
-                </div>
+                {/* Show answer (unless hard mode attempt 3) */}
+                {shouldShowAnswer && (
+                  <div className="p-4 bg-muted rounded-lg border-l-4 border-primary font-mono text-sm">
+                    {flashcard.answer}
+                  </div>
+                )}
+
+                {/* Hide answer on 3rd attempt in hard mode */}
+                {hardMode && retryAttempt === 3 && isAnswered && (
+                  <div className="p-4 bg-muted/50 rounded-lg border-l-4 border-muted text-sm text-center text-muted-foreground italic">
+                    Answer hidden - type from memory
+                  </div>
+                )}
+
+                {/* Feedback - only show if not in retry mode OR they got it wrong */}
+                {(!hardMode || retryAttempt === 0 || !cardState?.isCorrect) && (
+                  <div
+                    className={cn(
+                      'p-3 rounded-lg text-sm font-medium text-center',
+                      cardState?.isCorrect
+                        ? 'bg-success/10 text-success border border-success'
+                        : 'bg-error/10 text-error border border-error'
+                    )}
+                  >
+                    {cardState?.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
+                  </div>
+                )}
+
+                {/* Show success message when all retries completed */}
+                {hardMode && retryAttempt === 3 && cardState?.isCorrect && (
+                  <div className="p-3 rounded-lg text-sm font-medium text-center bg-success/10 text-success border border-success">
+                    🎉 All 3 retries completed! Press Enter to continue.
+                  </div>
+                )}
               </>
             )}
           </form>
@@ -101,7 +155,7 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered }: 
       {/* Navigation hints */}
       <div className="flex justify-between text-xs text-muted-foreground/60 px-4">
         <span>← Previous</span>
-        <span>Enter to submit/continue</span>
+        <span>Enter to submit/continue • Esc to go home</span>
         <span>Next →</span>
       </div>
     </div>

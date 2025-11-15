@@ -11,6 +11,7 @@ export default function Home() {
   const router = useRouter()
   const [sets, setSets] = useState<FlashcardSet[]>([])
   const [selectedSetId, setSelectedSetId] = useState<string | null>(null)
+  const [hardMode, setHardMode] = useState(false)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function Home() {
 
   const handleStart = () => {
     if (selectedSetId) {
-      router.push(`/flashcards/${selectedSetId}`)
+      router.push(`/flashcards/${selectedSetId}?hardMode=${hardMode}`)
     }
   }
 
@@ -69,10 +70,10 @@ export default function Home() {
         <div className="flex flex-col items-center gap-8 text-center max-w-4xl w-full">
           <div className="space-y-4">
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              Master Clasp Commands
+              Master CLI Commands
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground">
-              Learn Google Apps Script deployment with interactive flashcards
+              Learn essential command-line tools with interactive flashcards
             </p>
           </div>
 
@@ -83,6 +84,23 @@ export default function Home() {
                 selectedSetId={selectedSetId}
                 onSelectSet={setSelectedSetId}
               />
+
+              {/* Hard Mode Toggle */}
+              <div className="flex items-center gap-3 p-4 bg-card border-2 border-border rounded-xl">
+                <input
+                  type="checkbox"
+                  id="hardMode"
+                  checked={hardMode}
+                  onChange={(e) => setHardMode(e.target.checked)}
+                  className="w-5 h-5 rounded border-border text-primary focus:ring-2 focus:ring-primary cursor-pointer"
+                />
+                <label htmlFor="hardMode" className="flex flex-col cursor-pointer">
+                  <span className="text-sm font-semibold text-foreground">Hard Mode</span>
+                  <span className="text-xs text-muted-foreground">
+                    Wrong answers require 3 correct retries before proceeding
+                  </span>
+                </label>
+              </div>
 
               <Button onClick={handleStart} size="lg" disabled={!selectedSetId}>
                 Start Learning
