@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import flashcardsData from '@/data/flashcards.json'
 
 export async function GET(
   request: Request,
@@ -7,18 +7,25 @@ export async function GET(
 ) {
   try {
     const { setId } = await context.params
-    const supabase = await createClient()
 
-    const { data: flashcards, error } = await supabase
-      .from('flashcards')
-      .select('*')
-      .eq('set_id', setId)
-      .order('order_index')
+    // Get flashcards for the specified set
+    const setCards = flashcardsData[setId as keyof typeof flashcardsData]
 
-    if (error) {
-      console.error('Error fetching flashcards:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    if (!setCards) {
+      return NextResponse.json({ error: 'Flashcard set not found' }, { status: 404 })
     }
+
+    // Transform JSON data to match expected Flashcard interface
+    const flashcards = setCards.map((card, index) => ({
+      id: `${setId}-${index}`,
+      set_id: setId,
+      task: card.task,
+      answer: card.answer,
+      description: card.description,
+      when_to_use: card.whenToUse,
+      scenarios: card.scenarios,
+      order_index: index
+    }))
 
     return NextResponse.json({ flashcards })
   } catch (error) {

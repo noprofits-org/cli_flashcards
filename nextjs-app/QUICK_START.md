@@ -2,69 +2,34 @@
 
 ## 🚀 What's Been Done
 
-Your Apps Script flashcard app has been successfully migrated to a modern Next.js + Supabase stack!
+Your flashcard app is now running on Next.js with JSON-based data storage - no external database required!
 
 ### ✅ Completed Tasks
 
-1. **Next.js 14 Project** - Initialized with App Router, TypeScript, Tailwind CSS
-2. **Supabase Configuration** - Database schema, RLS policies, and migrations
-3. **Flashcard Data** - 29 basic flashcards migrated and ready to seed
+1. **Next.js 16 Project** - Initialized with App Router, TypeScript, Tailwind CSS 4
+2. **JSON Data Storage** - Flashcard data stored as simple JSON files
+3. **Flashcard Data** - 56 total flashcards (29 basic + 27 advanced clasp commands)
 4. **UI Components** - Reusable components built with Tailwind
 5. **Pages & Routing** - Home, Flashcards, Results pages implemented
-6. **API Routes** - Flashcard retrieval and progress tracking endpoints
-7. **Vercel Config** - Ready for deployment
+6. **API Routes** - Flashcard retrieval and validation endpoints
+7. **Vercel Ready** - Ready for deployment
 
 ## 📁 Project Location
 
-All the new code is in: `/home/user/cli_flashcards/nextjs-app/`
+All the code is in: `/home/user/cli_flashcards/nextjs-app/`
 
-## 🎯 Next Steps
+## 🎯 Quick Start (2 minutes!)
 
-### Step 1: Set Up Supabase (5 minutes)
-
-1. Go to [supabase.com](https://supabase.com) and create a free account
-2. Click "New Project" and fill in:
-   - **Name:** CLI Flashcards
-   - **Database Password:** (choose a strong password)
-   - **Region:** (closest to you)
-3. Wait for the project to initialize (1-2 minutes)
-
-### Step 2: Run Database Migrations
-
-1. In your Supabase dashboard, go to **SQL Editor**
-2. Click "New Query"
-3. Copy the contents of `supabase/migrations/001_initial_schema.sql`
-4. Paste and click "Run"
-5. Repeat with `supabase/migrations/002_seed_data.sql`
-
-You should see: "Success. No rows returned"
-
-### Step 3: Get Your API Keys
-
-1. In Supabase dashboard, go to **Project Settings** (gear icon)
-2. Click **API** in the left sidebar
-3. Copy these values:
-   - **Project URL** (looks like: `https://xxxxx.supabase.co`)
-   - **anon public** key (long string under "Project API keys")
-
-### Step 4: Configure Environment
+### Step 1: Install Dependencies
 
 ```bash
 cd nextjs-app
-cp .env.local.example .env.local
+npm install
 ```
 
-Edit `.env.local` and paste your values:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-```
-
-### Step 5: Run the App
+### Step 2: Run the App
 
 ```bash
-npm install  # (if not already done)
 npm run dev
 ```
 
@@ -72,7 +37,7 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ## 🎉 You should see:
 
-- **Home page** with mode selector (Basic/Advanced)
+- **Home page** with mode selector (clasp-basics/clasp-advanced)
 - Click "Start Learning" to begin
 - **Flashcard page** with card content, input field, and navigation
 - Submit answers and see instant feedback
@@ -81,28 +46,39 @@ Open [http://localhost:3000](http://localhost:3000)
 ## 🐛 Troubleshooting
 
 ### "No flashcard sets available"
-- ✅ Check that you ran both migration files
-- ✅ Verify the `flashcard_sets` table has 2 rows in Supabase
-
-### API errors in console
-- ✅ Check `.env.local` has correct values
-- ✅ Restart dev server after changing `.env.local`
-- ✅ Verify Supabase project is active (not paused)
+- ✅ Check that `data/flashcards.json` exists
+- ✅ Verify the JSON structure is valid
 
 ### Build errors
 - ✅ Run `rm -rf .next && npm run dev` to clear cache
 - ✅ Make sure Node.js 18+ is installed: `node --version`
 
-## 📊 Verify Database Setup
+### Import errors
+- ✅ Run `npm install` to ensure all dependencies are installed
+- ✅ Clear node_modules: `rm -rf node_modules && npm install`
 
-In Supabase dashboard:
+## 📊 Data Structure
 
-1. Go to **Table Editor**
-2. You should see these tables:
-   - `flashcard_sets` (2 rows)
-   - `flashcards` (29 rows for basic set)
-   - `user_progress` (empty)
-   - `user_sessions` (empty)
+Flashcard data is in `data/flashcards.json`:
+
+```json
+{
+  "clasp-basics": [
+    {
+      "task": "Authenticate with your Google Account",
+      "answer": "clasp login [options]",
+      "description": "Authorizes clasp to manage...",
+      "whenToUse": "Required before using...",
+      "scenarios": ["First-time setup...", "..."]
+    }
+  ],
+  "clasp-advanced": [...]
+}
+```
+
+### Adding More Flashcards
+
+Simply edit `data/flashcards.json` and add new entries. No database migrations needed!
 
 ## 🚢 Deploy to Production
 
@@ -117,51 +93,39 @@ vercel login
 vercel --prod
 ```
 
-Follow the prompts and add your environment variables when asked.
-
 ### Option 2: GitHub + Vercel (Automatic)
 
-1. Push to GitHub (already done!)
+1. Push to GitHub (if not already done)
 2. Go to [vercel.com](https://vercel.com)
 3. Click "New Project"
 4. Import your repository
-5. Add environment variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-6. Click "Deploy"
+5. Click "Deploy" - No environment variables needed!
 
 ## 📚 Documentation
 
 - **[README.md](README.md)** - Full documentation
-- **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Detailed migration info
 
 ## 🎓 What You Got
 
 ### Features
-- ✅ 29 flashcards (basic clasp commands)
-- ✅ Progress tracking
+- ✅ 56 flashcards (29 basic + 27 advanced clasp commands)
+- ✅ Client-side progress tracking
 - ✅ Dark mode
 - ✅ Mobile-first design
 - ✅ Keyboard navigation
-- ✅ Guest mode (no login required)
-- ✅ RESTful API
+- ✅ Hard mode with 3-retry challenge
+- ✅ No external dependencies
 - ✅ TypeScript type safety
-- ✅ Scalable architecture
+- ✅ Simple data management
 
 ### Tech Stack
-- ✅ Next.js 14 (React framework)
-- ✅ Supabase (PostgreSQL database)
-- ✅ TypeScript (type safety)
-- ✅ Tailwind CSS (styling)
+- ✅ Next.js 16 (React framework)
+- ✅ JSON files (data storage)
+- ✅ TypeScript 5 (type safety)
+- ✅ Tailwind CSS 4 (styling)
 - ✅ Vercel (deployment)
 
 ## 💡 Tips
-
-### Adding More Flashcards
-
-1. Go to Supabase → Table Editor → `flashcards`
-2. Click "Insert" → "Insert row"
-3. Fill in the fields (or use SQL INSERT)
 
 ### Customizing Colors
 
@@ -175,32 +139,24 @@ Edit `app/globals.css` and modify the CSS variables:
 }
 ```
 
-### Adding Authentication
+### Managing Flashcards
 
-The app supports guest mode by default. To add user accounts:
+All flashcard data is in `data/flashcards.json`. To modify:
 
-1. Enable Email auth in Supabase → Authentication
-2. Add login/signup pages
-3. Update session creation to use `user.id`
+1. Edit the JSON file directly
+2. Follow the existing structure
+3. Save and restart dev server
 
-## 🤔 Questions?
-
-Check the full README.md for detailed information about:
-- Project structure
-- API endpoints
-- Database schema
-- Customization options
-- Advanced features
+No database, no migrations, just simple JSON!
 
 ## 🎯 Current Status
 
 - ✅ Migration complete
-- ✅ Code committed to branch
-- ✅ Pushed to GitHub
-- ⏳ Waiting for Supabase setup
-- ⏳ Ready to test locally
-- ⏳ Ready to deploy
+- ✅ JSON data storage configured
+- ✅ All dependencies removed
+- ✅ Ready to test locally
+- ✅ Ready to deploy
 
 ---
 
-**You're all set! Follow the steps above to get your app running.** 🚀
+**You're all set! Just run `npm install && npm run dev` to get started.** 🚀
