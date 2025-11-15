@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasp Flashcards - Master Google Apps Script CLI</title>
+    <style>
+        /* CSS Variables for theming */
+        :root {
+            --background: hsl(0, 0%, 100%);
+            --foreground: hsl(222, 47%, 11%);
+            --card: hsl(0, 0%, 100%);
+            --card-foreground: hsl(222, 47%, 11%);
+            --primary: hsl(217, 91%, 60%);
+            --primary-dark: hsl(217, 91%, 53%);
+            --primary-foreground: hsl(0, 0%, 100%);
+            --muted: hsl(210, 40%, 96%);
+            --muted-foreground: hsl(215, 16%, 47%);
+            --success: hsl(142, 71%, 45%);
+            --success-foreground: hsl(0, 0%, 100%);
+            --error: hsl(0, 84%, 60%);
+            --error-foreground: hsl(0, 0%, 100%);
+            --border: hsl(214, 32%, 91%);
+            --radius: 0.75rem;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --background: hsl(222, 47%, 11%);
+                --foreground: hsl(210, 40%, 98%);
+                --card: hsl(217, 33%, 17%);
+                --card-foreground: hsl(210, 40%, 98%);
+                --primary: hsl(217, 91%, 70%);
+                --primary-dark: hsl(217, 91%, 60%);
+                --primary-foreground: hsl(222, 47%, 11%);
+                --muted: hsl(217, 33%, 17%);
+                --muted-foreground: hsl(215, 20%, 65%);
+                --success: hsl(142, 69%, 58%);
+                --success-foreground: hsl(222, 47%, 11%);
+                --error: hsl(0, 72%, 70%);
+                --error-foreground: hsl(222, 47%, 11%);
+                --border: hsl(217, 33%, 24%);
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .subtitle {
+            color: var(--muted-foreground);
+            font-size: 1rem;
+        }
+
+        /* Mode Selector */
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .mode-card {
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .mode-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-card.selected {
+            border-color: var(--primary);
+            background: color-mix(in srgb, var(--primary) 10%, var(--card));
+        }
+
+        .mode-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
+        }
+
+        .mode-card p {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .mode-card .card-count {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Hard Mode Toggle */
+        .hard-mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: var(--muted);
+            border-radius: var(--radius);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hard-mode-toggle label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .hard-mode-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .hard-mode-description {
+            font-size: 0.75rem;
+            color: var(--muted-foreground);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        /* Start Button */
+        .start-btn {
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: var(--primary-foreground);
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .start-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .start-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: var(--muted);
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Flashcard Container */
+        .flashcard-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .context-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .context-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .context-content {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* Main Card */
+        .flashcard {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .task {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .input-container {
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: calc(var(--radius) * 0.75);
+            background: var(--background);
+            color: var(--foreground);
+            font-family: monospace;
+            transition: border-color 0.2s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        input[type="text"]:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Hard Mode Indicator */
+        .hard-mode-indicator {
+            background: color-mix(in srgb, var(--primary) 10%, transparent);
+            border: 1px solid var(--primary);
+            border-radius: calc(var(--radius) * 0.75);
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .hard-mode-indicator .title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .hard-mode-indicator .description {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+
+        /* Answer Display */
+        .answer-display {
+            background: var(--muted);
+            border-left: 4px solid var(--primary);
+            border-radius: calc(var(--radius) * 0.75);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+
+        .answer-hidden {
+            background: color-mix(in srgb, var(--muted) 50%, transparent);
+            border-left: 4px solid var(--muted);
+            text-align: center;
+            font-style: italic;
+            color: var(--muted-foreground);
+        }
+
+        /* Feedback */
+        .feedback {
+            padding: 0.75rem 1rem;
+            border-radius: calc(var(--radius) * 0.75);
+            margin-bottom: 1rem;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .feedback.correct {
+            background: color-mix(in srgb, var(--success) 10%, transparent);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .feedback.incorrect {
+            background: color-mix(in srgb, var(--error) 10%, transparent);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        /* Scenarios */
+        .scenarios {
+            margin-top: 1.5rem;
+        }
+
+        .scenarios ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .scenarios li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .scenarios li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Navigation Hints */
+        .nav-hints {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding: 0 1rem;
+            font-size: 0.75rem;
+            color: color-mix(in srgb, var(--muted-foreground) 60%, transparent);
+        }
+
+        /* Control Buttons */
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: calc(var(--radius) * 0.75);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--primary-foreground);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--muted);
+            color: var(--foreground);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: color-mix(in srgb, var(--muted) 80%, var(--foreground));
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Screen */
+        .results {
+            text-align: center;
+            padding: 3rem 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .results h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--foreground);
+            margin: 2rem 0;
+        }
+
+        .stats {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--muted-foreground);
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--foreground);
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .task {
+                font-size: 1.25rem;
+            }
+
+            .mode-selector {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-hints {
+                flex-direction: column;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--muted-foreground);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 1rem;
+            border: 4px solid var(--muted);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Clasp Flashcards</h1>
+            <p class="subtitle">Master Google Apps Script CLI Commands</p>
+        </header>
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading">
+            <div class="spinner"></div>
+            <p>Loading flashcards...</p>
+        </div>
+
+        <!-- Mode Selection Screen -->
+        <div id="modeScreen" class="hidden">
+            <div class="mode-selector" id="modeSelector">
+                <!-- Mode cards will be inserted here -->
+            </div>
+
+            <div class="hard-mode-toggle">
+                <label>
+                    <input type="checkbox" id="hardModeCheckbox">
+                    <span>Hard Mode</span>
+                </label>
+            </div>
+            <p class="hard-mode-description">
+                In hard mode, wrong answers require 3 correct retries before moving on
+            </p>
+
+            <button class="start-btn" id="startBtn" disabled>Start Practice</button>
+        </div>
+
+        <!-- Flashcard Screen -->
+        <div id="flashcardScreen" class="hidden">
+            <div class="progress-text" id="progressText"></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="flashcard-container" id="flashcardContainer">
+                <!-- Flashcard content will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="hidden">
+            <div class="results">
+                <h2>Practice Complete!</h2>
+                <div class="score-display" id="scoreDisplay"></div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Correct Answers</span>
+                        <span class="stat-value" id="correctCount"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Total Attempts</span>
+                        <span class="stat-value" id="totalAttempts"></span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Accuracy</span>
+                        <span class="stat-value" id="accuracy"></span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn-primary" onclick="app.restart()">Practice Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Application State
+        const app = {
+            data: null,
+            selectedMode: null,
+            hardMode: false,
+            flashcards: [],
+            currentIndex: 0,
+            cardStates: [],
+            isAnswered: false,
+            currentRetryAttempt: 0,
+            score: 0,
+            totalAttempts: 0,
+
+            // Initialize app
+            async init() {
+                try {
+                    const response = await fetch('data.json');
+                    this.data = await response.json();
+                    this.showModeScreen();
+                } catch (error) {
+                    console.error('Error loading flashcards:', error);
+                    document.getElementById('loadingScreen').innerHTML =
+                        '<p style="color: var(--error);">Error loading flashcards. Please refresh the page.</p>';
+                }
+            },
+
+            // Show mode selection screen
+            showModeScreen() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                document.getElementById('modeScreen').classList.remove('hidden');
+
+                const modeSelector = document.getElementById('modeSelector');
+                modeSelector.innerHTML = '';
+
+                // Create mode cards
+                Object.keys(this.data).forEach(key => {
+                    const setData = this.data[key];
+                    const card = document.createElement('div');
+                    card.className = 'mode-card';
+                    card.innerHTML = `
+                        <h3>${this.formatModeName(key)}</h3>
+                        <p>${this.getModeDescription(key)}</p>
+                        <div class="card-count">${setData.length} cards</div>
+                    `;
+                    card.onclick = () => this.selectMode(key, card);
+                    modeSelector.appendChild(card);
+                });
+
+                // Setup hard mode checkbox
+                document.getElementById('hardModeCheckbox').checked = false;
+                document.getElementById('hardModeCheckbox').onchange = (e) => {
+                    this.hardMode = e.target.checked;
+                };
+            },
+
+            // Format mode name for display
+            formatModeName(key) {
+                const parts = key.split('-');
+                const tool = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+                const level = parts[1] === 'basics' ? 'Basic' : 'Advanced';
+                return `${tool} - ${level}`;
+            },
+
+            // Get mode description
+            getModeDescription(key) {
+                const descriptions = {
+                    'clasp-basics': 'Learn fundamental clasp commands for Google Apps Script',
+                    'clasp-advanced': 'Master clasp command flags and options'
+                };
+                return descriptions[key] || '';
+            },
+
+            // Select a mode
+            selectMode(key, element) {
+                this.selectedMode = key;
+
+                // Update UI
+                document.querySelectorAll('.mode-card').forEach(card => {
+                    card.classList.remove('selected');
+                });
+                element.classList.add('selected');
+
+                document.getElementById('startBtn').disabled = false;
+            },
+
+            // Start practice
+            start() {
+                if (!this.selectedMode) return;
+
+                // Get flashcards and shuffle them
+                this.flashcards = this.shuffleArray([...this.data[this.selectedMode]]);
+                this.currentIndex = 0;
+                this.cardStates = new Array(this.flashcards.length).fill(null);
+                this.isAnswered = false;
+                this.currentRetryAttempt = 0;
+                this.score = 0;
+                this.totalAttempts = 0;
+
+                // Show flashcard screen
+                document.getElementById('modeScreen').classList.add('hidden');
+                document.getElementById('flashcardScreen').classList.remove('hidden');
+
+                this.renderFlashcard();
+                this.setupKeyboardShortcuts();
+            },
+
+            // Shuffle array (Fisher-Yates algorithm)
+            shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            },
+
+            // Render current flashcard
+            renderFlashcard() {
+                const card = this.flashcards[this.currentIndex];
+                const cardState = this.cardStates[this.currentIndex];
+
+                // Update progress
+                const progress = ((this.currentIndex + 1) / this.flashcards.length) * 100;
+                document.getElementById('progressBar').style.width = `${progress}%`;
+                document.getElementById('progressText').textContent =
+                    `Card ${this.currentIndex + 1} of ${this.flashcards.length}`;
+
+                // Determine if we should show the answer
+                const shouldShowAnswer = this.isAnswered && (!this.hardMode || this.currentRetryAttempt !== 3);
+
+                // Build flashcard HTML
+                let html = `
+                    <!-- Context: What it does -->
+                    <div class="context-section">
+                        <div class="context-label">What it does</div>
+                        <div class="context-content">${card.description}</div>
+                    </div>
+
+                    <!-- Context: When to use -->
+                    <div class="context-section">
+                        <div class="context-label">When to use it</div>
+                        <div class="context-content">${card.whenToUse}</div>
+                    </div>
+
+                    <!-- Main Card -->
+                    <div class="flashcard">
+                        <div class="task">${card.task}</div>
+
+                        <form onsubmit="app.handleSubmit(event)" id="answerForm">
+                            <div class="input-container">
+                                <input
+                                    type="text"
+                                    id="answerInput"
+                                    placeholder="clasp ..."
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    spellcheck="false"
+                                    ${this.isAnswered ? 'disabled' : ''}
+                                    value="${cardState ? cardState.userAnswer : ''}"
+                                >
+                            </div>
+
+                            ${this.isAnswered ? this.renderAnswerSection(card, cardState) : ''}
+                        </form>
+                    </div>
+
+                    <!-- Scenarios -->
+                    <div class="scenarios">
+                        <div class="context-label">Example scenarios</div>
+                        <ul>
+                            ${card.scenarios.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Navigation Hints -->
+                    <div class="nav-hints">
+                        <span>← Previous</span>
+                        <span>Enter to submit/continue • Esc to go home</span>
+                        <span>Next →</span>
+                    </div>
+                `;
+
+                document.getElementById('flashcardContainer').innerHTML = html;
+
+                // Auto-focus input if not answered
+                if (!this.isAnswered) {
+                    setTimeout(() => {
+                        document.getElementById('answerInput').focus();
+                    }, 100);
+                }
+            },
+
+            // Render answer section
+            renderAnswerSection(card, cardState) {
+                const shouldShowAnswer = !this.hardMode || this.currentRetryAttempt !== 3;
+
+                let html = '';
+
+                // Hard mode indicator
+                if (this.hardMode && this.currentRetryAttempt > 0) {
+                    html += `
+                        <div class="hard-mode-indicator">
+                            <div class="title">Hard Mode Active</div>
+                            <div class="description">
+                                ${this.currentRetryAttempt === 3
+                                    ? 'Attempt 3/3 - Type from memory (answer hidden)'
+                                    : `Attempt ${this.currentRetryAttempt}/3 - Type the correct answer shown below`
+                                }
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Show answer or hide it
+                if (shouldShowAnswer) {
+                    html += `<div class="answer-display">${card.answer}</div>`;
+                } else if (this.hardMode && this.currentRetryAttempt === 3) {
+                    html += `<div class="answer-display answer-hidden">Answer hidden - type from memory</div>`;
+                }
+
+                // Feedback
+                if (!this.hardMode || this.currentRetryAttempt === 0 || !cardState?.isCorrect) {
+                    html += `
+                        <div class="feedback ${cardState?.isCorrect ? 'correct' : 'incorrect'}">
+                            ${cardState?.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
+                        </div>
+                    `;
+                }
+
+                // Success message for completing all retries
+                if (this.hardMode && this.currentRetryAttempt === 3 && cardState?.isCorrect) {
+                    html += `
+                        <div class="feedback correct">
+                            All 3 retries completed! Press Enter to continue.
+                        </div>
+                    `;
+                }
+
+                return html;
+            },
+
+            // Handle form submission
+            handleSubmit(event) {
+                event.preventDefault();
+
+                if (this.isAnswered) {
+                    this.nextCard();
+                    return;
+                }
+
+                const userAnswer = document.getElementById('answerInput').value.trim();
+                if (!userAnswer) return;
+
+                const card = this.flashcards[this.currentIndex];
+                const isCorrect = this.isAnswerCorrect(userAnswer, card.answer);
+
+                this.totalAttempts++;
+
+                // Hard mode logic
+                if (this.hardMode && !isCorrect) {
+                    // Wrong answer in hard mode - start retry sequence
+                    this.cardStates[this.currentIndex] = {
+                        userAnswer,
+                        isCorrect: false,
+                        retryCount: 0
+                    };
+                    this.isAnswered = true;
+                    this.currentRetryAttempt = 1;
+                    this.renderFlashcard();
+                    return;
+                }
+
+                // Hard mode: user got it right, check if they're in retry mode
+                if (this.hardMode && this.currentRetryAttempt > 0) {
+                    const currentState = this.cardStates[this.currentIndex] || { retryCount: 0 };
+                    const newRetryCount = currentState.retryCount + 1;
+
+                    if (newRetryCount < 3) {
+                        // Still need more retries
+                        this.cardStates[this.currentIndex] = {
+                            userAnswer,
+                            isCorrect: true,
+                            retryCount: newRetryCount
+                        };
+                        this.isAnswered = true;
+                        this.currentRetryAttempt = newRetryCount + 1;
+                        this.renderFlashcard();
+                        return;
+                    }
+                    // Completed 3 retries - fall through to normal flow
+                }
+
+                // Normal mode or successful completion
+                this.cardStates[this.currentIndex] = {
+                    userAnswer,
+                    isCorrect,
+                    retryCount: 0
+                };
+                this.isAnswered = true;
+                this.currentRetryAttempt = 0;
+
+                if (isCorrect) {
+                    this.score++;
+                }
+
+                this.renderFlashcard();
+            },
+
+            // Check if answer is correct (case-insensitive, whitespace-trimmed)
+            isAnswerCorrect(userAnswer, correctAnswer) {
+                const normalize = (str) => str.toLowerCase().trim().replace(/\s+/g, ' ');
+                return normalize(userAnswer) === normalize(correctAnswer);
+            },
+
+            // Navigate to next card
+            nextCard() {
+                // In hard mode retry, clear answer and stay on same card
+                if (this.hardMode && this.currentRetryAttempt > 0) {
+                    this.isAnswered = false;
+                    this.renderFlashcard();
+                    return;
+                }
+
+                // Move to next card
+                if (this.currentIndex < this.flashcards.length - 1) {
+                    this.currentIndex++;
+                    this.isAnswered = this.cardStates[this.currentIndex] !== null;
+                    this.currentRetryAttempt = 0;
+                    this.renderFlashcard();
+                } else {
+                    // Show results
+                    this.showResults();
+                }
+            },
+
+            // Navigate to previous card
+            prevCard() {
+                if (this.currentIndex > 0) {
+                    this.currentIndex--;
+                    this.isAnswered = this.cardStates[this.currentIndex] !== null;
+                    this.currentRetryAttempt = 0;
+                    this.renderFlashcard();
+                }
+            },
+
+            // Setup keyboard shortcuts
+            setupKeyboardShortcuts() {
+                // Remove old listeners
+                document.removeEventListener('keydown', this.handleKeyDown);
+                document.removeEventListener('keypress', this.handleKeyPress);
+
+                // Add new listeners
+                this.handleKeyDown = this.handleKeyDown.bind(this);
+                this.handleKeyPress = this.handleKeyPress.bind(this);
+
+                document.addEventListener('keydown', this.handleKeyDown);
+                document.addEventListener('keypress', this.handleKeyPress);
+            },
+
+            // Handle keydown events (for arrow keys and Esc)
+            handleKeyDown(e) {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.prevCard();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.nextCard();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.restart();
+                }
+            },
+
+            // Handle keypress events (for Enter)
+            handleKeyPress(e) {
+                if (e.key === 'Enter' && this.isAnswered) {
+                    this.nextCard();
+                }
+            },
+
+            // Show results screen
+            showResults() {
+                document.getElementById('flashcardScreen').classList.add('hidden');
+                document.getElementById('resultsScreen').classList.remove('hidden');
+
+                const accuracy = this.totalAttempts > 0
+                    ? Math.round((this.score / this.totalAttempts) * 100)
+                    : 0;
+
+                document.getElementById('scoreDisplay').textContent =
+                    `${this.score} / ${this.flashcards.length}`;
+                document.getElementById('correctCount').textContent = this.score;
+                document.getElementById('totalAttempts').textContent = this.totalAttempts;
+                document.getElementById('accuracy').textContent = `${accuracy}%`;
+            },
+
+            // Restart application
+            restart() {
+                // Clean up keyboard listeners
+                document.removeEventListener('keydown', this.handleKeyDown);
+                document.removeEventListener('keypress', this.handleKeyPress);
+
+                // Reset state
+                this.selectedMode = null;
+                this.hardMode = false;
+                this.flashcards = [];
+                this.currentIndex = 0;
+                this.cardStates = [];
+                this.isAnswered = false;
+                this.currentRetryAttempt = 0;
+                this.score = 0;
+                this.totalAttempts = 0;
+
+                // Show mode screen
+                document.getElementById('resultsScreen').classList.add('hidden');
+                document.getElementById('flashcardScreen').classList.add('hidden');
+                this.showModeScreen();
+            }
+        };
+
+        // Setup start button
+        document.getElementById('startBtn').onclick = () => app.start();
+
+        // Initialize app when page loads
+        window.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
