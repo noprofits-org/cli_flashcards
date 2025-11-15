@@ -1,34 +1,26 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
-import { v4 as uuidv4 } from 'uuid'
+
+// Generate a simple random ID for session tracking (client-side only, no persistence)
+function generateSessionId() {
+  return `session-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`
+}
 
 export async function POST(request: Request) {
   try {
     const { setId, isGuest = true } = await request.json()
-    const supabase = await createClient()
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    const sessionData = {
+    // Return a mock session object without persisting to database
+    // All session tracking is handled client-side
+    const session = {
+      id: generateSessionId(),
       set_id: setId,
-      user_id: user?.id || null,
-      is_guest: isGuest || !user,
-      guest_session_id: !user ? uuidv4() : null,
+      user_id: null,
+      is_guest: isGuest,
+      guest_session_id: generateSessionId(),
       score: 0,
       total_attempts: 0,
-    }
-
-    const { data: session, error } = await supabase
-      .from('user_sessions')
-      .insert(sessionData)
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error creating session:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      started_at: new Date().toISOString(),
+      completed_at: null,
     }
 
     return NextResponse.json({ session })
@@ -41,27 +33,14 @@ export async function POST(request: Request) {
 export async function PATCH(request: Request) {
   try {
     const { sessionId, score, totalAttempts, completed } = await request.json()
-    const supabase = await createClient()
 
-    const updateData: any = {
+    // Return updated session data without persisting
+    // Session data is tracked client-side only
+    const session = {
+      id: sessionId,
       score,
       total_attempts: totalAttempts,
-    }
-
-    if (completed) {
-      updateData.completed_at = new Date().toISOString()
-    }
-
-    const { data: session, error } = await supabase
-      .from('user_sessions')
-      .update(updateData)
-      .eq('id', sessionId)
-      .select()
-      .single()
-
-    if (error) {
-      console.error('Error updating session:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      completed_at: completed ? new Date().toISOString() : null,
     }
 
     return NextResponse.json({ session })

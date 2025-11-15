@@ -1,46 +1,25 @@
-# CLI Flashcards - Next.js + Supabase
+# CLI Flashcards - Next.js + JSON
 
-> **⚠️ DEPRECATED - Version 2**
->
-> This version is **no longer actively maintained**. It has been replaced by a simpler static version.
->
-> **Use instead**: `/docs/` directory (v3 - Static HTML/CSS/JS)
->
-> **Why deprecated?**
-> - Database was overkill for static flashcard data
-> - Required external services (Supabase, Vercel)
-> - SQL migrations needed for simple content updates
-> - Over-engineered for the use case
->
-> This version is kept for reference and learning purposes. If you want to see a production-ready Next.js + Supabase implementation, feel free to explore the code.
->
-> See the main [README.md](../README.md) for the current recommended version.
-
----
-
-## Original Documentation (v2)
-
-A modern flashcard application for learning CLI commands, migrated from Google Apps Script to Next.js + Supabase stack.
+A modern flashcard application for learning CLI commands, built with Next.js and JSON-based data storage.
 
 ## Features
 
 - **29 Basic Flashcards** - Master fundamental clasp commands
 - **27 Advanced Flashcards** - Learn command flags and options
-- **Modern Stack** - Next.js 14, Supabase, TypeScript, Tailwind CSS
+- **Modern Stack** - Next.js 16, TypeScript, Tailwind CSS
 - **Mobile-First Design** - Optimized for all devices
 - **Dark Mode** - Automatic system preference detection
-- **Progress Tracking** - Save your learning progress
-- **Guest Mode** - No login required to start learning
+- **Static Data** - Simple JSON-based flashcard storage
 - **Real-Time Validation** - Instant answer checking
 - **Keyboard Navigation** - Arrow keys, Enter to submit/continue
+- **Hard Mode** - 3-retry challenge system for mastery
 
 ## Tech Stack
 
-- **Framework:** Next.js 14 (App Router)
-- **Database:** Supabase (PostgreSQL)
-- **Authentication:** Supabase Auth
-- **Styling:** Tailwind CSS
-- **Language:** TypeScript
+- **Framework:** Next.js 16 (App Router)
+- **Data Storage:** JSON files (static)
+- **Styling:** Tailwind CSS 4
+- **Language:** TypeScript 5
 - **Deployment:** Vercel
 - **Animation:** Framer Motion
 - **State Management:** React Hooks
@@ -50,7 +29,6 @@ A modern flashcard application for learning CLI commands, migrated from Google A
 ### Prerequisites
 
 - Node.js 18+ installed
-- A Supabase account (free tier works great)
 - Git (for cloning and version control)
 
 ### 1. Install Dependencies
@@ -59,40 +37,41 @@ A modern flashcard application for learning CLI commands, migrated from Google A
 npm install
 ```
 
-### 2. Set Up Supabase
-
-1. Create a new project at [supabase.com](https://supabase.com)
-2. Go to **Project Settings** → **API** and copy:
-   - Project URL
-   - Anon/Public key
-
-3. Run the database migrations:
-   - Go to **SQL Editor** in Supabase dashboard
-   - Copy and run `supabase/migrations/001_initial_schema.sql`
-   - Then run `supabase/migrations/002_seed_data.sql`
-
-### 3. Configure Environment Variables
-
-Create a `.env.local` file in the root directory:
-
-```bash
-cp .env.local.example .env.local
-```
-
-Update the values:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=your-project-url.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-```
-
-### 4. Run Development Server
+### 2. Run Development Server
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+### 3. Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Data Management
+
+Flashcard data is stored in `/data/flashcards.json`. The structure is:
+
+```json
+{
+  "clasp-basics": [
+    {
+      "task": "What to accomplish",
+      "answer": "The CLI command",
+      "description": "What it does",
+      "whenToUse": "When to use it",
+      "scenarios": ["Example scenario 1", "Example scenario 2"]
+    }
+  ],
+  "clasp-advanced": [...]
+}
+```
+
+To add or modify flashcards, simply edit the JSON file. No database migrations needed!
 
 ## Deployment
 
@@ -110,13 +89,9 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
    - Click "New Project"
    - Import your GitHub repository
 
-3. **Add Environment Variables:**
-   In Vercel project settings, add:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-
-4. **Deploy:**
-   Click "Deploy" and wait for the build to complete
+3. **Deploy:**
+   - Click "Deploy" and wait for the build to complete
+   - No environment variables needed!
 
 ## Project Structure
 
@@ -124,24 +99,22 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 nextjs-app/
 ├── app/                      # Next.js App Router
 │   ├── api/                  # API routes
+│   │   ├── flashcards/       # Flashcard data endpoints
+│   │   ├── practice/         # Answer validation
+│   │   └── progress/         # Session tracking
 │   ├── flashcards/[setId]/   # Flashcard session page
 │   ├── results/              # Results page
 │   └── page.tsx              # Home page
 ├── components/
 │   ├── ui/                   # Reusable UI components
 │   └── flashcards/           # Flashcard-specific components
+├── data/
+│   └── flashcards.json       # Flashcard data storage
 ├── lib/
-│   ├── supabase/             # Supabase client configuration
 │   ├── types/                # TypeScript type definitions
 │   └── utils/                # Utility functions
-├── supabase/
-│   └── migrations/           # Database schema and seed data
 └── public/                   # Static assets
 ```
-
-## Documentation
-
-- **[MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)** - Detailed migration from Apps Script
 
 ## License
 

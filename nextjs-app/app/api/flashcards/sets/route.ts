@@ -1,19 +1,20 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import flashcardsData from '@/data/flashcards.json'
 
 export async function GET() {
   try {
-    const supabase = await createClient()
+    // Create flashcard sets from the JSON data structure
+    const sets = Object.keys(flashcardsData).map(setId => ({
+      id: setId,
+      name: setId,
+      description: setId === 'clasp-basics'
+        ? 'Essential clasp commands for getting started'
+        : 'Advanced clasp commands and workflows',
+      card_count: flashcardsData[setId as keyof typeof flashcardsData].length
+    }))
 
-    const { data: sets, error } = await supabase
-      .from('flashcard_sets')
-      .select('*')
-      .order('name')
-
-    if (error) {
-      console.error('Error fetching flashcard sets:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
+    // Sort by name
+    sets.sort((a, b) => a.name.localeCompare(b.name))
 
     return NextResponse.json({ sets })
   } catch (error) {

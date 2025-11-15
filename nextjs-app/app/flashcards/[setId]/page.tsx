@@ -42,7 +42,7 @@ export default function FlashcardsPage({ params }: PageProps) {
   const fetchFlashcards = async () => {
     try {
       const response = await fetch(`/api/flashcards/${setId}`)
-      const data = await response.json()
+      const data = await response.json() as { flashcards: Flashcard[] }
 
       if (data.flashcards) {
         const shuffled = shuffleArray(data.flashcards)
