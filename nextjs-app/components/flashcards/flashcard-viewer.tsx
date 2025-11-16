@@ -21,23 +21,26 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
   const inputRef = useRef<HTMLInputElement>(null)
 
   // Determine if we should show the answer
-  // In hard mode: show answer on attempts 1 and 2, hide on attempt 3
-  const shouldShowAnswer = isAnswered && (!hardMode || retryAttempt !== 3)
+  // In hard mode: show answer when wrong (retryAttempt=1 after wrong answer) and during retry attempts 1-2
+  // In normal mode: only show after answering
+  const shouldShowAnswer = hardMode
+    ? (retryAttempt >= 1 && retryAttempt <= 2) // Show after wrong answer and during retry attempts 1-2
+    : isAnswered // Normal mode: only show after answering
 
   // In hard mode attempt 3, always hide the answer (whether answered or not)
   const shouldHideAnswer = hardMode && retryAttempt === 3
 
   // Clear input and focus when flashcard changes (unless it's already been answered)
   useEffect(() => {
-    if (cardState) {
-      // Card was previously answered, restore the answer
+    if (cardState && isAnswered) {
+      // Card was previously answered and still in answered state, restore the answer
       setUserAnswer(cardState.userAnswer)
     } else {
-      // New card, clear the input and focus
+      // New card OR retry attempt (isAnswered is false), clear the input and focus
       setUserAnswer('')
       setTimeout(() => inputRef.current?.focus(), 100)
     }
-  }, [flashcard.id, cardState])
+  }, [flashcard.id, cardState, isAnswered])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
