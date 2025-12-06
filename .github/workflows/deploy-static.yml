@@ -33,11 +33,11 @@ jobs:
           echo '<!DOCTYPE html>
           <html>
           <head>
-            <meta http-equiv="refresh" content="0; url=https://claspcards.vercel.app">
+            <meta http-equiv="refresh" content="0; url=https://cli-flashcards.vercel.app">
             <title>Redirecting...</title>
           </head>
           <body>
-            <p>Redirecting to <a href="https://claspcards.vercel.app">https://claspcards.vercel.app</a>...</p>
+            <p>Redirecting to <a href="https://cli-flashcards.vercel.app">https://cli-flashcards.vercel.app</a>...</p>
           </body>
           </html>' > _site/index.html
 
