@@ -1,0 +1,235 @@
+{
+  "id": "email-template-doc",
+  "title": "Email Template Doc",
+  "description": "Create a Google Doc template with placeholders for personalized emails",
+  "difficulty": "beginner",
+  "estimatedTime": "20 min",
+  "icon": "file-text",
+  "color": "#4285f4",
+  "category": "docs",
+  "stepCount": 4,
+  "prerequisites": ["contact-list-sheet"],
+  "nextProject": "mail-manager-webapp",
+  "steps": [
+    {
+      "id": "create-doc",
+      "title": "Create the Google Doc",
+      "description": "Create a new document from the command line",
+      "estimatedTime": "2 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's create a Google Doc for your email template directly from the terminal."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Navigate to the email-template folder:"
+        },
+        {
+          "type": "command",
+          "content": "cd ~/Documents/mail-list-manager/email-template"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Create a new Google Doc with an attached Apps Script project:"
+        },
+        {
+          "type": "command",
+          "content": "clasp create --type docs --title \"Mail List Email Template\""
+        },
+        {
+          "type": "tip",
+          "content": "Just like with Sheets, this creates both a Google Doc AND an Apps Script project attached to it!"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Extract and save the Doc ID (you'll need this later):"
+        },
+        {
+          "type": "command",
+          "content": "cat .clasp.json"
+        },
+        {
+          "type": "text",
+          "content": "The **parentId** is your Doc ID - copy it and save it somewhere!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created the Google Doc and saved my Doc ID"
+        }
+      ]
+    },
+    {
+      "id": "create-all-files",
+      "title": "Create All Script Files",
+      "description": "Create the setup script and template processing functions",
+      "estimatedTime": "10 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now we'll create all the script files. We'll push them all at once at the end."
+        },
+        {
+          "type": "text",
+          "content": "**File 1: Setup.gs** - Create the template setup script:"
+        },
+        {
+          "type": "command",
+          "content": "nano Setup.gs"
+        },
+        {
+          "type": "text",
+          "content": "Paste this code:"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Setup.gs",
+          "content": "/**\n * Sets up the email template with placeholders.\n * Run this once to initialize the template content.\n */\nfunction setupTemplate() {\n  const doc = DocumentApp.getActiveDocument();\n  const body = doc.getBody();\n  \n  // Clear any existing content\n  body.clear();\n  \n  // Add subject line\n  const subject = body.appendParagraph('Subject: {{subject}}');\n  subject.setHeading(DocumentApp.ParagraphHeading.HEADING2);\n  \n  body.appendHorizontalRule();\n  body.appendParagraph('');\n  \n  // Add greeting\n  body.appendParagraph('Hi {{name}},');\n  body.appendParagraph('');\n  \n  // Add body placeholder\n  body.appendParagraph('{{body}}');\n  body.appendParagraph('');\n  \n  // Add signature\n  body.appendParagraph('Best regards,');\n  body.appendParagraph('Your Name');\n  body.appendParagraph('');\n  \n  // Add footer\n  body.appendHorizontalRule();\n  const footer = body.appendParagraph('Sent on {{date}}');\n  footer.setItalic(true);\n  footer.setForegroundColor('#666666');\n  \n  console.log('Template setup complete!');\n  return 'Template created with placeholders: {{subject}}, {{name}}, {{body}}, {{date}}';\n}"
+        },
+        {
+          "type": "text",
+          "content": "Save the file (Ctrl+O, Enter, Ctrl+X)."
+        },
+        {
+          "type": "text",
+          "content": "**File 2: Code.gs** - Create the template processing functions:"
+        },
+        {
+          "type": "command",
+          "content": "nano Code.gs"
+        },
+        {
+          "type": "text",
+          "content": "Paste this code:"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Code.gs",
+          "content": "/**\n * Gets the template text from this document.\n * @return {string} The raw template text\n */\nfunction getTemplateText() {\n  const doc = DocumentApp.getActiveDocument();\n  return doc.getBody().getText();\n}\n\n/**\n * Replaces placeholders in a template string with actual values.\n * @param {string} template - The template text with {{placeholders}}\n * @param {Object} data - Key-value pairs to replace placeholders\n * @return {string} The processed text\n */\nfunction processTemplate(template, data) {\n  let result = template;\n  for (const key in data) {\n    const placeholder = '{{' + key + '}}';\n    result = result.split(placeholder).join(data[key]);\n  }\n  return result;\n}\n\n/**\n * Tests the template processing with sample data.\n * @return {string} A preview of the processed email\n */\nfunction testTemplate() {\n  const template = getTemplateText();\n  const sampleData = {\n    subject: 'Monthly Newsletter',\n    name: 'John Smith',\n    body: 'Thank you for being a valued subscriber! Here are this month\\'s updates...',\n    date: new Date().toLocaleDateString()\n  };\n  return processTemplate(template, sampleData);\n}"
+        },
+        {
+          "type": "text",
+          "content": "Save the file."
+        },
+        {
+          "type": "tip",
+          "content": "The template will have these placeholders:\n• {{subject}} - Email subject line\n• {{name}} - Recipient's name\n• {{body}} - Main email content\n• {{date}} - Send date"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created both files: Setup.gs and Code.gs"
+        }
+      ]
+    },
+    {
+      "id": "push-and-authorize",
+      "title": "Push and Authorize",
+      "description": "Deploy the code and authorize the script",
+      "estimatedTime": "5 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now let's push all the files to Google and authorize the script."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Push all files to Google:"
+        },
+        {
+          "type": "command",
+          "content": "clasp push"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Open the script editor to authorize:"
+        },
+        {
+          "type": "command",
+          "content": "clasp open-script"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** In the Apps Script editor:\n1. Select **setupTemplate** from the function dropdown\n2. Click **Run** (▶️)\n3. A permissions dialog will appear - click to allow access\n4. Choose your Google account if prompted"
+        },
+        {
+          "type": "text",
+          "content": "The function will run and populate your Doc with the template. You can close the browser tab."
+        },
+        {
+          "type": "tip",
+          "content": "Now that you've authorized, future `clasp run` commands will work from the terminal!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have pushed the code and authorized the script"
+        }
+      ]
+    },
+    {
+      "id": "verify-template",
+      "title": "Verify Your Setup",
+      "description": "Confirm the template is ready",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's verify everything is set up correctly."
+        },
+        {
+          "type": "text",
+          "content": "**Check your files:**"
+        },
+        {
+          "type": "command",
+          "content": "ls -la"
+        },
+        {
+          "type": "tip",
+          "content": "You should see:\n• .clasp.json - CLASP configuration\n• appsscript.json - Apps Script manifest\n• Setup.gs - Template setup function\n• Code.gs - Template processing functions"
+        },
+        {
+          "type": "text",
+          "content": "**Test the template processing by running testTemplate in the script editor:**"
+        },
+        {
+          "type": "command",
+          "content": "clasp open-script"
+        },
+        {
+          "type": "text",
+          "content": "Select **testTemplate** from the function dropdown and click **Run**. Check the Execution log (View → Execution log) - you should see the email with placeholders replaced by sample data!"
+        },
+        {
+          "type": "text",
+          "content": "**Save your Doc ID to your config file:**"
+        },
+        {
+          "type": "command",
+          "content": "echo \"EMAIL_TEMPLATE_DOC_ID=$(grep -o '\"parentId\":\\[\"[^\"]*\"' .clasp.json | cut -d'\"' -f4)\" >> ~/Documents/mail-list-manager/CONFIG.txt"
+        },
+        {
+          "type": "text",
+          "content": "Verify it was saved:"
+        },
+        {
+          "type": "command",
+          "content": "cat ~/Documents/mail-list-manager/CONFIG.txt"
+        },
+        {
+          "type": "tip",
+          "content": "You should now see both your CONTACTS_SHEET_ID and EMAIL_TEMPLATE_DOC_ID in the config file!"
+        },
+        {
+          "type": "tip",
+          "content": "Your Email Template Doc is complete! The template is ready to be used by the web app for sending personalized emails."
+        },
+        {
+          "type": "checkpoint",
+          "content": "My Email Template Doc is complete and verified!"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "id": "clasp-troubleshooting",
+  "title": "Troubleshooting Guide",
+  "description": "Common errors and how to fix them",
+  "difficulty": "intermediate",
+  "estimatedTime": "30 min",
+  "cardCount": 16,
+  "cards": [
+    {
+      "id": "troubleshoot-001",
+      "task": "Error: 'Could not read API credentials. Are you logged in globally?' - How to fix?",
+      "answer": "Run 'clasp login' to authenticate, or check that ~/.clasprc.json exists with valid credentials",
+      "description": "This error means clasp can't find your authentication credentials. The global credentials file (~/.clasprc.json) is missing, corrupted, or you haven't logged in yet.",
+      "whenToUse": "Common after fresh clasp installation or when credentials expire.",
+      "scenarios": [
+        "First-time setup: Install clasp globally with 'npm install -g @google/clasp', then 'clasp login' to authenticate",
+        "Expired credentials: Run 'clasp login' again to refresh your OAuth tokens",
+        "Wrong user: Check '~/.clasprc.json' to see which Google account is authenticated, logout and re-login if needed"
+      ]
+    },
+    {
+      "id": "troubleshoot-002",
+      "task": "Authentication fails with SSL certificate error - How to fix?",
+      "answer": "Clear localhost from HSTS list in browser, or use 'clasp login --no-localhost' and manually enter the code",
+      "description": "Browser forcing HTTPS on localhost breaks clasp's OAuth callback. The local server clasp creates for auth doesn't have SSL, causing certificate errors.",
+      "whenToUse": "When browser redirects localhost to HTTPS during clasp login, causing connection refused errors.",
+      "scenarios": [
+        "Chrome/Edge fix: Navigate to edge://net-internals/#hsts, enter 'localhost' under 'Delete domain security policies' and click Delete",
+        "Alternative method: Use 'clasp login --no-localhost', manually copy authorization code from browser to terminal",
+        "CI/CD environments: Always use --no-localhost in automated pipelines where you can't open a browser"
+      ]
+    },
+    {
+      "id": "troubleshoot-003",
+      "task": "Fix \"Looks like you are offline\" by renewing auth behind a proxy/VPN",
+      "answer": "clasp login --no-localhost",
+      "description": "Forces clasp to use the manual OAuth flow and refresh tokens without opening a local callback URL, which often fails on locked-down networks.",
+      "whenToUse": "When clasp claims you're offline but you have connectivity, usually due to proxy/VPN restrictions or stale tokens.",
+      "scenarios": [
+        "Corporate proxy: Manual login succeeds when the local callback is blocked by firewall or SSL interception",
+        "VPN quirks: Re-auth with --no-localhost to bypass captive portal or split-tunnel issues",
+        "Stale tokens: Clearing ~/.clasprc.json and running this command to issue fresh credentials"
+      ]
+    },
+    {
+      "id": "troubleshoot-004",
+      "task": "Google Workspace admin restrictions prevent clasp login - How to fix?",
+      "answer": "Admin must enable 'Google Apps Script API' in Admin Console under Security > API Controls > App access control",
+      "description": "Google Workspace organizations can restrict API access. If your admin has blocked the Apps Script API, clasp login will fail with authorization errors.",
+      "whenToUse": "When personal Gmail accounts work but your @company.com Workspace account fails to authorize clasp.",
+      "scenarios": [
+        "Admin action required: Go to admin.google.com > Security > Access and data control > API controls > Manage Third-Party App Access > Configure new app > Apps Script API",
+        "Workaround: Use a personal Google account for development, share final scripts with work account",
+        "Enterprise setup: Work with IT to enable Apps Script API org-wide or for your department"
+      ]
+    },
+    {
+      "id": "troubleshoot-005",
+      "task": "Error: 'Missing credentials' when trying 'clasp run' - How to fix?",
+      "answer": "Create OAuth credentials with 'clasp open --creds', download JSON, then 'clasp login --creds <file>'",
+      "description": "clasp run requires custom OAuth credentials (not the default clasp ones) to execute functions remotely. You must create credentials in GCP Console.",
+      "whenToUse": "Before using 'clasp run' to execute Apps Script functions from command line.",
+      "scenarios": [
+        "Setup steps: 1) clasp open --creds 2) Create OAuth client ID (Desktop app) 3) Download JSON as creds.json 4) clasp login --creds creds.json 5) clasp run myFunction",
+        "Project-specific creds: Each Apps Script project can have its own OAuth client for better security isolation",
+        "Troubleshooting: If run still fails, ensure Apps Script API is enabled in the GCP project linked to your script"
+      ]
+    },
+    {
+      "id": "troubleshoot-006",
+      "task": "Push conflicts: local and remote have diverged - How to resolve?",
+      "answer": "Choose: 'clasp pull' to get remote changes (discards local), 'clasp push --force' to overwrite remote (discards cloud), or manually merge",
+      "description": "Happens when both local and cloud versions have changed (someone edited in web editor while you worked locally). Clasp won't auto-merge, you must choose which version wins.",
+      "whenToUse": "When clasp push shows conflict warnings about remote changes.",
+      "scenarios": [
+        "Solo dev, you edited in browser: 'clasp pull' to get web changes, reapply your local changes, then 'clasp push'",
+        "Team member pushed: Pull their changes first, resolve conflicts manually in your code, then push",
+        "You know local is correct: 'clasp push --force' to overwrite cloud - use carefully, you'll lose cloud edits"
+      ]
+    },
+    {
+      "id": "troubleshoot-007",
+      "task": "Deployment succeeds but webapp shows old code - How to fix?",
+      "answer": "Clear browser cache, or create new deployment instead of updating @HEAD - @HEAD caching issues are common",
+      "description": "Apps Script aggressively caches webapp deployments. Even after successful deployment update, users may see old code for minutes/hours due to CDN caching.",
+      "whenToUse": "When 'clasp deploy' succeeds but testing the webapp URL shows previous version's behavior.",
+      "scenarios": [
+        "Quick fix: Open webapp in incognito/private window to bypass browser cache",
+        "Force new version: Create new deployment with version number instead of updating @HEAD: 'clasp version' then 'clasp deploy --versionNumber N'",
+        "Permanent solution: Use versioned deployments in production, never use @HEAD for live webapps"
+      ]
+    },
+    {
+      "id": "troubleshoot-008",
+      "task": "Error: 'Script file must be in root directory' - How to fix?",
+      "answer": "Set 'rootDir' in .clasp.json to point to your source directory, like 'rootDir': 'src'",
+      "description": "Clasp by default expects files in the same directory as .clasp.json. If you organize code in subdirectories (like src/), you must configure rootDir.",
+      "whenToUse": "When you want to keep source code in a subdirectory for better project organization.",
+      "scenarios": [
+        "Organized structure: .clasp.json and package.json in root, code in src/ - add 'rootDir': 'src' to .clasp.json",
+        "TypeScript build: Source .ts files in src/, compiled .js in dist/ - set 'rootDir': 'dist' to push only compiled code",
+        "Monorepo: Multiple clasp projects in packages/*/ - each has .clasp.json with appropriate rootDir"
+      ]
+    },
+    {
+      "id": "troubleshoot-009",
+      "task": "Files not uploading despite being in project - How to troubleshoot?",
+      "answer": "Check .claspignore patterns, verify rootDir setting, ensure files are .js/.gs/.html, check file size limits",
+      "description": "Common reasons files don't push: ignored by .claspignore, outside rootDir, wrong extension, or exceeding size limits. Apps Script has limits on total project size.",
+      "whenToUse": "When 'clasp push' succeeds but expected files don't appear in Apps Script editor.",
+      "scenarios": [
+        "Check ignore patterns: Review .claspignore - wildcards like '*.ts' might unintentionally match files you want to push",
+        "Verify rootDir: If rootDir is 'src/', files in 'lib/' won't push - move them or adjust structure",
+        "File size: Apps Script projects limited to 50 files and specific size constraints - split large files or use libraries"
+      ]
+    },
+    {
+      "id": "troubleshoot-010",
+      "task": "TypeError: Cannot read scriptId in clasp command - How to fix?",
+      "answer": "You're in wrong directory or .clasp.json is missing/malformed. Navigate to project root or run 'clasp clone' to create it",
+      "description": "Most clasp commands need .clasp.json with valid scriptId. This error means clasp can't find or parse that configuration file.",
+      "whenToUse": "When any clasp command (push, pull, open, deploy) fails with scriptId error.",
+      "scenarios": [
+        "Wrong directory: 'cd' into your project folder where .clasp.json exists before running clasp commands",
+        "Missing config: If new project, run 'clasp create' to generate .clasp.json. If existing, run 'clasp clone <scriptId>'",
+        "Malformed JSON: Open .clasp.json, check for syntax errors - must be valid JSON with 'scriptId' field"
+      ]
+    },
+    {
+      "id": "troubleshoot-011",
+      "task": "Apps Script API not enabled error - How to enable?",
+      "answer": "Visit script.google.com/home/usersettings and turn on 'Google Apps Script API' toggle",
+      "description": "The Apps Script API must be enabled in your Google account settings for clasp to work. This is a one-time setup per Google account.",
+      "whenToUse": "Usually during first-time clasp setup when you get 'Apps Script API has not been used' error.",
+      "scenarios": [
+        "First-time enable: Navigate to script.google.com/home/usersettings, enable the API toggle, retry clasp command",
+        "New Google account: Each account needs API enabled separately - enable it for work and personal accounts",
+        "Organization account: If toggle is grayed out, contact Workspace admin to enable API at org level"
+      ]
+    },
+    {
+      "id": "troubleshoot-012",
+      "task": "Deployment fails with 'User has not enabled the Apps Script Deployment API' - How to fix?",
+      "answer": "Enable Apps Script API at script.google.com/home/usersettings, ensure you're logged in with correct account",
+      "description": "Similar to general API error but specifically for deployment operations. The deployment API subset needs explicit enabling.",
+      "whenToUse": "When clasp deploy or undeploy commands fail but other clasp commands work.",
+      "scenarios": [
+        "Enable deployment API: Visit script.google.com/home/usersettings and enable Apps Script API if not already done",
+        "Account mismatch: Verify you're logged into clasp with same account that owns the script - check with 'clasp whoami'",
+        "Workspace restrictions: Admin may have disabled deployment API - request IT to enable in Admin Console"
+      ]
+    },
+    {
+      "id": "troubleshoot-013",
+      "task": "'clasp status' shows no changes but you know files changed - Why?",
+      "answer": "Status compares against last pull, not remote. Run 'clasp pull' first to sync remote state, then check status again",
+      "description": "clasp status compares local files against your last pulled version, not the current cloud state. If someone pushed after your last pull, status won't show those changes.",
+      "whenToUse": "When you need to see what's different between local and current remote state.",
+      "scenarios": [
+        "Get accurate status: 'clasp pull' to sync remote, 'clasp status' to see local changes vs that sync point",
+        "Team collaboration: Before pushing, pull first to avoid overwriting teammate's changes",
+        "Alternative: Use 'git diff' for local changes if you track with Git - more reliable than clasp status"
+      ]
+    },
+    {
+      "id": "troubleshoot-014",
+      "task": "Remote function execution fails with permission denied - How to fix?",
+      "answer": "Ensure OAuth credentials are set up correctly with 'clasp login --creds', and function is not private/library-only",
+      "description": "clasp run executes functions remotely via Apps Script API. Requires proper OAuth setup and function must be at top level, not inside objects or marked private.",
+      "whenToUse": "When 'clasp run functionName' fails with authorization or execution errors.",
+      "scenarios": [
+        "OAuth setup: Create Desktop app OAuth credentials in GCP Console, download JSON, run 'clasp login --creds creds.json'",
+        "Function visibility: Ensure function is top-level (not inside object/class) and name doesn't start with underscore",
+        "Test function: Start simple with 'clasp run' on basic function like 'function test() { return \"hello\"; }' to verify setup"
+      ]
+    },
+    {
+      "id": "troubleshoot-015",
+      "task": "How to fix 'ReferenceError: module is not defined' in Apps Script after pushing?",
+      "answer": "esbuild src/index.ts --bundle --format=iife --outfile=dist/Code.js && clasp push --rootDir dist",
+      "description": "Bundles your code into a single IIFE file (no CommonJS modules) and pushes the transpiled output that Apps Script can run.",
+      "whenToUse": "When deployed code throws 'module is not defined' because CommonJS/ESM modules weren't bundled for Apps Script.",
+      "scenarios": [
+        "TypeScript project: Bundle to dist/Code.js as IIFE, then push the dist folder instead of raw TS/ESM files",
+        "CommonJS cleanup: Eliminate module.exports/require by bundling to a single browser-safe file before deploy",
+        "CI pipeline: Run esbuild + clasp push in CI to ensure only transpiled output is uploaded"
+      ]
+    }
+  ]
+}

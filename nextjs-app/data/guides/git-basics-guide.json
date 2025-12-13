@@ -1,0 +1,97 @@
+{
+  "id": "git-basics-guide",
+  "setId": "git-basics",
+  "title": "Git Basics - Friendly Guide",
+  "summary": "Plain-language primer for daily Git: clone, branch, stage/commit, push/pull, and read the log.",
+  "mentalModel": "Git is snapshots plus pointers: commits are snapshots, branches are movable pointers, remotes are shared pointers. Keep history small and clear.",
+  "sections": [
+    {
+      "title": "Setup and identity",
+      "content": [
+        "Set your global name/email once: git config --global user.name / user.email.",
+        "Use SSH or HTTPS consistently to avoid auth popups.",
+        "Clone with git clone <url> [folder] to get history plus working tree."
+      ]
+    },
+    {
+      "title": "Daily loop",
+      "content": [
+        "Check status (git status -sb) to see staged/unstaged/untracked files.",
+        "Stage intentionally (git add <path>), then commit with a clear message.",
+        "Pull with rebase (git pull --rebase origin main) before pushing to avoid noisy merge commits."
+      ]
+    },
+    {
+      "title": "Reading history",
+      "content": [
+        "git log --oneline --graph --decorate --all shows branches and tags at a glance.",
+        "git show <commit> to see details; git diff to inspect working changes.",
+        "Tag releases with git tag -a vX.Y.Z -m \"msg\" for traceability."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Start a feature cleanly",
+      "steps": [
+        "git fetch origin",
+        "git switch -c feature/<name> origin/main",
+        "Build, test, then git add + git commit",
+        "git push -u origin feature/<name>"
+      ],
+      "tips": [
+        "Branch from main to minimize conflicts.",
+        "Use -u on first push so future pushes are shorter."
+      ]
+    },
+    {
+      "name": "Keep your fork current",
+      "steps": [
+        "git fetch origin",
+        "git pull --rebase origin main",
+        "Resolve conflicts locally if any",
+        "git push"
+      ],
+      "tips": [
+        "Rebase keeps history linear for easier review.",
+        "Run tests after rebasing to catch integration issues early."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Status first, add second, commit third.",
+    "Rebase to stay linear; merge only when needed.",
+    "Tags mark releases; branches mark work in progress."
+  ],
+  "examples": [
+    {
+      "title": "Fix a small typo",
+      "commands": [
+        "git status -sb",
+        "git add docs/readme.md",
+        "git commit -m \"Fix typo in setup instructions\"",
+        "git push"
+      ],
+      "explanation": "Even tiny changes deserve a focused commit for clean history."
+    },
+    {
+      "title": "Inspect recent work",
+      "commands": [
+        "git log --oneline --graph --decorate --all | head",
+        "git show HEAD~1",
+        "git diff HEAD"
+      ],
+      "explanation": "Combine graph, show, and diff to understand context quickly."
+    }
+  ],
+  "troubleshooting": [
+    "Wrong author: update global config and amend the last commit if needed.",
+    "Rejected push: pull --rebase origin main, resolve conflicts, push again.",
+    "Detached HEAD confusion: git switch <branch> to get back to a branch pointer."
+  ],
+  "recap": [
+    "Clone, branch from main, commit small, rebase before push.",
+    "Use status/log/diff to stay oriented.",
+    "Tags for releases, branches for work, commits for units of change."
+  ]
+}

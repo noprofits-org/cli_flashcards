@@ -1,0 +1,271 @@
+{
+  "id": "terminal-basics",
+  "title": "Terminal Basics",
+  "description": "Essential terminal commands for navigating and managing files",
+  "difficulty": "beginner",
+  "category": "terminal",
+  "estimatedTime": "25 min",
+  "cardCount": 20,
+  "cards": [
+    {
+      "id": "tb-1",
+      "task": "Print the current directory path",
+      "answer": "pwd",
+      "description": "Displays the full path to your current working directory",
+      "whenToUse": "When you need to know exactly where you are in the file system",
+      "scenarios": [
+        "You opened a new terminal and want to see where you are",
+        "You need to copy the current path to share with someone",
+        "You're lost after navigating through multiple directories"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-2",
+      "task": "List files in the current directory",
+      "answer": "ls",
+      "description": "Shows all files and folders in the current directory",
+      "whenToUse": "When you want to see what's in a folder",
+      "scenarios": [
+        "You want to see what files are in your project folder",
+        "You're checking if a file exists before creating it",
+        "You need to find the exact name of a file"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-3",
+      "task": "List files with details (size, date, permissions)",
+      "answer": "ls -la",
+      "description": "Shows all files including hidden ones, with detailed information",
+      "whenToUse": "When you need to see file sizes, dates, or hidden files",
+      "scenarios": [
+        "You want to see hidden config files like .clasp.json",
+        "You need to check when a file was last modified",
+        "You want to see file sizes"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-4",
+      "task": "Change to a directory called 'projects'",
+      "answer": "cd projects",
+      "description": "Moves you into a subdirectory",
+      "whenToUse": "When you need to navigate into a folder",
+      "scenarios": [
+        "You want to enter your project folder",
+        "You need to access files in a subdirectory",
+        "You're navigating to where your code lives"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-5",
+      "task": "Go up one directory level",
+      "answer": "cd ..",
+      "description": "Moves you to the parent directory",
+      "whenToUse": "When you need to go back up in the folder structure",
+      "scenarios": [
+        "You're done working in a subfolder",
+        "You went into the wrong directory",
+        "You need to access a sibling folder"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-6",
+      "task": "Go to your home directory",
+      "answer": "cd ~",
+      "description": "Takes you directly to your user's home folder",
+      "whenToUse": "When you want to quickly return to your home directory",
+      "scenarios": [
+        "You want to start fresh from a known location",
+        "You need to access files in your home folder",
+        "You're deeply nested and want to get back quickly"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-7",
+      "task": "Create a new directory called 'my-project'",
+      "answer": "mkdir my-project",
+      "description": "Creates a new empty folder",
+      "whenToUse": "When you need to create a new folder",
+      "scenarios": [
+        "You're starting a new project",
+        "You need to organize files into folders",
+        "You're setting up a directory structure"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-8",
+      "task": "Create a new empty file called 'notes.txt'",
+      "answer": "touch notes.txt",
+      "description": "Creates a new empty file or updates the timestamp of an existing file",
+      "whenToUse": "When you need to create an empty file quickly",
+      "scenarios": [
+        "You need to create a placeholder file",
+        "You want to create a file before editing it",
+        "You're setting up config files"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-9",
+      "task": "Display the contents of a file called 'readme.txt'",
+      "answer": "cat readme.txt",
+      "description": "Prints the entire contents of a file to the terminal",
+      "whenToUse": "When you want to quickly view a file's contents",
+      "scenarios": [
+        "You want to read a config file",
+        "You need to check what's in a small text file",
+        "You want to see the contents of .clasp.json"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-10",
+      "task": "Clear the terminal screen",
+      "answer": "clear",
+      "description": "Clears all previous output from the terminal",
+      "whenToUse": "When your terminal is cluttered with old output",
+      "scenarios": [
+        "You want a fresh, clean terminal view",
+        "You're about to run an important command and want to see the output clearly",
+        "Your screen is full of previous command results"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-11",
+      "task": "Copy a file called 'config.json' to 'config-backup.json'",
+      "answer": "cp config.json config-backup.json",
+      "description": "Creates a copy of a file with a new name",
+      "whenToUse": "When you need to duplicate a file",
+      "scenarios": [
+        "You want to back up a file before editing it",
+        "You need to create a copy to modify",
+        "You're duplicating a template file"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-12",
+      "task": "Move (rename) a file from 'old.txt' to 'new.txt'",
+      "answer": "mv old.txt new.txt",
+      "description": "Moves or renames a file",
+      "whenToUse": "When you need to rename a file or move it to another location",
+      "scenarios": [
+        "You want to rename a file",
+        "You need to move a file to a different folder",
+        "You're reorganizing your project structure"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-13",
+      "task": "Delete a file called 'temp.txt'",
+      "answer": "rm temp.txt",
+      "description": "Permanently removes a file (no trash/recycle bin)",
+      "whenToUse": "When you need to delete a file you no longer need",
+      "scenarios": [
+        "You want to remove a temporary file",
+        "You're cleaning up old files",
+        "You created a file by mistake"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-14",
+      "task": "Delete an empty directory called 'old-folder'",
+      "answer": "rmdir old-folder",
+      "description": "Removes an empty directory",
+      "whenToUse": "When you need to delete an empty folder",
+      "scenarios": [
+        "You created a folder by mistake",
+        "You're cleaning up empty directories",
+        "A folder is no longer needed"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-15",
+      "task": "Open the current directory in Finder (Mac) or Explorer (Windows)",
+      "answer": "open .",
+      "description": "Opens the current folder in your system's file browser (Mac: open, Windows: explorer, Linux: xdg-open)",
+      "whenToUse": "When you want to see the current folder in a graphical file browser",
+      "scenarios": [
+        "You want to drag and drop files",
+        "You prefer to browse files visually",
+        "You need to open a file with a specific application"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-16",
+      "task": "Open a file called 'script.js' in the nano text editor",
+      "answer": "nano script.js",
+      "description": "Opens a file in nano, a simple terminal-based text editor",
+      "whenToUse": "When you need to edit a file directly in the terminal",
+      "scenarios": [
+        "You want to quickly edit a config file",
+        "You're creating a new script file",
+        "You need to make a small change without opening a full IDE"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-17",
+      "task": "In nano: Save the current file",
+      "answer": "Ctrl+O",
+      "description": "Writes (saves) the current file in nano (then press Enter to confirm)",
+      "whenToUse": "When you want to save your changes in nano",
+      "scenarios": [
+        "You've finished editing and want to save",
+        "You want to save before making more risky changes",
+        "You're saving periodically to avoid losing work"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-18",
+      "task": "In nano: Exit the editor",
+      "answer": "Ctrl+X",
+      "description": "Exits nano (will prompt to save if there are unsaved changes)",
+      "whenToUse": "When you're done editing and want to close nano",
+      "scenarios": [
+        "You've finished editing a file",
+        "You want to quit without saving (press N when prompted)",
+        "You're done and ready to run other commands"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-19",
+      "task": "In nano: Cut the current line",
+      "answer": "Ctrl+K",
+      "description": "Cuts (removes) the entire current line and stores it for pasting",
+      "whenToUse": "When you want to delete or move a line of text",
+      "scenarios": [
+        "You want to delete a line of code",
+        "You're moving a line to a different location",
+        "You need to remove multiple lines quickly"
+      ],
+      "set_id": "terminal-basics"
+    },
+    {
+      "id": "tb-20",
+      "task": "In nano: Paste the cut text",
+      "answer": "Ctrl+U",
+      "description": "Pastes (uncuts) the previously cut text at the cursor position",
+      "whenToUse": "When you want to paste text you previously cut",
+      "scenarios": [
+        "You're moving a line to a new location",
+        "You want to duplicate a line (cut, paste, paste)",
+        "You need to restore a line you accidentally cut"
+      ],
+      "set_id": "terminal-basics"
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "id": "setup-installation",
+  "title": "Setup & Installation",
+  "description": "Install CLASP and configure your development environment",
+  "difficulty": "beginner",
+  "estimatedTime": "15 min",
+  "icon": "download",
+  "color": "#4285f4",
+  "category": "setup",
+  "stepCount": 5,
+  "nextProject": "contact-list-sheet",
+  "steps": [
+    {
+      "id": "install-node",
+      "title": "Install Node.js",
+      "description": "Node.js is required to run CLASP",
+      "estimatedTime": "5 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "CLASP (Command Line Apps Script Projects) runs on Node.js, a JavaScript runtime. If you don't have Node.js installed, you'll need to download and install it first."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Go to the official Node.js website:"
+        },
+        {
+          "type": "tip",
+          "content": "Visit https://nodejs.org and download the LTS (Long Term Support) version - it's the most stable."
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Run the installer and follow the prompts. Accept the default settings."
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Open your terminal (Terminal on Mac, Command Prompt or PowerShell on Windows) and verify the installation:"
+        },
+        {
+          "type": "command",
+          "content": "node --version"
+        },
+        {
+          "type": "tip",
+          "content": "You should see a version number like v18.17.0 or higher. If you see an error, try restarting your terminal."
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have Node.js installed and can see a version number"
+        }
+      ]
+    },
+    {
+      "id": "install-clasp",
+      "title": "Install CLASP",
+      "description": "Install the CLASP command-line tool globally",
+      "estimatedTime": "2 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now that Node.js is installed, we can use npm (Node Package Manager) to install CLASP globally on your computer."
+        },
+        {
+          "type": "text",
+          "content": "Run this command in your terminal:"
+        },
+        {
+          "type": "command",
+          "content": "npm install -g @google/clasp"
+        },
+        {
+          "type": "tip",
+          "content": "The -g flag installs CLASP globally, so you can use it from any folder on your computer."
+        },
+        {
+          "type": "text",
+          "content": "Verify CLASP is installed:"
+        },
+        {
+          "type": "command",
+          "content": "clasp --version"
+        },
+        {
+          "type": "warning",
+          "content": "On Mac/Linux, if you get a permission error, try: sudo npm install -g @google/clasp"
+        },
+        {
+          "type": "checkpoint",
+          "content": "CLASP is installed and I can see a version number"
+        }
+      ]
+    },
+    {
+      "id": "enable-apps-script-api",
+      "title": "Enable the Apps Script API",
+      "description": "Turn on the API that allows CLASP to communicate with Google",
+      "estimatedTime": "2 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Before CLASP can work with your Google account, you need to enable the Apps Script API in your Google account settings."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Go to the Apps Script API settings page:"
+        },
+        {
+          "type": "tip",
+          "content": "Visit https://script.google.com/home/usersettings"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Find the setting called **\"Google Apps Script API\"** and make sure it's turned **ON**."
+        },
+        {
+          "type": "warning",
+          "content": "If the API is off, CLASP won't be able to create or push projects to your Google account."
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have enabled the Google Apps Script API"
+        }
+      ]
+    },
+    {
+      "id": "login-google",
+      "title": "Login to Google",
+      "description": "Authenticate CLASP with your Google account",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now we need to connect CLASP to your Google account. This lets CLASP create and manage Apps Script projects on your behalf."
+        },
+        {
+          "type": "text",
+          "content": "Run this command:"
+        },
+        {
+          "type": "command",
+          "content": "clasp login"
+        },
+        {
+          "type": "text",
+          "content": "A browser window will open asking you to sign in to Google and grant permissions. Click through the prompts to authorize CLASP."
+        },
+        {
+          "type": "tip",
+          "content": "Choose the Google account where you want to create your Apps Script projects. This is usually your personal Gmail or Google Workspace account."
+        },
+        {
+          "type": "text",
+          "content": "After authorizing, you should see a success message in your terminal like: \"Authorization successful.\""
+        },
+        {
+          "type": "checkpoint",
+          "content": "I am logged in to Google via CLASP"
+        }
+      ]
+    },
+    {
+      "id": "create-project-folder",
+      "title": "Create Project Folder",
+      "description": "Set up your workspace for the Mail List Manager",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's create a folder to hold all of your Mail List Manager projects. We'll create sub-folders for each part of the system."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Open your terminal and navigate to where you want to create the project (like your Documents folder):"
+        },
+        {
+          "type": "command",
+          "content": "cd ~/Documents"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Create the main project folder and navigate into it:"
+        },
+        {
+          "type": "command",
+          "content": "mkdir mail-list-manager && cd mail-list-manager"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Create sub-folders for each part of the project:"
+        },
+        {
+          "type": "command",
+          "content": "mkdir contacts-sheet email-template web-app"
+        },
+        {
+          "type": "text",
+          "content": "**Step 4:** Create a config file to store your project IDs:"
+        },
+        {
+          "type": "command",
+          "content": "echo \"# Mail List Manager Configuration\" > CONFIG.txt && echo \"# Add your IDs here as you complete each project\" >> CONFIG.txt"
+        },
+        {
+          "type": "tip",
+          "content": "Your folder structure should now look like:\nmail-list-manager/\n  ├── contacts-sheet/\n  ├── email-template/\n  ├── web-app/\n  └── CONFIG.txt"
+        },
+        {
+          "type": "text",
+          "content": "You're all set up and ready to start building! Your CONFIG.txt file will store important IDs as you complete each project."
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created my project folders"
+        }
+      ]
+    }
+  ]
+}

@@ -977,14 +977,14 @@
       ]
     },
     {
-      "task": "Error: 'Looks like you are offline' but you have internet - How to fix?",
-      "answer": "Check firewall/proxy settings blocking googleapis.com, or try 'clasp login' again to refresh credentials",
-      "description": "This error occurs when clasp can't reach Google's APIs due to network restrictions, proxy configs, or expired tokens that fail to refresh.",
-      "whenToUse": "When you have internet but clasp commands timeout or return offline error.",
+      "task": "Fix \"Looks like you are offline\" by renewing auth behind a proxy/VPN",
+      "answer": "clasp login --no-localhost",
+      "description": "Forces clasp to use the manual OAuth flow and refresh tokens without opening a local callback URL, which often fails on locked-down networks.",
+      "whenToUse": "When clasp claims you're offline but you have connectivity, usually due to proxy/VPN restrictions or stale tokens.",
       "scenarios": [
-        "Corporate network: Configure proxy settings or request IT to whitelist *.googleapis.com domains",
-        "VPN issues: Disconnect VPN and retry, or configure VPN to allow Google API access",
-        "Credential refresh: Delete ~/.clasprc.json and run 'clasp login' to get fresh tokens"
+        "Corporate proxy: Manual login succeeds when the local callback is blocked by firewall or SSL interception",
+        "VPN quirks: Re-auth with --no-localhost to bypass captive portal or split-tunnel issues",
+        "Stale tokens: Clearing ~/.clasprc.json and running this command to issue fresh credentials"
       ]
     },
     {
@@ -1110,13 +1110,13 @@
     },
     {
       "task": "How to fix 'ReferenceError: module is not defined' in Apps Script after pushing?",
-      "answer": "Remove Node.js-style exports (module.exports, exports) - Apps Script doesn't support CommonJS modules",
-      "description": "Apps Script doesn't have Node.js module system. If you write 'module.exports = ...' locally, it will error when executed in Apps Script cloud runtime.",
-      "whenToUse": "When code works locally but fails in Apps Script with module/exports/require not defined.",
+      "answer": "esbuild src/index.ts --bundle --format=iife --outfile=dist/Code.js && clasp push --rootDir dist",
+      "description": "Bundles your code into a single IIFE file (no CommonJS modules) and pushes the transpiled output that Apps Script can run.",
+      "whenToUse": "When deployed code throws 'module is not defined' because CommonJS/ESM modules weren't bundled for Apps Script.",
       "scenarios": [
-        "Remove CommonJS: Delete 'module.exports' and 'require()' statements - use global functions instead",
-        "TypeScript setup: Configure tsconfig.json with 'module': 'None' or use rollup/webpack to bundle without module wrappers",
-        "Function sharing: Use Apps Script libraries instead of npm-style modules for code reuse across projects"
+        "TypeScript project: Bundle to dist/Code.js as IIFE, then push the dist folder instead of raw TS/ESM files",
+        "CommonJS cleanup: Eliminate module.exports/require by bundling to a single browser-safe file before deploy",
+        "CI pipeline: Run esbuild + clasp push in CI to ensure only transpiled output is uploaded"
       ]
     }
   ]

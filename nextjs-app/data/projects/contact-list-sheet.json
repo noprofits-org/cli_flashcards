@@ -1,0 +1,253 @@
+{
+  "id": "contact-list-sheet",
+  "title": "Contact List Sheet",
+  "description": "Build a Google Sheet to store your mail list contacts with custom dropdown menus",
+  "difficulty": "beginner",
+  "estimatedTime": "25 min",
+  "icon": "table",
+  "color": "#0f9d58",
+  "category": "sheets",
+  "stepCount": 4,
+  "prerequisites": ["setup-installation"],
+  "nextProject": "email-template-doc",
+  "steps": [
+    {
+      "id": "create-sheet",
+      "title": "Create the Google Sheet",
+      "description": "Create a new spreadsheet from the command line",
+      "estimatedTime": "2 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's create a new Google Sheet directly from the terminal."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Navigate to the contacts-sheet folder:"
+        },
+        {
+          "type": "command",
+          "content": "cd ~/Documents/mail-list-manager/contacts-sheet"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Create a new Google Sheet with an attached Apps Script project:"
+        },
+        {
+          "type": "command",
+          "content": "clasp create --type sheets --title \"Mail List Contacts\""
+        },
+        {
+          "type": "tip",
+          "content": "This single command creates both a Google Sheet AND an Apps Script project attached to it!"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Extract and save the Sheet ID (you'll need this later for the web app):"
+        },
+        {
+          "type": "command",
+          "content": "cat .clasp.json"
+        },
+        {
+          "type": "text",
+          "content": "You'll see output like:\n{\"scriptId\":\"abc123...\",\"parentId\":[\"YOUR_SHEET_ID\"]}\n\nThe **parentId** is your Sheet ID - copy it and save it somewhere!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created the Google Sheet and saved my Sheet ID"
+        }
+      ]
+    },
+    {
+      "id": "create-all-files",
+      "title": "Create All Script Files",
+      "description": "Create the setup script, menu functions, and sidebar HTML",
+      "estimatedTime": "12 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now we'll create all the script files. We'll push them all at once at the end."
+        },
+        {
+          "type": "text",
+          "content": "**File 1: Setup.gs** - Create the setup script:"
+        },
+        {
+          "type": "command",
+          "content": "nano Setup.gs"
+        },
+        {
+          "type": "text",
+          "content": "Paste this code:"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Setup.gs",
+          "content": "/**\n * Sets up the spreadsheet with headers, formatting, and sample data.\n * Run this once to initialize your contact sheet.\n */\nfunction setupSheet() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  \n  // Set column headers\n  const headers = ['Name', 'Email', 'Status', 'Tags', 'Date Added', 'Last Emailed'];\n  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);\n  \n  // Format header row\n  const headerRange = sheet.getRange(1, 1, 1, headers.length);\n  headerRange.setFontWeight('bold');\n  headerRange.setBackground('#f3f3f3');\n  \n  // Set column widths\n  sheet.setColumnWidth(1, 150); // Name\n  sheet.setColumnWidth(2, 200); // Email\n  sheet.setColumnWidth(3, 100); // Status\n  sheet.setColumnWidth(4, 150); // Tags\n  sheet.setColumnWidth(5, 100); // Date Added\n  sheet.setColumnWidth(6, 100); // Last Emailed\n  \n  // Freeze header row\n  sheet.setFrozenRows(1);\n  \n  // Add sample contacts\n  const sampleContacts = [\n    ['John Smith', 'john@example.com', 'Active', 'Newsletter', '2024-01-15', ''],\n    ['Jane Doe', 'jane@example.com', 'Active', 'VIP, Newsletter', '2024-01-20', ''],\n    ['Bob Wilson', 'bob@example.com', 'Inactive', 'Newsletter', '2024-02-01', ''],\n    ['Alice Brown', 'alice@example.com', 'Unsubscribed', '', '2024-02-10', '']\n  ];\n  sheet.getRange(2, 1, sampleContacts.length, 6).setValues(sampleContacts);\n  \n  // Set up Status column dropdown validation\n  const statusOptions = ['Active', 'Inactive', 'Unsubscribed'];\n  const statusRule = SpreadsheetApp.newDataValidation()\n    .requireValueInList(statusOptions, true)\n    .setAllowInvalid(false)\n    .build();\n  sheet.getRange('C2:C1000').setDataValidation(statusRule);\n  \n  console.log('Sheet setup complete! Headers, sample data, and dropdowns configured.');\n  return 'Setup complete';\n}"
+        },
+        {
+          "type": "text",
+          "content": "Save the file (Ctrl+O, Enter, Ctrl+X)."
+        },
+        {
+          "type": "text",
+          "content": "**File 2: Code.gs** - Create the menu and contact functions:"
+        },
+        {
+          "type": "command",
+          "content": "nano Code.gs"
+        },
+        {
+          "type": "text",
+          "content": "Paste this code:"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Code.gs",
+          "content": "/**\n * Runs when the spreadsheet is opened.\n * Adds a custom menu to the spreadsheet.\n */\nfunction onOpen() {\n  const ui = SpreadsheetApp.getUi();\n  ui.createMenu('Mail List')\n    .addItem('Add Contact', 'showAddContactSidebar')\n    .addItem('Refresh Dropdowns', 'refreshDropdowns')\n    .addToUi();\n}\n\n/**\n * Refreshes the Status dropdown validation.\n */\nfunction refreshDropdowns() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const statusOptions = ['Active', 'Inactive', 'Unsubscribed'];\n  const statusRule = SpreadsheetApp.newDataValidation()\n    .requireValueInList(statusOptions, true)\n    .setAllowInvalid(false)\n    .build();\n  sheet.getRange('C2:C1000').setDataValidation(statusRule);\n  return 'Dropdowns refreshed';\n}\n\n/**\n * Shows the Add Contact sidebar.\n */\nfunction showAddContactSidebar() {\n  const html = HtmlService.createHtmlOutputFromFile('Sidebar')\n    .setTitle('Add Contact');\n  SpreadsheetApp.getUi().showSidebar(html);\n}\n\n/**\n * Adds a new contact to the sheet.\n * Called from the sidebar form.\n */\nfunction addContact(name, email, status, tags) {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const today = new Date().toISOString().split('T')[0];\n  const lastRow = sheet.getLastRow();\n  const newRow = lastRow + 1;\n  sheet.getRange(newRow, 1, 1, 5).setValues([[name, email, status, tags, today]]);\n  return 'Contact added successfully!';\n}\n\n/**\n * Gets all contacts from the sheet (used by web app later).\n */\nfunction getContacts() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const data = sheet.getDataRange().getValues();\n  const contacts = [];\n  for (let i = 1; i < data.length; i++) {\n    if (data[i][0] && data[i][1]) {\n      contacts.push({\n        name: data[i][0],\n        email: data[i][1],\n        status: data[i][2] || 'Active',\n        tags: data[i][3] || '',\n        dateAdded: data[i][4] || '',\n        lastEmailed: data[i][5] || ''\n      });\n    }\n  }\n  return contacts;\n}"
+        },
+        {
+          "type": "text",
+          "content": "Save the file."
+        },
+        {
+          "type": "text",
+          "content": "**File 3: Sidebar.html** - Create the Add Contact form:"
+        },
+        {
+          "type": "command",
+          "content": "nano Sidebar.html"
+        },
+        {
+          "type": "text",
+          "content": "Paste this code:"
+        },
+        {
+          "type": "code",
+          "language": "html",
+          "filename": "Sidebar.html",
+          "content": "<!DOCTYPE html>\n<html>\n<head>\n  <base target=\"_top\">\n  <style>\n    body { font-family: Arial, sans-serif; padding: 10px; }\n    .form-group { margin-bottom: 15px; }\n    label { display: block; margin-bottom: 5px; font-weight: bold; }\n    input, select { width: 100%; padding: 8px; box-sizing: border-box; }\n    button { background: #4285f4; color: white; padding: 10px 20px; border: none; cursor: pointer; width: 100%; }\n    button:hover { background: #3367d6; }\n    .message { padding: 10px; margin-top: 10px; border-radius: 4px; }\n    .success { background: #d4edda; color: #155724; }\n    .error { background: #f8d7da; color: #721c24; }\n  </style>\n</head>\n<body>\n  <h3>Add New Contact</h3>\n  <div class=\"form-group\">\n    <label>Name</label>\n    <input type=\"text\" id=\"name\" placeholder=\"John Smith\">\n  </div>\n  <div class=\"form-group\">\n    <label>Email</label>\n    <input type=\"email\" id=\"email\" placeholder=\"john@example.com\">\n  </div>\n  <div class=\"form-group\">\n    <label>Status</label>\n    <select id=\"status\">\n      <option value=\"Active\">Active</option>\n      <option value=\"Inactive\">Inactive</option>\n      <option value=\"Unsubscribed\">Unsubscribed</option>\n    </select>\n  </div>\n  <div class=\"form-group\">\n    <label>Tags (comma-separated)</label>\n    <input type=\"text\" id=\"tags\" placeholder=\"Newsletter, VIP\">\n  </div>\n  <button onclick=\"submitForm()\">Add Contact</button>\n  <div id=\"message\"></div>\n  <script>\n    function submitForm() {\n      const name = document.getElementById('name').value;\n      const email = document.getElementById('email').value;\n      const status = document.getElementById('status').value;\n      const tags = document.getElementById('tags').value;\n      if (!name || !email) {\n        document.getElementById('message').innerHTML = '<div class=\"message error\">Please fill in name and email.</div>';\n        return;\n      }\n      google.script.run\n        .withSuccessHandler(function(result) {\n          document.getElementById('message').innerHTML = '<div class=\"message success\">' + result + '</div>';\n          document.getElementById('name').value = '';\n          document.getElementById('email').value = '';\n          document.getElementById('tags').value = '';\n        })\n        .addContact(name, email, status, tags);\n    }\n  </script>\n</body>\n</html>"
+        },
+        {
+          "type": "text",
+          "content": "Save the file."
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created all three files: Setup.gs, Code.gs, and Sidebar.html"
+        }
+      ]
+    },
+    {
+      "id": "push-and-authorize",
+      "title": "Push and Authorize",
+      "description": "Deploy the code and authorize the script",
+      "estimatedTime": "5 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now let's push all the files to Google and authorize the script."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Push all files to Google:"
+        },
+        {
+          "type": "command",
+          "content": "clasp push"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Open the script editor to authorize:"
+        },
+        {
+          "type": "command",
+          "content": "clasp open-script"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** In the Apps Script editor that opens in your browser:\n1. Select **setupSheet** from the function dropdown (next to the Run button)\n2. Click the **Run** button (▶️)\n3. A permissions dialog will appear - click to allow access\n4. Choose your Google account if prompted"
+        },
+        {
+          "type": "text",
+          "content": "The function will run and set up your sheet with headers, sample data, and dropdown menus. You can close the browser tab."
+        },
+        {
+          "type": "tip",
+          "content": "Now that you've authorized once, future `clasp run` commands will work directly from the terminal!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have pushed the code and authorized the script"
+        }
+      ]
+    },
+    {
+      "id": "verify-setup",
+      "title": "Verify Your Setup",
+      "description": "Confirm everything is working from the terminal",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's verify everything is set up correctly."
+        },
+        {
+          "type": "text",
+          "content": "**Check your files:**"
+        },
+        {
+          "type": "command",
+          "content": "ls -la"
+        },
+        {
+          "type": "tip",
+          "content": "You should see:\n• .clasp.json - CLASP configuration\n• appsscript.json - Apps Script manifest\n• Setup.gs - Setup functions\n• Code.gs - Menu and contact functions\n• Sidebar.html - Add Contact form"
+        },
+        {
+          "type": "text",
+          "content": "**Verify your contacts are in the sheet by running getContacts in the script editor:**"
+        },
+        {
+          "type": "command",
+          "content": "clasp open-script"
+        },
+        {
+          "type": "text",
+          "content": "Select **getContacts** from the function dropdown and click **Run**. Check the Execution log (View → Execution log) - you should see your 4 sample contacts returned as JSON."
+        },
+        {
+          "type": "text",
+          "content": "**Save your Sheet ID to your config file:**"
+        },
+        {
+          "type": "command",
+          "content": "echo \"CONTACTS_SHEET_ID=$(grep -o '\"parentId\":\\[\"[^\"]*\"' .clasp.json | cut -d'\"' -f4)\" >> ~/Documents/mail-list-manager/CONFIG.txt"
+        },
+        {
+          "type": "text",
+          "content": "Verify it was saved:"
+        },
+        {
+          "type": "command",
+          "content": "cat ~/Documents/mail-list-manager/CONFIG.txt"
+        },
+        {
+          "type": "tip",
+          "content": "Your CONFIG.txt file will store all the IDs you need for the web app. Much easier than copying them manually!"
+        },
+        {
+          "type": "tip",
+          "content": "Your Contact List Sheet is complete! All the code is deployed and ready. You'll see the custom menu when you eventually open the sheet in a browser, but for now we're staying in the terminal."
+        },
+        {
+          "type": "checkpoint",
+          "content": "My Contact List Sheet is complete and verified!"
+        }
+      ]
+    }
+  ]
+}

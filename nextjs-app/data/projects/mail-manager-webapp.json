@@ -1,0 +1,309 @@
+{
+  "id": "mail-manager-webapp",
+  "title": "Mail Manager Web App",
+  "description": "Build a standalone web app to view contacts and send emails",
+  "difficulty": "intermediate",
+  "estimatedTime": "40 min",
+  "icon": "globe",
+  "color": "#ea4335",
+  "category": "webapp",
+  "stepCount": 7,
+  "prerequisites": ["email-template-doc"],
+  "nextProject": "integration-suite",
+  "steps": [
+    {
+      "id": "create-standalone",
+      "title": "Create Standalone Project",
+      "description": "Set up a new standalone Apps Script project",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now we'll create a standalone web app that ties everything together. This app will run independently and can access your Sheet and Doc."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Open your terminal and navigate to the web-app folder:"
+        },
+        {
+          "type": "command",
+          "content": "cd ~/Documents/mail-list-manager/web-app"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Create a new standalone CLASP project:"
+        },
+        {
+          "type": "command",
+          "content": "clasp create --type standalone --title \"Mail List Manager\""
+        },
+        {
+          "type": "tip",
+          "content": "Standalone projects aren't attached to any document - they run on their own and can access any Google services you authorize."
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created a standalone CLASP project"
+        }
+      ]
+    },
+    {
+      "id": "create-html-interface",
+      "title": "Create the Web Interface",
+      "description": "Build the HTML page for your web app",
+      "estimatedTime": "10 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's create the main HTML page for your web app. This will display your contacts and let you send emails."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Create the index.html file:"
+        },
+        {
+          "type": "command",
+          "content": "nano index.html"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Copy and paste this code:"
+        },
+        {
+          "type": "code",
+          "language": "html",
+          "filename": "index.html",
+          "content": "<!DOCTYPE html>\n<html>\n<head>\n  <base target=\"_top\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n  <style>\n    * { box-sizing: border-box; }\n    body { \n      font-family: 'Segoe UI', Arial, sans-serif; \n      margin: 0; \n      padding: 20px; \n      background: #f5f5f5;\n    }\n    .container { max-width: 900px; margin: 0 auto; }\n    h1 { color: #333; margin-bottom: 20px; }\n    \n    /* Tabs */\n    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }\n    .tab { \n      padding: 10px 20px; \n      background: #fff; \n      border: none; \n      cursor: pointer;\n      border-radius: 4px 4px 0 0;\n    }\n    .tab.active { background: #4285f4; color: white; }\n    \n    /* Panel */\n    .panel { \n      background: white; \n      padding: 20px; \n      border-radius: 8px; \n      box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n      display: none;\n    }\n    .panel.active { display: block; }\n    \n    /* Table */\n    table { width: 100%; border-collapse: collapse; }\n    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }\n    th { background: #f8f9fa; font-weight: 600; }\n    tr:hover { background: #f8f9fa; }\n    \n    /* Status badges */\n    .status { \n      padding: 4px 8px; \n      border-radius: 12px; \n      font-size: 12px;\n    }\n    .status-active { background: #d4edda; color: #155724; }\n    .status-inactive { background: #fff3cd; color: #856404; }\n    .status-unsubscribed { background: #f8d7da; color: #721c24; }\n    \n    /* Form */\n    .form-group { margin-bottom: 15px; }\n    label { display: block; margin-bottom: 5px; font-weight: 600; }\n    input, textarea, select { \n      width: 100%; \n      padding: 10px; \n      border: 1px solid #ddd; \n      border-radius: 4px;\n    }\n    textarea { min-height: 150px; resize: vertical; }\n    \n    /* Button */\n    .btn {\n      background: #4285f4;\n      color: white;\n      padding: 12px 24px;\n      border: none;\n      border-radius: 4px;\n      cursor: pointer;\n      font-size: 14px;\n    }\n    .btn:hover { background: #3367d6; }\n    .btn:disabled { background: #ccc; cursor: not-allowed; }\n    \n    /* Messages */\n    .message {\n      padding: 12px;\n      border-radius: 4px;\n      margin-top: 15px;\n    }\n    .success { background: #d4edda; color: #155724; }\n    .error { background: #f8d7da; color: #721c24; }\n    \n    /* Loading */\n    .loading { text-align: center; padding: 40px; color: #666; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Mail List Manager</h1>\n    \n    <div class=\"tabs\">\n      <button class=\"tab active\" onclick=\"showTab('contacts')\">Contacts</button>\n      <button class=\"tab\" onclick=\"showTab('compose')\">Compose Email</button>\n    </div>\n    \n    <!-- Contacts Panel -->\n    <div id=\"contacts-panel\" class=\"panel active\">\n      <h2>Your Contacts</h2>\n      <div id=\"contacts-list\">\n        <div class=\"loading\">Loading contacts...</div>\n      </div>\n    </div>\n    \n    <!-- Compose Panel -->\n    <div id=\"compose-panel\" class=\"panel\">\n      <h2>Send Email</h2>\n      \n      <div class=\"form-group\">\n        <label>Send To</label>\n        <select id=\"recipient\">\n          <option value=\"\">Loading contacts...</option>\n        </select>\n      </div>\n      \n      <div class=\"form-group\">\n        <label>Subject</label>\n        <input type=\"text\" id=\"subject\" placeholder=\"Enter email subject\">\n      </div>\n      \n      <div class=\"form-group\">\n        <label>Message</label>\n        <textarea id=\"message\" placeholder=\"Write your message here...\"></textarea>\n      </div>\n      \n      <button class=\"btn\" onclick=\"sendEmail()\" id=\"send-btn\">Send Email</button>\n      <div id=\"send-result\"></div>\n    </div>\n  </div>\n  \n  <script>\n    // Tab switching\n    function showTab(tabName) {\n      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));\n      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));\n      \n      event.target.classList.add('active');\n      document.getElementById(tabName + '-panel').classList.add('active');\n    }\n    \n    // Load contacts on page load\n    function loadContacts() {\n      google.script.run\n        .withSuccessHandler(displayContacts)\n        .withFailureHandler(showError)\n        .getContacts();\n    }\n    \n    // Display contacts in table\n    function displayContacts(contacts) {\n      if (!contacts || contacts.length === 0) {\n        document.getElementById('contacts-list').innerHTML = '<p>No contacts found.</p>';\n        return;\n      }\n      \n      let html = '<table><tr><th>Name</th><th>Email</th><th>Status</th><th>Tags</th></tr>';\n      \n      // Also populate the recipient dropdown\n      let options = '<option value=\"\">Select a contact...</option>';\n      \n      contacts.forEach(function(contact) {\n        const statusClass = 'status-' + contact.status.toLowerCase();\n        html += '<tr>';\n        html += '<td>' + contact.name + '</td>';\n        html += '<td>' + contact.email + '</td>';\n        html += '<td><span class=\"status ' + statusClass + '\">' + contact.status + '</span></td>';\n        html += '<td>' + (contact.tags || '-') + '</td>';\n        html += '</tr>';\n        \n        if (contact.status === 'Active') {\n          options += '<option value=\"' + contact.email + '\" data-name=\"' + contact.name + '\">' + contact.name + ' (' + contact.email + ')</option>';\n        }\n      });\n      \n      html += '</table>';\n      document.getElementById('contacts-list').innerHTML = html;\n      document.getElementById('recipient').innerHTML = options;\n    }\n    \n    // Send email\n    function sendEmail() {\n      const recipientSelect = document.getElementById('recipient');\n      const recipient = recipientSelect.value;\n      const recipientName = recipientSelect.options[recipientSelect.selectedIndex].dataset.name || '';\n      const subject = document.getElementById('subject').value;\n      const message = document.getElementById('message').value;\n      \n      if (!recipient || !subject || !message) {\n        document.getElementById('send-result').innerHTML = '<div class=\"message error\">Please fill in all fields.</div>';\n        return;\n      }\n      \n      document.getElementById('send-btn').disabled = true;\n      document.getElementById('send-btn').textContent = 'Sending...';\n      \n      google.script.run\n        .withSuccessHandler(function(result) {\n          document.getElementById('send-result').innerHTML = '<div class=\"message success\">' + result + '</div>';\n          document.getElementById('send-btn').disabled = false;\n          document.getElementById('send-btn').textContent = 'Send Email';\n          // Clear form\n          document.getElementById('subject').value = '';\n          document.getElementById('message').value = '';\n        })\n        .withFailureHandler(function(error) {\n          document.getElementById('send-result').innerHTML = '<div class=\"message error\">Error: ' + error.message + '</div>';\n          document.getElementById('send-btn').disabled = false;\n          document.getElementById('send-btn').textContent = 'Send Email';\n        })\n        .sendEmail(recipient, recipientName, subject, message);\n    }\n    \n    function showError(error) {\n      document.getElementById('contacts-list').innerHTML = '<div class=\"message error\">Error loading contacts: ' + error.message + '</div>';\n    }\n    \n    // Load contacts when page loads\n    loadContacts();\n  </script>\n</body>\n</html>"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Save the file (Ctrl+O, Enter, Ctrl+X)"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created the index.html file"
+        }
+      ]
+    },
+    {
+      "id": "create-server-code",
+      "title": "Create Server Functions",
+      "description": "Add the backend code to read contacts and send emails",
+      "estimatedTime": "10 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now let's add the server-side code that reads from your Sheet and sends emails."
+        },
+        {
+          "type": "text",
+          "content": "First, get your Sheet ID from your config file:"
+        },
+        {
+          "type": "command",
+          "content": "cat ~/Documents/mail-list-manager/CONFIG.txt"
+        },
+        {
+          "type": "warning",
+          "content": "You'll need to replace YOUR_SHEET_ID in the code below with the CONTACTS_SHEET_ID from your config file!"
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Create the Code.gs file:"
+        },
+        {
+          "type": "command",
+          "content": "nano Code.gs"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Copy and paste this code (remember to replace YOUR_SHEET_ID):"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Code.gs",
+          "content": "// IMPORTANT: Replace this with your actual Sheet ID from Project 1\nconst CONTACTS_SHEET_ID = 'YOUR_SHEET_ID';\n\n/**\n * Serves the web app HTML.\n */\nfunction doGet() {\n  return HtmlService.createHtmlOutputFromFile('index')\n    .setTitle('Mail List Manager')\n    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);\n}\n\n/**\n * Gets all contacts from the spreadsheet.\n * @return {Array} Array of contact objects\n */\nfunction getContacts() {\n  const sheet = SpreadsheetApp.openById(CONTACTS_SHEET_ID).getActiveSheet();\n  const data = sheet.getDataRange().getValues();\n  \n  // Skip header row\n  const contacts = [];\n  for (let i = 1; i < data.length; i++) {\n    const row = data[i];\n    if (row[0] && row[1]) { // Has name and email\n      contacts.push({\n        name: row[0],\n        email: row[1],\n        status: row[2] || 'Active',\n        tags: row[3] || '',\n        dateAdded: row[4] || '',\n        lastEmailed: row[5] || ''\n      });\n    }\n  }\n  \n  return contacts;\n}\n\n/**\n * Sends an email and logs it to the spreadsheet.\n * @param {string} recipient - Email address\n * @param {string} recipientName - Recipient's name\n * @param {string} subject - Email subject\n * @param {string} body - Email body\n * @return {string} Success message\n */\nfunction sendEmail(recipient, recipientName, subject, body) {\n  try {\n    // Personalize the email\n    const personalizedBody = 'Hi ' + recipientName + ',\\n\\n' + body + '\\n\\nBest regards';\n    \n    // Send the email\n    GmailApp.sendEmail(recipient, subject, personalizedBody);\n    \n    // Log the send in the spreadsheet\n    logEmailSent(recipient);\n    \n    return 'Email sent successfully to ' + recipientName + '!';\n  } catch (error) {\n    throw new Error('Failed to send email: ' + error.message);\n  }\n}\n\n/**\n * Updates the \"Last Emailed\" column for a contact.\n * @param {string} email - The contact's email address\n */\nfunction logEmailSent(email) {\n  const sheet = SpreadsheetApp.openById(CONTACTS_SHEET_ID).getActiveSheet();\n  const data = sheet.getDataRange().getValues();\n  \n  for (let i = 1; i < data.length; i++) {\n    if (data[i][1] === email) {\n      // Column F (index 5) is \"Last Emailed\"\n      sheet.getRange(i + 1, 6).setValue(new Date().toLocaleDateString());\n      break;\n    }\n  }\n}"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Save the file"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have created Code.gs with my Sheet ID"
+        }
+      ]
+    },
+    {
+      "id": "update-manifest",
+      "title": "Update App Settings",
+      "description": "Configure the web app permissions",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "We need to update the appsscript.json file to enable web app deployment."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Open the manifest file:"
+        },
+        {
+          "type": "command",
+          "content": "nano appsscript.json"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Replace the contents with this:"
+        },
+        {
+          "type": "code",
+          "language": "json",
+          "filename": "appsscript.json",
+          "content": "{\n  \"timeZone\": \"America/New_York\",\n  \"dependencies\": {},\n  \"webapp\": {\n    \"access\": \"MYSELF\",\n    \"executeAs\": \"USER_DEPLOYING\"\n  },\n  \"exceptionLogging\": \"STACKDRIVER\",\n  \"runtimeVersion\": \"V8\"\n}"
+        },
+        {
+          "type": "tip",
+          "content": "The webapp settings configure who can access your app. MYSELF means only you can use it (great for testing). You can change this later."
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Save and push all files to Google:"
+        },
+        {
+          "type": "command",
+          "content": "clasp push"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have updated the manifest and pushed all files"
+        }
+      ]
+    },
+    {
+      "id": "deploy-webapp",
+      "title": "Deploy the Web App",
+      "description": "Make your web app accessible via URL",
+      "estimatedTime": "5 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now let's deploy your web app so you can access it from a URL."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Deploy the web app:"
+        },
+        {
+          "type": "command",
+          "content": "clasp deploy --description \"Initial deployment\""
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** List your deployments to get the web app URL:"
+        },
+        {
+          "type": "command",
+          "content": "clasp deployments"
+        },
+        {
+          "type": "text",
+          "content": "You'll see output with your deployment ID. The web app URL is:\nhttps://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Open the web app in your browser:"
+        },
+        {
+          "type": "command",
+          "content": "clasp open-web-app"
+        },
+        {
+          "type": "tip",
+          "content": "This is the moment we've been waiting for - your first browser interaction! The web app URL looks like:\nhttps://script.google.com/macros/s/DEPLOYMENT_ID/exec"
+        },
+        {
+          "type": "warning",
+          "content": "The first time you open it, Google will ask you to authorize the app. Click through the permissions - you're giving your own app permission to access your Sheet and Gmail."
+        },
+        {
+          "type": "text",
+          "content": "Save the web app URL - you can bookmark it and access your mail manager from anywhere!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "My web app is deployed and I can see it in the browser"
+        }
+      ]
+    },
+    {
+      "id": "test-webapp",
+      "title": "Test Your Web App",
+      "description": "Make sure everything works",
+      "estimatedTime": "5 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's test that your web app is working correctly."
+        },
+        {
+          "type": "text",
+          "content": "**Test 1: View Contacts**\n1. Open your web app URL\n2. You should see your contacts from the Sheet in a table\n3. Check that the Status badges show correctly"
+        },
+        {
+          "type": "text",
+          "content": "**Test 2: Send a Test Email**\n1. Click the \"Compose Email\" tab\n2. Select yourself or a test contact from the dropdown\n3. Enter a subject like \"Test from Mail Manager\"\n4. Write a short test message\n5. Click \"Send Email\""
+        },
+        {
+          "type": "warning",
+          "content": "Use your own email or a test email for testing! Don't spam real contacts."
+        },
+        {
+          "type": "text",
+          "content": "**Test 3: Check the Log**\n1. Go back to your Google Sheet\n2. Look at the \"Last Emailed\" column\n3. It should show today's date for the contact you emailed"
+        },
+        {
+          "type": "tip",
+          "content": "If something doesn't work, check the browser's developer console (F12) for error messages, or run 'clasp logs' in your terminal."
+        },
+        {
+          "type": "checkpoint",
+          "content": "My web app shows contacts and can send emails!"
+        }
+      ]
+    },
+    {
+      "id": "webapp-complete",
+      "title": "Web App Complete",
+      "description": "Review what you've built",
+      "estimatedTime": "2 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Fantastic! You now have a fully functional web app!"
+        },
+        {
+          "type": "text",
+          "content": "**What you've built:**\n- A web interface to view all your contacts\n- A form to compose and send emails\n- Automatic logging of sent emails back to your Sheet\n- Status filtering (only active contacts can receive emails)"
+        },
+        {
+          "type": "text",
+          "content": "Your web-app folder should contain:\n- .clasp.json\n- appsscript.json\n- Code.gs\n- index.html"
+        },
+        {
+          "type": "tip",
+          "content": "You can redeploy anytime with 'clasp deploy' after making changes. Each deployment creates a new version."
+        },
+        {
+          "type": "text",
+          "content": "In the final project, we'll connect everything together and add a newsletter feature!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "My Mail Manager Web App is complete!"
+        }
+      ]
+    }
+  ]
+}

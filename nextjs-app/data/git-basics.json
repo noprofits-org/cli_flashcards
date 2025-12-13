@@ -1,0 +1,130 @@
+{
+  "id": "git-basics",
+  "title": "Git Basics",
+  "description": "Essential Git commands for everyday development",
+  "difficulty": "beginner",
+  "estimatedTime": "25 min",
+  "cardCount": 10,
+  "cards": [
+    {
+      "id": "git-basics-001",
+      "task": "Set your Git identity for all repos",
+      "answer": "git config --global user.name \"Your Name\" && git config --global user.email \"you@example.com\"",
+      "description": "Configures your global author identity so commits on this machine are attributed to the correct name and email.",
+      "whenToUse": "Run once on a new machine or when you need to change the name/email attached to your commits.",
+      "scenarios": [
+        "Fresh setup: New laptop that has Git installed but no author identity configured",
+        "Wrong metadata: Commits show the wrong email on GitHub and need to be corrected for future commits",
+        "Multiple emails: Switching from personal to work identity before contributing to a company repo"
+      ]
+    },
+    {
+      "id": "git-basics-002",
+      "task": "Initialize a new repository with main as default branch",
+      "answer": "git init --initial-branch=main",
+      "description": "Creates a new Git repository in the current directory and sets the default branch to main instead of master.",
+      "whenToUse": "Starting a brand-new project that isn't yet tracked by Git.",
+      "scenarios": [
+        "New project kickoff: Turn an existing folder of code into a Git repo",
+        "Template cloning: After copying starter files without Git history, initialize clean tracking",
+        "Aligning naming: Ensuring the default branch is main to match GitHub's conventions"
+      ]
+    },
+    {
+      "id": "git-basics-003",
+      "task": "Clone a remote repository",
+      "answer": "git clone <repo-url> [folder-name]",
+      "description": "Copies a remote repository (including commit history) to your local machine. Optionally rename the destination folder.",
+      "whenToUse": "Any time you need a local working copy of an existing GitHub repository.",
+      "scenarios": [
+        "Joining a project: Pulling the team repo to start contributing",
+        "Code review locally: Cloning a fork to run the code yourself",
+        "Mirroring: Creating a local mirror before migrating repos between orgs"
+      ]
+    },
+    {
+      "id": "git-basics-004",
+      "task": "Check the working tree status quickly",
+      "answer": "git status -sb",
+      "description": "Shows a short, branch-aware summary of staged, unstaged, and untracked changes.",
+      "whenToUse": "Before committing or stashing to see exactly what will be included.",
+      "scenarios": [
+        "Pre-commit review: Confirm only the intended files are staged",
+        "Dirty workspace check: Ensure working tree is clean before switching branches",
+        "CI failure triage: Verify local state matches expected changes"
+      ]
+    },
+    {
+      "id": "git-basics-005",
+      "task": "Stage files for the next commit",
+      "answer": "git add <path>",
+      "description": "Moves selected changes into the staging area so they are included in the next commit.",
+      "whenToUse": "After editing files and before running git commit.",
+      "scenarios": [
+        "Selective staging: Add only the files that belong to the current feature",
+        "Partial work: Stage one directory at a time to keep commits focused",
+        "Fixup: Stage a single file to amend or supplement the previous commit"
+      ]
+    },
+    {
+      "id": "git-basics-006",
+      "task": "Create a commit with a message",
+      "answer": "git commit -m \"Describe the change\"",
+      "description": "Records the staged snapshot in the repository with a descriptive message.",
+      "whenToUse": "Whenever you want to capture a logical unit of work in history.",
+      "scenarios": [
+        "Feature work: Commit after completing a discrete piece of functionality",
+        "Bug fixes: Capture the exact change that resolves a specific issue",
+        "Checkpoint: Save progress before pulling in upstream changes"
+      ]
+    },
+    {
+      "id": "git-basics-007",
+      "task": "Connect a local repo to GitHub",
+      "answer": "git remote add origin <repo-url>",
+      "description": "Registers the GitHub repository URL as the origin remote so you can push and pull.",
+      "whenToUse": "After git init when you're ready to sync the repo to GitHub.",
+      "scenarios": [
+        "First push: Hooking up a new local project to a freshly created GitHub repo",
+        "Changing remotes: Pointing an existing local repo at a new organization URL",
+        "Fork workflow: Setting origin to your fork before pushing branches"
+      ]
+    },
+    {
+      "id": "git-basics-008",
+      "task": "Push the default branch and set upstream",
+      "answer": "git push -u origin main",
+      "description": "Uploads the main branch to GitHub and records origin/main as the upstream for future pulls and pushes.",
+      "whenToUse": "The first time you push main from a new local repository.",
+      "scenarios": [
+        "Project publish: Making the repository visible to collaborators on GitHub",
+        "Upstream tracking: Enabling simple git pull and git push without extra arguments",
+        "CI trigger: Pushing main to kick off GitHub Actions or other pipelines"
+      ]
+    },
+    {
+      "id": "git-basics-009",
+      "task": "Pull the latest changes while keeping your commits on top",
+      "answer": "git pull --rebase origin main",
+      "description": "Fetches upstream changes and rebases your local commits on top to keep a linear history.",
+      "whenToUse": "Before pushing your work to avoid merge commits and reduce conflict noise.",
+      "scenarios": [
+        "Team updates: Syncing with teammates' changes before opening a pull request",
+        "CI failures: Rebase onto the latest main to pick up fixes before retrying",
+        "Conflict avoidance: Keeping a clean history for easier code review"
+      ]
+    },
+    {
+      "id": "git-basics-010",
+      "task": "View a compact, annotated commit history",
+      "answer": "git log --oneline --graph --decorate --all",
+      "description": "Shows a condensed commit log with branch pointers and a text-based graph of the DAG.",
+      "whenToUse": "When you need to understand branch structure or recent activity quickly.",
+      "scenarios": [
+        "Review prep: Check what's been merged before starting new work",
+        "Debugging: Visualize where a branch diverged from main",
+        "Release planning: See tags and branch tips to decide what's ready to ship"
+      ]
+    }
+  ]
+}

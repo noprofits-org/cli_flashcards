@@ -1,0 +1,154 @@
+{
+  "id": "clasp-fundamentals",
+  "title": "Core Concepts",
+  "description": "Essential knowledge about Apps Script architecture and clasp configuration",
+  "difficulty": "beginner",
+  "estimatedTime": "25 min",
+  "cardCount": 12,
+  "cards": [
+    {
+      "id": "fundamentals-001",
+      "task": "Explain the difference between Apps Script and clasp",
+      "answer": "Apps Script is Google's JavaScript runtime for automation. clasp is the Command Line Apps Script Projects tool that lets you develop Apps Script locally.",
+      "description": "Apps Script runs your code on Google's servers to automate Google Workspace. clasp is a development tool that syncs between your local files and Google's servers, enabling modern workflows like Git, TypeScript, and IDE integration.",
+      "whenToUse": "Understand this distinction before starting any clasp project - Apps Script is what runs, clasp is how you develop.",
+      "scenarios": [
+        "Explaining to teammates: 'Apps Script is like Node.js for Google Workspace, clasp is like the npm CLI for managing those projects'",
+        "Choosing tools: Use Apps Script web editor for quick prototypes, use clasp for serious projects with version control",
+        "Troubleshooting: If code works in web editor but not locally, the issue is with clasp sync, not Apps Script itself"
+      ]
+    },
+    {
+      "id": "fundamentals-002",
+      "task": "What is the .clasp.json file and what does it contain?",
+      "answer": "Configuration file that links your local directory to a remote Apps Script project",
+      "description": "The .clasp.json file stores the scriptId (unique identifier) and optionally the rootDir (source folder) and parentId (for container-bound scripts). This file tells clasp which remote project to sync with.",
+      "whenToUse": "Created automatically by 'clasp create' or 'clasp clone'. You need this file in your project root for any clasp command to work.",
+      "scenarios": [
+        "Team setup: Add .clasp.json to .gitignore so each developer can work with their own test scripts",
+        "Multi-environment: Use .clasp.dev.json and .clasp.prod.json with --project flag for different deployment targets",
+        "Troubleshooting: If clasp says 'No scriptId found', you're missing .clasp.json or you're in the wrong directory"
+      ]
+    },
+    {
+      "id": "fundamentals-003",
+      "task": "What is the appsscript.json manifest file?",
+      "answer": "Configuration file that defines your Apps Script project's settings, dependencies, and permissions",
+      "description": "The appsscript.json manifest specifies runtime version, OAuth scopes, enabled advanced services, time zone, library dependencies, and webapp settings. It's like package.json for Apps Script.",
+      "whenToUse": "Automatically created with new projects. Edit it to add OAuth scopes, enable APIs, or configure webapp settings.",
+      "scenarios": [
+        "Adding APIs: Enable 'sheets' in advancedServices to use Sheets API v4 instead of just SpreadsheetApp",
+        "OAuth scopes: Add explicit scopes to oauthScopes array when authorization prompts are too broad or missing permissions",
+        "Webapp config: Set executeAs and access settings to control who can run your deployed web app"
+      ]
+    },
+    {
+      "id": "fundamentals-004",
+      "task": "Explain the difference between container-bound and standalone scripts",
+      "answer": "Container-bound scripts are attached to a specific Doc/Sheet/Form/Slides. Standalone scripts exist independently in Drive.",
+      "description": "Container-bound scripts have special access to their parent document and appear in its Script Editor. Standalone scripts are independent projects that can work with any document (if granted permission).",
+      "whenToUse": "Use container-bound for custom functions, menus, and automations specific to one document. Use standalone for multi-document tools, web apps, or reusable libraries.",
+      "scenarios": [
+        "Sheet automation: Create container-bound script with 'clasp create --type sheets --parentId <sheetId>' for custom functions accessible only in that sheet",
+        "Email tool: Create standalone script for a Gmail automation tool that processes emails across your entire account",
+        "Form processor: Bind to specific form with --type forms to process submissions with onFormSubmit trigger"
+      ]
+    },
+    {
+      "id": "fundamentals-005",
+      "task": "What's the difference between a version and a deployment in Apps Script?",
+      "answer": "A version is a saved snapshot of your code. A deployment is a version that's been published and given a URL/ID for public access.",
+      "description": "Versions are immutable code snapshots created with 'clasp version'. Deployments make a specific version accessible via URL (for webapps) or execution ID (for APIs). One version can have multiple deployments.",
+      "whenToUse": "Create versions before major changes for rollback safety. Create deployments when you want users to access your code.",
+      "scenarios": [
+        "Safe development: Create version 'v2.0-beta' before refactoring, so you can revert if needed",
+        "Multiple environments: Deploy version 10 as 'staging' and version 8 as 'production' simultaneously",
+        "Version history: Use 'clasp versions' to see all snapshots, 'clasp deployments' to see what's live"
+      ]
+    },
+    {
+      "id": "fundamentals-006",
+      "task": "What are the main Apps Script project types and when to use each?",
+      "answer": "standalone, sheets, docs, slides, forms - choose based on whether you need special access to a specific document type",
+      "description": "Standalone scripts are independent. Container-bound types (sheets/docs/slides/forms) are attached to a parent document and have special privileges like onOpen, onEdit triggers and simpler document access.",
+      "whenToUse": "Use container-bound when building features for a specific document. Use standalone for cross-document tools, web apps, or automation scripts.",
+      "scenarios": [
+        "Custom spreadsheet functions: --type sheets creates bound script with access to custom formulas and sheet-specific triggers",
+        "Web application: --type standalone (or omit --type) for webapps that aren't tied to any document",
+        "Survey processor: --type forms binds to a form for processing submissions via onFormSubmit trigger"
+      ]
+    },
+    {
+      "id": "fundamentals-007",
+      "task": "How does .claspignore work and what should you typically ignore?",
+      "answer": "Like .gitignore but for clasp push. Prevents local-only files from being uploaded to Apps Script.",
+      "description": "Create a .claspignore file in your project root with glob patterns. Each line is a pattern for files to exclude from 'clasp push'. Useful for ignoring tests, configs, node_modules, and source maps.",
+      "whenToUse": "Always create .claspignore for projects with dependencies, tests, or build tools. Prevents uploading unnecessary files.",
+      "scenarios": [
+        "TypeScript project: Ignore '**/*.ts' and '*.json' but push compiled .js files: pattern should exclude source, keep build output",
+        "Node dependencies: Add 'node_modules/**' and 'package.json' since Apps Script can't use npm packages directly",
+        "Test files: Ignore '**/*.test.js' and 'tests/**' to keep your deployed code clean and under size limits"
+      ]
+    },
+    {
+      "id": "fundamentals-008",
+      "task": "What OAuth scopes are and why they matter in Apps Script",
+      "answer": "OAuth scopes define what Google services your script can access (Gmail, Drive, Calendar, etc.)",
+      "description": "When users run your script, Google asks them to authorize specific permissions (scopes). Apps Script auto-detects scopes from your code, but you can specify them explicitly in appsscript.json for better control.",
+      "whenToUse": "Review scopes before sharing scripts. Add explicit scopes when auto-detection is too broad or misses necessary permissions.",
+      "scenarios": [
+        "Publishing add-on: OAuth review requires minimal scopes - explicitly set only what you need in appsscript.json",
+        "Troubleshooting permissions: User gets 'insufficient permissions' error - add missing scope to oauthScopes array",
+        "Security: Auto-detected scope is too broad (like 'mail.google.com') when you only need to send email - specify 'gmail.send' instead"
+      ]
+    },
+    {
+      "id": "fundamentals-009",
+      "task": "What is the Apps Script runtime and how do you choose which version to use?",
+      "answer": "The runtime is the JavaScript engine version (V8). Specify in appsscript.json with 'runtimeVersion': 'V8'",
+      "description": "Modern Apps Script uses the V8 JavaScript engine (same as Chrome/Node.js), supporting ES6+ features like arrow functions, const/let, classes, etc. Legacy runtime (DEPRECATED) uses Rhino JavaScript.",
+      "whenToUse": "Always use V8 for new projects. Only use legacy runtime if maintaining old scripts with Rhino-specific code.",
+      "scenarios": [
+        "New project: Set 'runtimeVersion': 'V8' in appsscript.json to enable modern JavaScript features",
+        "Legacy migration: Encountering Rhino-specific code like 'Utilities.jsonParse()' - switch to native 'JSON.parse()' when migrating to V8",
+        "Debugging: Code works in V8 but breaks in legacy - check for ES6 features that Rhino doesn't support"
+      ]
+    },
+    {
+      "id": "fundamentals-010",
+      "task": "What are Apps Script libraries and how do you use them with clasp?",
+      "answer": "Libraries are reusable Apps Script code packages. Add them via appsscript.json dependencies array with scriptId and version.",
+      "description": "Libraries let you share code across projects. Reference them in appsscript.json under 'dependencies', then access via the library identifier in your code. Like npm packages but for Apps Script.",
+      "whenToUse": "Create libraries for code shared across multiple Apps Script projects. Use existing libraries for common utilities.",
+      "scenarios": [
+        "Shared utilities: Create a library with common date formatting functions, use across 5 different spreadsheet tools",
+        "Adding library: Get scriptId from library project's .clasp.json, add to dependencies: {'userSymbol': 'MyLib', 'libraryId': 'scriptId', 'version': '1'}",
+        "Versioning: Pin to specific version ('version': '3') for stability or use '0' for development (HEAD)"
+      ]
+    },
+    {
+      "id": "fundamentals-011",
+      "task": "Understanding the difference between Push and Deployment in clasp workflow",
+      "answer": "Push uploads code to Apps Script editor (not public). Deployment publishes a version for end-users to access.",
+      "description": "'clasp push' syncs your local code to the cloud for you to test in the editor. 'clasp deploy' creates a public deployment with a URL/ID that others can use. Push is development, deploy is production.",
+      "whenToUse": "Push frequently during development. Deploy only when ready to release to users.",
+      "scenarios": [
+        "Daily dev workflow: 'clasp push' after each code change to test in Apps Script editor, no deployment needed",
+        "Going live: After testing, 'clasp version' to snapshot, then 'clasp deploy' to publish for end-users",
+        "Rollback: Pushed bad code? 'clasp pull' to get last good version. Deployed bad code? 'clasp undeploy' or update deployment to previous version"
+      ]
+    },
+    {
+      "id": "fundamentals-012",
+      "task": "What file types can you develop locally with clasp?",
+      "answer": ".js, .gs, .html - JavaScript/Google Script files and HTML for UIs. TypeScript .ts files work with transpilation.",
+      "description": "Apps Script natively runs .gs (Google Script, same as .js) and .html files. With clasp you can write .js locally, or use .ts TypeScript files which clasp transpiles to .js before pushing.",
+      "whenToUse": "Use .js for simple projects, .ts for type safety and modern IDE features. Use .html for custom dialogs, sidebars, and web apps.",
+      "scenarios": [
+        "JavaScript project: Create .js files locally, clasp pushes them as .gs files to Apps Script",
+        "TypeScript setup: Create .ts files with @types/google-apps-script, transpile to .js, push compiled code",
+        "Web UI: Create .html files for custom sidebars in Sheets - include CSS/JS inline or in <script>/<style> tags"
+      ]
+    }
+  ]
+}

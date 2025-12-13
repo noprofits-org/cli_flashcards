@@ -6,6 +6,7 @@ import { calculatePercentage, getScoreMessage } from '@/lib/utils/flashcard'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
+import { PartyPopper } from 'lucide-react'
 
 function ResultsContent() {
   const router = useRouter()
@@ -76,7 +77,9 @@ function ResultsContent() {
 
       <div className="flex-1 flex items-center justify-center">
         <div className="flex flex-col items-center gap-8 text-center max-w-2xl w-full">
-          <h1 className="text-4xl md:text-5xl font-bold">Session Complete! 🎉</h1>
+          <h1 className="text-4xl md:text-5xl font-bold inline-flex items-center gap-3">
+            Session Complete! <PartyPopper className="w-10 h-10 text-primary" />
+          </h1>
 
           <div className="text-6xl md:text-7xl font-bold text-primary">
             {score}/{total}

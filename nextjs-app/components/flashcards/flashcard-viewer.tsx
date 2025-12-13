@@ -6,6 +6,7 @@ import { isAnswerCorrect } from '@/lib/utils/flashcard'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils/cn'
+import { Check, X, PartyPopper } from 'lucide-react'
 
 interface FlashcardViewerProps {
   flashcard: Flashcard
@@ -16,9 +17,21 @@ interface FlashcardViewerProps {
   retryAttempt: number
 }
 
+// Get placeholder text based on the flashcard set
+function getPlaceholder(setId: string): string {
+  if (setId.startsWith('git')) {
+    return 'git ...'
+  }
+  if (setId.startsWith('terminal')) {
+    return 'command ...'
+  }
+  return 'clasp ...'
+}
+
 export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, hardMode, retryAttempt }: FlashcardViewerProps) {
   const [userAnswer, setUserAnswer] = useState(cardState?.userAnswer || '')
   const inputRef = useRef<HTMLInputElement>(null)
+  const placeholder = getPlaceholder(flashcard.set_id)
 
   // Determine if we should show the answer
   // In hard mode: show answer when wrong (retryAttempt=1 after wrong answer) and during retry attempts 1-2
@@ -80,7 +93,7 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
               ref={inputRef}
               value={userAnswer}
               onChange={(e) => setUserAnswer(e.target.value)}
-              placeholder="clasp ..."
+              placeholder={placeholder}
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
@@ -129,14 +142,18 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
                         : 'bg-error/10 text-error border border-error'
                     )}
                   >
-                    {cardState?.isCorrect ? '✓ Correct!' : '✗ Incorrect'}
+                    <span className="inline-flex items-center gap-1 justify-center">
+                      {cardState?.isCorrect
+                        ? <><Check className="w-4 h-4" /> Correct!</>
+                        : <><X className="w-4 h-4" /> Incorrect</>}
+                    </span>
                   </div>
                 )}
 
                 {/* Show success message when all retries completed */}
                 {hardMode && retryAttempt === 0 && cardState?.isCorrect && cardState.retryCount && cardState.retryCount >= 3 && (
-                  <div className="p-3 rounded-lg text-sm font-medium text-center bg-success/10 text-success border border-success">
-                    🎉 All 3 retries completed successfully! Press Enter to continue.
+                  <div className="p-3 rounded-lg text-sm font-medium text-center bg-success/10 text-success border border-success inline-flex items-center gap-2 justify-center">
+                    <PartyPopper className="w-4 h-4" /> All 3 retries completed successfully! Press Enter to continue.
                   </div>
                 )}
               </>

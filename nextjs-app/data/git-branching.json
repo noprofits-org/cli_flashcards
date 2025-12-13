@@ -1,0 +1,130 @@
+{
+  "id": "git-branching",
+  "title": "Branching & Collaboration",
+  "description": "Branch management, merging, rebasing, and team workflows",
+  "difficulty": "intermediate",
+  "estimatedTime": "30 min",
+  "cardCount": 10,
+  "cards": [
+    {
+      "id": "git-branching-001",
+      "task": "Create and switch to a new feature branch",
+      "answer": "git switch -c feature/<name>",
+      "description": "Creates a new branch off the current HEAD and moves your working tree to it in one step.",
+      "whenToUse": "Starting scoped work that should be isolated from main until review.",
+      "scenarios": [
+        "New feature: Begin work on a feature without touching main",
+        "Bugfix branch: Isolate hotfix changes for a quick pull request",
+        "Spike: Explore an idea safely without polluting stable branches"
+      ]
+    },
+    {
+      "id": "git-branching-002",
+      "task": "List local and remote branches",
+      "answer": "git branch -a",
+      "description": "Shows all branches, including remote-tracking ones, so you know what exists and where.",
+      "whenToUse": "Before switching, cleaning up stale branches, or checking if a branch already exists on origin.",
+      "scenarios": [
+        "Avoid duplicates: Confirm a teammate already pushed a branch before creating your own",
+        "Cleanup: Identify stale local branches to delete",
+        "Tracking: Verify a branch is published to origin before opening a PR"
+      ]
+    },
+    {
+      "id": "git-branching-003",
+      "task": "Update your feature branch with the latest main",
+      "answer": "git fetch origin && git rebase origin/main",
+      "description": "Fetches new commits from origin and rebases your current branch on top of the updated main branch.",
+      "whenToUse": "Before opening or updating a PR to minimize merge conflicts and keep history linear.",
+      "scenarios": [
+        "PR refresh: Rebase before requesting review so diff only shows your changes",
+        "Conflict prevention: Reduce chances of merge conflicts by staying current",
+        "CI stability: Rebase to include the latest main fixes before rerunning pipelines"
+      ]
+    },
+    {
+      "id": "git-branching-004",
+      "task": "Merge a completed branch into the current branch",
+      "answer": "git merge --no-ff feature/<name>",
+      "description": "Merges another branch into the current one while preserving a merge commit for history clarity.",
+      "whenToUse": "When you want a merge commit to mark integration of a feature or PR.",
+      "scenarios": [
+        "Release integration: Merge a feature branch into main after approval",
+        "Audit trail: Keep a merge commit to show when a feature landed",
+        "Conflict resolution: Perform the merge locally to resolve conflicts before pushing"
+      ]
+    },
+    {
+      "id": "git-branching-005",
+      "task": "Stash uncommitted work with a label",
+      "answer": "git stash push -m \"message\"",
+      "description": "Saves tracked changes to a named stash and restores a clean working tree without committing.",
+      "whenToUse": "When you need to switch branches or pull updates without committing WIP changes.",
+      "scenarios": [
+        "Urgent hotfix: Stash ongoing work to apply a production patch",
+        "Review prep: Clean workspace before rebasing or merging",
+        "Context switch: Pause a feature to help on another task without losing progress"
+      ]
+    },
+    {
+      "id": "git-branching-006",
+      "task": "Reapply the most recent stash and drop it",
+      "answer": "git stash pop",
+      "description": "Restores the latest stashed changes to your working tree and removes that stash entry.",
+      "whenToUse": "After returning to the original branch or task and ready to continue the stashed work.",
+      "scenarios": [
+        "Resume work: Continue the feature after handling a hotfix",
+        "Conflict check: Ensure stashed changes still apply cleanly after upstream updates",
+        "Cleanup: Avoid accumulating stale stashes by popping instead of keeping them"
+      ]
+    },
+    {
+      "id": "git-branching-007",
+      "task": "Cherry-pick a specific commit onto the current branch",
+      "answer": "git cherry-pick <commit>",
+      "description": "Applies the changes from a single commit to your current branch, creating a new commit with the same diff.",
+      "whenToUse": "When you need one commit from another branch without merging the whole branch.",
+      "scenarios": [
+        "Hotfix backport: Bring a fix from main to a release branch",
+        "Selective adoption: Grab a useful change from a teammate's branch",
+        "PR cleanup: Move a commit from one branch to another without redoing work"
+      ]
+    },
+    {
+      "id": "git-branching-008",
+      "task": "Squash or reorder recent commits interactively",
+      "answer": "git rebase -i HEAD~<n>",
+      "description": "Opens an interactive rebase for the last n commits so you can squash, reorder, or edit messages.",
+      "whenToUse": "Before pushing a branch or requesting review to produce a clean, logical commit history.",
+      "scenarios": [
+        "PR hygiene: Squash fixup commits into a single coherent change",
+        "Message cleanup: Rewrite commit messages for clarity before review",
+        "History organization: Reorder commits so changes build logically"
+      ]
+    },
+    {
+      "id": "git-branching-009",
+      "task": "Create an annotated tag for a release",
+      "answer": "git tag -a v<version> -m \"Release v<version>\"",
+      "description": "Creates a named, annotated tag that records the release message and metadata at the current commit.",
+      "whenToUse": "When marking a release candidate or production release in the repository history.",
+      "scenarios": [
+        "Versioning: Tagging v1.2.0 before publishing a GitHub release",
+        "Hotfix marker: Tagging a patch release off a maintenance branch",
+        "Deployment traceability: Tag commits that correspond to deployed artifacts"
+      ]
+    },
+    {
+      "id": "git-branching-010",
+      "task": "Push a specific tag to origin",
+      "answer": "git push origin v<version>",
+      "description": "Sends an annotated tag to the remote repository so teammates and CI/CD can use it.",
+      "whenToUse": "After creating a release tag locally and you want it available on GitHub.",
+      "scenarios": [
+        "Release distribution: Make the tag visible for GitHub Releases or package pipelines",
+        "Coordination: Share a tag so others can check out the exact release commit",
+        "Automation triggers: Push a tag that kicks off release workflows in CI"
+      ]
+    }
+  ]
+}

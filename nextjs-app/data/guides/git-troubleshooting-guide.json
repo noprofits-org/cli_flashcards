@@ -1,0 +1,94 @@
+{
+  "id": "git-troubleshooting-guide",
+  "setId": "git-troubleshooting",
+  "title": "Git Troubleshooting - Fix-It Guide",
+  "summary": "Practical remedies for staging mistakes, bad merges/rebases, lost commits, and identifying regressions.",
+  "mentalModel": "Git keeps history unless you truly delete it; reflog is your safety net. Prefer reverting or cherry-picking over rewriting shared history.",
+  "sections": [
+    {
+      "title": "Staging and workspace mistakes",
+      "content": [
+        "Unstage without losing work: git restore --staged <path>.",
+        "Discard local edits: git restore <path> (use carefully).",
+        "Clean generated cruft: git clean -fd (ensure .gitignore covers build outputs)."
+      ]
+    },
+    {
+      "title": "Merge/rebase safety",
+      "content": [
+        "Abort a merge: git merge --abort; abort a rebase: git rebase --abort.",
+        "When in doubt, reset to a known commit (only if not shared) or revert the bad merge.",
+        "Always pull --rebase to reduce conflict noise before pushing."
+      ]
+    },
+    {
+      "title": "Finding and fixing regressions",
+      "content": [
+        "git bisect start <bad> <good> to binary search for the culprit commit.",
+        "git blame <file> to see who/when a line changed before asking questions.",
+        "Revert bad commits on shared branches (git revert <sha>) instead of rewriting history."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Recover a lost commit",
+      "steps": [
+        "git reflog",
+        "Find the lost commit hash",
+        "git checkout -b rescue/<name> <hash>"
+      ],
+      "tips": [
+        "Reflog shows where HEAD and branches have been; it’s your undo history.",
+        "Create a new branch from the lost commit to keep recovery safe."
+      ]
+    },
+    {
+      "name": "Undo a bad merge on main",
+      "steps": [
+        "git revert -m 1 <mergeCommit>",
+        "git push"
+      ],
+      "tips": [
+        "Revert keeps history intact on shared branches.",
+        "If the branch is private, a reset is OK; on shared branches, prefer revert."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Reflog remembers; use it to recover.",
+    "Revert shared history; reset private history.",
+    "Abort > fix > retry for merges/rebases gone wrong."
+  ],
+  "examples": [
+    {
+      "title": "Clean up a dirty tree before rebase",
+      "commands": [
+        "git status -sb",
+        "git stash push -m \"wip-before-rebase\"",
+        "git pull --rebase origin main",
+        "git stash pop"
+      ],
+      "explanation": "Stash keeps WIP safe while you rebase onto the latest main."
+    },
+    {
+      "title": "Locate the regression commit",
+      "commands": [
+        "git bisect start <bad> <good>",
+        "Run tests; mark good/bad accordingly",
+        "git bisect reset"
+      ],
+      "explanation": "Bisect narrows regressions quickly; always reset afterward."
+    }
+  ],
+  "troubleshooting": [
+    "Push rejected after history rewrite: pull --rebase or use --force-with-lease cautiously.",
+    "Stash conflicts on pop: resolve, git add, git stash drop if it remains.",
+    "Working tree chaos: git restore <path> for specific files; git reset --hard <commit> only if you accept losing local changes."
+  ],
+  "recap": [
+    "Use restore/clean for workspace issues, abort for bad merges/rebases.",
+    "Reflog to recover, revert on shared branches, reset only when safe.",
+    "Bisect/blame to find culprits, then fix or revert cleanly."
+  ]
+}

@@ -1,0 +1,252 @@
+{
+  "id": "integration-suite",
+  "title": "Integration Suite",
+  "description": "Connect all the pieces and add a newsletter feature to send bulk emails",
+  "difficulty": "intermediate",
+  "estimatedTime": "30 min",
+  "icon": "link",
+  "color": "#fbbc04",
+  "category": "integration",
+  "stepCount": 5,
+  "prerequisites": ["mail-manager-webapp"],
+  "steps": [
+    {
+      "id": "overview",
+      "title": "Integration Overview",
+      "description": "Understand how all the pieces connect",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Congratulations on making it this far! You've built three separate components:\n\n1. **Contact List Sheet** - Stores your contacts\n2. **Email Template Doc** - Defines your email format\n3. **Mail Manager Web App** - Sends individual emails"
+        },
+        {
+          "type": "text",
+          "content": "Now we're going to enhance the web app to:\n- Use the email template from your Doc\n- Send newsletters to all active contacts at once\n- Track which contacts received the newsletter"
+        },
+        {
+          "type": "tip",
+          "content": "The magic of Apps Script is that any script can access any Google document you have permission to - you just need the document ID!"
+        },
+        {
+          "type": "text",
+          "content": "**You'll need these IDs from earlier:**\n- Sheet ID (from Project 1)\n- Doc ID (from Project 2)"
+        },
+        {
+          "type": "warning",
+          "content": "Make sure you have both IDs saved before continuing!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have my Sheet ID and Doc ID ready"
+        }
+      ]
+    },
+    {
+      "id": "add-template-function",
+      "title": "Connect the Email Template",
+      "description": "Add code to fetch and use the email template",
+      "estimatedTime": "8 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's update the web app to use your email template document."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Get your Doc ID from your config file:"
+        },
+        {
+          "type": "command",
+          "content": "cat ~/Documents/mail-list-manager/CONFIG.txt"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Navigate to your web-app folder and open Code.gs:"
+        },
+        {
+          "type": "command",
+          "content": "cd ~/Documents/mail-list-manager/web-app && nano Code.gs"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Add this constant at the top of the file, right after the CONTACTS_SHEET_ID line (replace YOUR_DOC_ID with the EMAIL_TEMPLATE_DOC_ID from your config):"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Code.gs (add near top)",
+          "content": "// IMPORTANT: Replace with your Doc ID from CONFIG.txt\nconst EMAIL_TEMPLATE_DOC_ID = 'YOUR_DOC_ID';"
+        },
+        {
+          "type": "text",
+          "content": "**Step 4:** Add these new functions at the end of the file:"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "Code.gs (add at end)",
+          "content": "/**\n * Gets the email template from the Google Doc.\n * @return {string} The template text\n */\nfunction getEmailTemplate() {\n  const doc = DocumentApp.openById(EMAIL_TEMPLATE_DOC_ID);\n  return doc.getBody().getText();\n}\n\n/**\n * Replaces placeholders in a template with actual values.\n * @param {string} template - Template text with {{placeholders}}\n * @param {Object} data - Key-value pairs for replacement\n * @return {string} Processed text\n */\nfunction processTemplate(template, data) {\n  let result = template;\n  for (const key in data) {\n    const placeholder = '{{' + key + '}}';\n    result = result.split(placeholder).join(data[key]);\n  }\n  return result;\n}\n\n/**\n * Gets active contacts (those with status = 'Active').\n * @return {Array} Array of active contact objects\n */\nfunction getActiveContacts() {\n  const contacts = getContacts();\n  return contacts.filter(c => c.status === 'Active');\n}\n\n/**\n * Sends a newsletter to all active contacts.\n * @param {string} subject - Email subject\n * @param {string} body - Email body (goes into {{body}} placeholder)\n * @return {Object} Result with success count and errors\n */\nfunction sendNewsletter(subject, body) {\n  const activeContacts = getActiveContacts();\n  const template = getEmailTemplate();\n  \n  let successCount = 0;\n  const errors = [];\n  \n  activeContacts.forEach(function(contact) {\n    try {\n      // Process template with this contact's data\n      const emailContent = processTemplate(template, {\n        subject: subject,\n        name: contact.name,\n        body: body,\n        date: new Date().toLocaleDateString()\n      });\n      \n      // Extract just the body (after the subject line)\n      const bodyStart = emailContent.indexOf('---') + 3;\n      const emailBody = emailContent.substring(bodyStart).trim();\n      \n      // Send the email\n      GmailApp.sendEmail(contact.email, subject, emailBody);\n      \n      // Log it\n      logEmailSent(contact.email);\n      \n      successCount++;\n    } catch (error) {\n      errors.push(contact.name + ': ' + error.message);\n    }\n  });\n  \n  return {\n    success: successCount,\n    total: activeContacts.length,\n    errors: errors\n  };\n}"
+        },
+        {
+          "type": "text",
+          "content": "**Step 5:** Save the file"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have added the template and newsletter functions"
+        }
+      ]
+    },
+    {
+      "id": "update-html",
+      "title": "Add Newsletter UI",
+      "description": "Add a newsletter tab to the web interface",
+      "estimatedTime": "8 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Now let's add a Newsletter tab to the web app interface."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Open index.html:"
+        },
+        {
+          "type": "command",
+          "content": "nano index.html"
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Find the tabs div and add a new Newsletter tab button:"
+        },
+        {
+          "type": "code",
+          "language": "html",
+          "filename": "index.html (update tabs div)",
+          "content": "    <div class=\"tabs\">\n      <button class=\"tab active\" onclick=\"showTab('contacts')\">Contacts</button>\n      <button class=\"tab\" onclick=\"showTab('compose')\">Compose Email</button>\n      <button class=\"tab\" onclick=\"showTab('newsletter')\">Newsletter</button>\n    </div>"
+        },
+        {
+          "type": "text",
+          "content": "**Step 3:** Add the Newsletter panel HTML right after the compose-panel div:"
+        },
+        {
+          "type": "code",
+          "language": "html",
+          "filename": "index.html (add after compose-panel)",
+          "content": "    <!-- Newsletter Panel -->\n    <div id=\"newsletter-panel\" class=\"panel\">\n      <h2>Send Newsletter</h2>\n      <p style=\"color: #666; margin-bottom: 20px;\">Send an email to all <strong>Active</strong> contacts using your email template.</p>\n      \n      <div id=\"active-count\" style=\"background: #e3f2fd; padding: 10px; border-radius: 4px; margin-bottom: 20px;\">\n        Loading active contacts...\n      </div>\n      \n      <div class=\"form-group\">\n        <label>Subject</label>\n        <input type=\"text\" id=\"newsletter-subject\" placeholder=\"Monthly Newsletter - December 2024\">\n      </div>\n      \n      <div class=\"form-group\">\n        <label>Message Body</label>\n        <textarea id=\"newsletter-body\" placeholder=\"Write your newsletter content here. This will replace the {{body}} placeholder in your template...\"></textarea>\n      </div>\n      \n      <button class=\"btn\" onclick=\"sendNewsletter()\" id=\"newsletter-btn\">Send to All Active Contacts</button>\n      <div id=\"newsletter-result\"></div>\n    </div>"
+        },
+        {
+          "type": "text",
+          "content": "**Step 4:** Add the JavaScript function for sending newsletters. Find the </script> tag and add this code just before it:"
+        },
+        {
+          "type": "code",
+          "language": "javascript",
+          "filename": "index.html (add to script section)",
+          "content": "    // Load active contact count\n    function loadActiveCount() {\n      google.script.run\n        .withSuccessHandler(function(contacts) {\n          const count = contacts.filter(c => c.status === 'Active').length;\n          document.getElementById('active-count').innerHTML = \n            '<strong>' + count + '</strong> active contacts will receive this newsletter.';\n        })\n        .getContacts();\n    }\n    \n    // Send newsletter\n    function sendNewsletter() {\n      const subject = document.getElementById('newsletter-subject').value;\n      const body = document.getElementById('newsletter-body').value;\n      \n      if (!subject || !body) {\n        document.getElementById('newsletter-result').innerHTML = \n          '<div class=\"message error\">Please fill in subject and message.</div>';\n        return;\n      }\n      \n      if (!confirm('Send newsletter to all active contacts?')) {\n        return;\n      }\n      \n      document.getElementById('newsletter-btn').disabled = true;\n      document.getElementById('newsletter-btn').textContent = 'Sending...';\n      \n      google.script.run\n        .withSuccessHandler(function(result) {\n          let message = 'Newsletter sent to ' + result.success + ' of ' + result.total + ' contacts.';\n          if (result.errors.length > 0) {\n            message += '<br><br>Errors:<br>' + result.errors.join('<br>');\n          }\n          document.getElementById('newsletter-result').innerHTML = \n            '<div class=\"message ' + (result.errors.length ? 'error' : 'success') + '\">' + message + '</div>';\n          document.getElementById('newsletter-btn').disabled = false;\n          document.getElementById('newsletter-btn').textContent = 'Send to All Active Contacts';\n        })\n        .withFailureHandler(function(error) {\n          document.getElementById('newsletter-result').innerHTML = \n            '<div class=\"message error\">Error: ' + error.message + '</div>';\n          document.getElementById('newsletter-btn').disabled = false;\n          document.getElementById('newsletter-btn').textContent = 'Send to All Active Contacts';\n        })\n        .sendNewsletter(subject, body);\n    }\n    \n    // Load active count on page load\n    loadActiveCount();"
+        },
+        {
+          "type": "text",
+          "content": "**Step 5:** Save the file and push to Google:"
+        },
+        {
+          "type": "command",
+          "content": "clasp push"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have added the Newsletter tab to the web app"
+        }
+      ]
+    },
+    {
+      "id": "redeploy",
+      "title": "Redeploy the Web App",
+      "description": "Deploy the updated version",
+      "estimatedTime": "3 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "Let's deploy the updated web app with the new newsletter feature."
+        },
+        {
+          "type": "text",
+          "content": "**Step 1:** Create a new deployment:"
+        },
+        {
+          "type": "command",
+          "content": "clasp deploy --description \"Added newsletter feature\""
+        },
+        {
+          "type": "text",
+          "content": "**Step 2:** Open the web app:"
+        },
+        {
+          "type": "command",
+          "content": "clasp open-web-app"
+        },
+        {
+          "type": "tip",
+          "content": "Each deployment creates a new version. You can view all versions with 'clasp deployments'."
+        },
+        {
+          "type": "warning",
+          "content": "You may need to re-authorize the app since it now accesses your Google Docs as well."
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have redeployed the web app"
+        }
+      ]
+    },
+    {
+      "id": "final-test",
+      "title": "Final Test & Celebration",
+      "description": "Test the complete system and celebrate!",
+      "estimatedTime": "8 min",
+      "content": [
+        {
+          "type": "text",
+          "content": "It's time for the final test! Let's make sure everything works together."
+        },
+        {
+          "type": "text",
+          "content": "**Test the Newsletter Feature:**\n1. Open your web app\n2. Click on the \"Newsletter\" tab\n3. You should see the count of active contacts\n4. Enter a test subject: \"Test Newsletter\"\n5. Enter a test body: \"This is a test of our mail list manager!\"\n6. Click \"Send to All Active Contacts\""
+        },
+        {
+          "type": "warning",
+          "content": "For real testing, temporarily set all contacts except yourself to 'Inactive' so you only email yourself!"
+        },
+        {
+          "type": "text",
+          "content": "**Verify the Results:**\n1. Check your email inbox - you should receive the newsletter\n2. The email should use your template format with placeholders replaced\n3. Go to your Google Sheet - the \"Last Emailed\" column should be updated"
+        },
+        {
+          "type": "tip",
+          "content": "If the email looks wrong, check your template Doc. Make sure the placeholders are exactly {{name}}, {{body}}, {{subject}}, and {{date}}."
+        },
+        {
+          "type": "text",
+          "content": "**Congratulations! You've built a complete Mail List Manager!**"
+        },
+        {
+          "type": "text",
+          "content": "**What you've accomplished:**\n\n1. **Contact List Sheet**\n   - Custom dropdown menus\n   - Sidebar for adding contacts\n   - Email tracking\n\n2. **Email Template Doc**\n   - Reusable template with placeholders\n   - Easy to update and customize\n\n3. **Web App**\n   - View all contacts\n   - Send individual emails\n   - Send newsletters to all active contacts\n   - Automatic logging"
+        },
+        {
+          "type": "text",
+          "content": "**Ideas for extending your project:**\n- Add more template placeholders (company name, unsubscribe link)\n- Create multiple email templates for different purposes\n- Add email scheduling\n- Track email opens (using tracking pixels)\n- Add import/export contacts feature\n- Create a sign-up form for your website"
+        },
+        {
+          "type": "tip",
+          "content": "You now have real-world experience with CLASP, Google Sheets, Google Docs, and Web Apps. These skills transfer to countless automation projects!"
+        },
+        {
+          "type": "checkpoint",
+          "content": "I have completed the Mail List Manager project!"
+        }
+      ]
+    }
+  ]
+}

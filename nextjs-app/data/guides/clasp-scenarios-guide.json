@@ -1,0 +1,97 @@
+{
+  "id": "clasp-scenarios-guide",
+  "setId": "clasp-scenarios",
+  "title": "CLASP Scenarios - Story Guide",
+  "summary": "Narrative walkthroughs for real-world nonprofit and team use cases: onboarding, quick fixes, and controlled releases.",
+  "mentalModel": "Start from the user need (onboard, fix, release), then map to a short, repeatable clasp sequence (pull, change, version, deploy).",
+  "sections": [
+    {
+      "title": "Onboard a new collaborator",
+      "content": [
+        "Give scriptId and Git repo access; they clone both.",
+        "They run clasp login and clasp clone-script <scriptId> inside the repo.",
+        "They pull before push; you review via Git, not the Apps Script editor."
+      ]
+    },
+    {
+      "title": "Hotfix in production",
+      "content": [
+        "Pull latest, apply fix, clasp create-version with a clear label.",
+        "Update the production deployment to that version.",
+        "Verify via clasp open-web-app and communicate the new deployment ID."
+      ]
+    },
+    {
+      "title": "Pilot vs. general availability",
+      "content": [
+        "Maintain two deployments: pilot (small audience) and production.",
+        "Update pilot first; gather feedback; then update production.",
+        "Document both deployment IDs in README for quick reference."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Weekly content update",
+      "steps": [
+        "clasp pull",
+        "Edit data or logic locally; run tests if any",
+        "clasp push",
+        "clasp create-version \"week-12 content\"",
+        "clasp update-deployment <prodDeploymentId> --versionNumber <newVersion>"
+      ],
+      "tips": [
+        "Keep a changelog of versions vs. deployments to trace rollbacks.",
+        "Use consistent version naming (week-XX, feature-name)."
+      ]
+    },
+    {
+      "name": "Debug a user-reported error",
+      "steps": [
+        "clasp tail-logs --watch",
+        "Reproduce the issue in the web app URL",
+        "Add temporary logging, push, retest",
+        "Remove noisy logs before the final deployment"
+      ],
+      "tips": [
+        "Use tail-logs during reproduction; switch to open-logs for historical traces.",
+        "Create a new version for the fix to avoid mixing debugging code into prod."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Deployments are audiences: pilot vs prod can map to different URLs.",
+    "Version every meaningful change; deployments should point at versions, not @HEAD.",
+    "Logs first, code second: observe before changing when debugging."
+  ],
+  "examples": [
+    {
+      "title": "Limited release to staff only",
+      "commands": [
+        "clasp create-version \"staff pilot\"",
+        "clasp update-deployment <pilotDeploymentId> --versionNumber <version>",
+        "Share pilot URL only with staff"
+      ],
+      "explanation": "Keep production untouched while testing with a small group."
+    },
+    {
+      "title": "Roll back quickly",
+      "commands": [
+        "clasp list-versions",
+        "clasp update-deployment <prodDeploymentId> --versionNumber <stableVersion>",
+        "Verify via clasp open-web-app"
+      ],
+      "explanation": "Point production back to the last known good version in minutes."
+    }
+  ],
+  "troubleshooting": [
+    "Pilot users see stale code: ensure the pilot deployment points to the new version, not @HEAD.",
+    "Confused URLs: document deployment IDs/URLs in README per environment.",
+    "Debugging noise: strip temporary logs before final production deployment."
+  ],
+  "recap": [
+    "Map scenarios to small, repeatable clasp sequences.",
+    "Separate pilot vs production deployments for safety.",
+    "Log, version, deploy—keep records for rollbacks."
+  ]
+}

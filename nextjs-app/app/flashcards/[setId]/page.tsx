@@ -2,6 +2,7 @@
 
 import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { Flashcard, CardState, AppState } from '@/lib/types/flashcard'
 import { shuffleArray } from '@/lib/utils/flashcard'
 import { FlashcardViewer } from '@/components/flashcards/flashcard-viewer'
@@ -16,13 +17,11 @@ interface PageProps {
 export default function FlashcardsPage({ params }: PageProps) {
   const { setId } = use(params)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const queryHardMode = searchParams.get('hardMode') === 'true'
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [loading, setLoading] = useState(true)
   const [sessionId, setSessionId] = useState<string | null>(null)
-
-  // Get hard mode from URL params
-  const searchParams = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '')
-  const hardMode = searchParams.get('hardMode') === 'true'
 
   const [state, setState] = useState<AppState>({
     currentIndex: 0,
@@ -30,9 +29,14 @@ export default function FlashcardsPage({ params }: PageProps) {
     totalAttempts: 0,
     cardStates: [],
     isAnswered: false,
-    hardMode,
+    hardMode: queryHardMode,
     currentRetryAttempt: 0,
   })
+
+  // Keep hard mode in sync with URL query
+  useEffect(() => {
+    setState(prev => prev.hardMode === queryHardMode ? prev : { ...prev, hardMode: queryHardMode })
+  }, [queryHardMode])
 
   useEffect(() => {
     fetchFlashcards()

@@ -1,0 +1,334 @@
+{
+  "id": "clasp-advanced",
+  "title": "CLASP Advanced",
+  "description": "Power user commands, flags, and multi-environment workflows",
+  "difficulty": "advanced",
+  "estimatedTime": "45 min",
+  "cardCount": 27,
+  "cards": [
+    {
+      "id": "advanced-001",
+      "task": "Authenticate for CI/CD pipeline on a headless server",
+      "answer": "clasp login --no-localhost",
+      "description": "Disables the local redirect server during authentication, requiring manual code entry instead. Essential for environments without a display or browser.",
+      "whenToUse": "When setting up clasp authentication in CI/CD pipelines, Docker containers, or remote servers without GUI access.",
+      "scenarios": [
+        "GitHub Actions workflow: Using --no-localhost to authenticate in a CI runner where you can't launch a browser",
+        "Docker container: Setting up clasp in a containerized build environment without display capabilities",
+        "Cloud Build: Authenticating in Google Cloud Build or similar headless CI/CD systems"
+      ]
+    },
+    {
+      "id": "advanced-002",
+      "task": "Use custom OAuth credentials for running functions",
+      "answer": "clasp login --creds client_secret.json",
+      "description": "Uses a custom OAuth client ID/secret file instead of clasp's default credentials. Required for clasp run and organization-specific deployments.",
+      "whenToUse": "When you need to use organization-specific OAuth credentials or when setting up clasp run functionality.",
+      "scenarios": [
+        "Enterprise deployment: Using your company's OAuth client to comply with security policies",
+        "Function execution: Setting up credentials required for 'clasp run' to work properly",
+        "Multiple environments: Different credentials for dev, staging, and production environments"
+      ]
+    },
+    {
+      "id": "advanced-003",
+      "task": "Manage multiple Google accounts for different projects",
+      "answer": "clasp login --user client-a",
+      "description": "Stores credentials under a named key, allowing you to switch between multiple Google accounts without re-authenticating each time.",
+      "whenToUse": "When you work with multiple clients or maintain projects across different Google accounts.",
+      "scenarios": [
+        "Freelance developer: Switching between client accounts with 'clasp login --user client-a' and 'clasp login --user client-b'",
+        "Agency work: Managing separate credentials for different organizational accounts",
+        "Personal vs work: Keeping personal projects and work projects separate with named credential sets"
+      ]
+    },
+    {
+      "id": "advanced-004",
+      "task": "Specify custom port for OAuth redirect during login",
+      "answer": "clasp login --redirect-port 8888",
+      "description": "Sets a custom port for the local OAuth redirect server instead of the default. Useful when the default port is blocked or in use.",
+      "whenToUse": "When port conflicts exist with other services or when firewall rules require specific ports.",
+      "scenarios": [
+        "Port conflict: Default port 3000 is already used by your React dev server, so use 8888 instead",
+        "Firewall restrictions: Company firewall only allows specific ports for OAuth redirects",
+        "Multiple simultaneous logins: Running multiple clasp login sessions on different ports"
+      ]
+    },
+    {
+      "id": "advanced-005",
+      "task": "Create a script bound to a specific Google Sheet",
+      "answer": "clasp create-script --type sheets --parentId 1abc...xyz",
+      "description": "Creates a container-bound script attached to a specific Google Sheet, Form, Doc, or Slides. The script has special access to the container document.",
+      "whenToUse": "When building custom functions, menus, or automation for a specific Google Workspace document.",
+      "scenarios": [
+        "Custom sheet functions: Creating a script bound to a sales tracking sheet to add custom formulas and automation",
+        "Form processor: Binding a script to a Google Form to process responses with custom logic",
+        "Document automation: Creating a script bound to a template document for mail merge functionality"
+      ]
+    },
+    {
+      "id": "advanced-006",
+      "task": "Create project in a subdirectory instead of current folder",
+      "answer": "clasp create-script --rootDir ./apps-scripts/my-project",
+      "description": "Specifies where clasp stores project files locally, instead of using the current directory. Keeps your workspace organized.",
+      "whenToUse": "When organizing multiple scripts in a monorepo or when the current directory isn't the right location.",
+      "scenarios": [
+        "Monorepo structure: Creating script in './packages/gas-automation' within a larger project",
+        "Clean separation: Keeping scripts in './src/apps-script' separate from other code",
+        "Multiple scripts: Organizing different scripts in './scripts/email-sender', './scripts/sheet-updater', etc."
+      ]
+    },
+    {
+      "id": "advanced-007",
+      "task": "Create a new Apps Script project with a specific title and type",
+      "answer": "clasp create-script --title \"Sales Dashboard\" --type sheets",
+      "description": "Creates a new Apps Script project with a custom title and type. Valid types are: standalone, sheets, docs, slides, and forms. Note: 'web app' is a deployment type (how you publish), not a project type. Use --type sheets when you want the script bound to a Sheet. Any project type can later be deployed as a web app.",
+      "whenToUse": "When you want a descriptive name and need to specify whether the script should be standalone or bound to a specific Google Workspace document type.",
+      "scenarios": [
+        "Sheet-bound app: Creating 'Sales Dashboard' bound to Sheets so it can access spreadsheet data and add custom menus",
+        "Team collaboration: Using descriptive titles like 'Q4 Report Generator' for team projects to make them easily identifiable",
+        "Form automation: Creating 'Survey Processor' with --type forms to handle form submissions with custom logic"
+      ]
+    },
+    {
+      "id": "advanced-008",
+      "task": "Clone a specific historical version of a script",
+      "answer": "clasp clone-script scriptId 42",
+      "description": "Clones a specific version number instead of the latest code. Useful for auditing, debugging, or rolling back.",
+      "whenToUse": "When you need to examine or work with an older version of a script.",
+      "scenarios": [
+        "Bug investigation: Cloning version 38 to see what the code looked like before a bug was introduced",
+        "Audit requirements: Retrieving the exact code version that was deployed on a specific date",
+        "Rollback preparation: Cloning the last known good version (v42) to restore functionality"
+      ]
+    },
+    {
+      "id": "advanced-009",
+      "task": "Clone a script into a specific directory",
+      "answer": "clasp clone-script scriptId --rootDir ./legacy-scripts",
+      "description": "Clones a script into a specific local directory instead of the current folder.",
+      "whenToUse": "When organizing cloned scripts or when you don't want files in your current directory.",
+      "scenarios": [
+        "Archive old scripts: Cloning deprecated scripts to './archive/2024' for reference",
+        "Team structure: Each developer clones to their own folder like './developers/john/scripts'",
+        "Clean workspace: Cloning to './temp/review' for quick code review without cluttering main directory"
+      ]
+    },
+    {
+      "id": "advanced-010",
+      "task": "Auto-push code changes whenever files are saved",
+      "answer": "clasp push --watch",
+      "description": "Monitors local files and automatically pushes changes to Apps Script whenever you save. Eliminates manual push commands during development.",
+      "whenToUse": "During active development when you want instant synchronization with the cloud version.",
+      "scenarios": [
+        "Rapid development: Making frequent small changes and testing immediately in the web editor",
+        "Live debugging: Watching logs in browser while editing locally with auto-sync",
+        "Paired programming: One person codes locally while another tests in the Apps Script editor"
+      ]
+    },
+    {
+      "id": "advanced-011",
+      "task": "Force push to overwrite cloud changes without confirmation",
+      "answer": "clasp push --force",
+      "description": "Pushes local code and overwrites cloud changes without asking for confirmation. Use with caution.",
+      "whenToUse": "When you're certain your local version is correct and want to overwrite cloud changes.",
+      "scenarios": [
+        "Undo web edits: You accidentally edited in the web editor and want to restore from local",
+        "CI/CD pipeline: Automated deployments where manual confirmation isn't possible",
+        "Solo development: You know you're the only one working on it and don't need confirmation prompts"
+      ]
+    },
+    {
+      "id": "advanced-012",
+      "task": "Pull a specific version number to your local machine",
+      "answer": "clasp pull --versionNumber 15",
+      "description": "Downloads a specific historical version instead of the latest code. The version number corresponds to versions created with 'clasp version'.",
+      "whenToUse": "When you need to recover or examine a specific saved version of your code.",
+      "scenarios": [
+        "Time travel debugging: Pulling version 15 to see what the code looked like before refactoring",
+        "Production recovery: Pulling the version currently deployed to production for emergency fixes",
+        "Comparison: Pulling version 10 to compare against current code to understand changes"
+      ]
+    },
+    {
+      "id": "advanced-013",
+      "task": "Deploy a specific version number",
+      "answer": "clasp create-deployment --versionNumber 23 --description \"Production release v2.0\"",
+      "description": "Creates a new deployment using a specific saved version. Ensures you deploy tested, versioned code rather than the latest changes.",
+      "whenToUse": "When deploying to production and you want to use a specific tested version.",
+      "scenarios": [
+        "Controlled releases: Deploying version 23 that passed QA, not the latest untested code",
+        "Rollback capability: Creating deployment from version 20 which was the last stable release",
+        "Multi-environment: Deploying version 22 to staging while production stays on version 20"
+      ]
+    },
+    {
+      "id": "advanced-014",
+      "task": "Update an existing deployment with new code",
+      "answer": "clasp update-deployment AKfyc...xyz --description \"Bug fix release\"",
+      "description": "Updates an existing deployment instead of creating a new one. Maintains the same deployment URL.",
+      "whenToUse": "When you want to update a deployment without changing its URL or creating a new deployment entry.",
+      "scenarios": [
+        "Production update: Updating the production deployment without breaking user bookmarks",
+        "Web app fix: Pushing a hotfix to the live web app while keeping the same public URL",
+        "Client delivery: Updating the client's deployment ID without requiring them to change their integration"
+      ]
+    },
+    {
+      "id": "advanced-015",
+      "task": "Remove all deployments at once",
+      "answer": "clasp delete-deployment --all",
+      "description": "Removes every deployment for the script in one command, instead of removing them one by one.",
+      "whenToUse": "When you want to clean up all deployments and start fresh.",
+      "scenarios": [
+        "Fresh start: Removing all old test deployments before creating clean production deployment",
+        "Project sunset: Decommissioning a project by removing all its deployments at once",
+        "Deployment cleanup: Too many test deployments accumulated, easier to remove all and redeploy"
+      ]
+    },
+    {
+      "id": "advanced-016",
+      "task": "Stream logs continuously in real-time",
+      "answer": "clasp tail-logs --watch",
+      "description": "Continuously monitors and displays new log entries as they occur, refreshing every 5 seconds. Like 'tail -f' for Apps Script logs.",
+      "whenToUse": "When debugging a running script or monitoring production web app activity.",
+      "scenarios": [
+        "Live debugging: Watching logs while triggering your web app to see real-time execution flow",
+        "Production monitoring: Keeping logs open to watch for errors in a live deployment",
+        "Trigger testing: Monitoring logs while time-based or event triggers fire to verify behavior"
+      ]
+    },
+    {
+      "id": "advanced-017",
+      "task": "View logs in JSON format for parsing",
+      "answer": "clasp tail-logs --json",
+      "description": "Outputs logs as JSON instead of human-readable format. Useful for programmatic processing or log aggregation tools.",
+      "whenToUse": "When integrating logs with monitoring tools or when you need to parse log data programmatically.",
+      "scenarios": [
+        "Log aggregation: Piping JSON logs to Elasticsearch or Splunk for centralized monitoring",
+        "Automated analysis: Using jq to filter and analyze error patterns in JSON log output",
+        "CI/CD testing: Parsing JSON logs in test scripts to verify function execution"
+      ]
+    },
+    {
+      "id": "advanced-018",
+      "task": "View simplified logs without timestamps",
+      "answer": "clasp tail-logs --simplified",
+      "description": "Removes timestamps and metadata from log output, showing only the actual log messages.",
+      "whenToUse": "When you only care about the log messages themselves, not when they occurred.",
+      "scenarios": [
+        "Quick scanning: Removing clutter to quickly scan for specific error messages",
+        "Copy-paste: Getting clean log messages without timestamps for pasting into documentation",
+        "Pattern matching: Easier to spot repeated messages without timestamp noise"
+      ]
+    },
+    {
+      "id": "advanced-019",
+      "task": "Combine multiple log options for customized output",
+      "answer": "clasp tail-logs --watch --simplified",
+      "description": "Multiple flags can be combined. This watches logs in real-time while showing simplified output.",
+      "whenToUse": "When you want real-time monitoring with cleaner output format.",
+      "scenarios": [
+        "Development flow: Watching simplified logs while coding to focus on messages, not timestamps",
+        "Error hunting: Real-time simplified logs make it easier to spot error patterns",
+        "Team debugging: Sharing clean, continuous log output in screen sharing sessions"
+      ]
+    },
+    {
+      "id": "advanced-020",
+      "task": "Run a function with specific user credentials",
+      "answer": "clasp run-function myFunction --user prod-account",
+      "description": "Executes a function using a specific named credential set. Useful when different accounts have different permissions.",
+      "whenToUse": "When you need to run functions with specific account permissions or test multi-account scenarios.",
+      "scenarios": [
+        "Permission testing: Running with --user admin to test admin-only functions vs --user standard for regular users",
+        "Production execution: Using --user prod-account with production credentials for safe deployments",
+        "Client impersonation: Running as a specific client account to debug their specific issues"
+      ]
+    },
+    {
+      "id": "advanced-021",
+      "task": "Use a different .clasp.json configuration file",
+      "answer": "clasp push --project .clasp.production.json",
+      "description": "Reads settings from an alternate configuration file instead of .clasp.json. Enables managing multiple environments.",
+      "whenToUse": "When managing multiple deployment targets or environments for the same codebase.",
+      "scenarios": [
+        "Multi-environment: 'clasp push --project .clasp.dev.json' for dev, '.clasp.prod.json' for production",
+        "A/B testing: Maintaining separate script IDs for experimental and stable versions",
+        "Client variants: Different .clasp files for different client customizations of the same base code"
+      ]
+    },
+    {
+      "id": "advanced-022",
+      "task": "Use application default credentials for service accounts",
+      "answer": "clasp push --adc",
+      "description": "Uses Application Default Credentials from the environment instead of user credentials. Essential for service account authentication in CI/CD.",
+      "whenToUse": "When running clasp commands in automated environments with service account authentication.",
+      "scenarios": [
+        "Cloud Build: Using --adc with service account credentials in Google Cloud Build pipelines",
+        "Kubernetes: Running clasp commands in pods with workload identity",
+        "Automated deployments: GitHub Actions using service account key from environment variables"
+      ]
+    },
+    {
+      "id": "advanced-023",
+      "task": "Use custom .claspignore file location",
+      "answer": "clasp push --ignore ./config/.claspignore.production",
+      "description": "Specifies a different file containing ignore patterns instead of the default .claspignore.",
+      "whenToUse": "When you need different ignore rules for different environments or build targets.",
+      "scenarios": [
+        "Production builds: Using stricter ignore rules that exclude test files and dev dependencies",
+        "Development: Different ignore file that includes test files for development deployments",
+        "Multi-config: Separate ignore rules for different deployment targets in monorepo"
+      ]
+    },
+    {
+      "id": "advanced-024",
+      "task": "Get command output in JSON format for scripting",
+      "answer": "clasp list-deployments --json",
+      "description": "Returns command output as JSON instead of human-readable format. Works with most clasp commands.",
+      "whenToUse": "When integrating clasp with scripts, CI/CD pipelines, or other automation tools.",
+      "scenarios": [
+        "Deployment automation: Parsing JSON output to extract deployment IDs for scripted workflows",
+        "Monitoring dashboard: Feeding clasp status info into monitoring tools via JSON",
+        "Build scripts: Using jq to extract specific values from clasp command output in bash scripts"
+      ]
+    },
+    {
+      "id": "advanced-025",
+      "task": "Set up clasp for team development with Git",
+      "answer": "clasp clone-script scriptId --rootDir ./src && echo '.clasp.json' >> .gitignore",
+      "description": "Clones to a source directory and excludes .clasp.json from Git so each developer can have their own script ID.",
+      "whenToUse": "When setting up a collaborative development workflow with version control.",
+      "scenarios": [
+        "Team onboarding: Each developer clones to their own test script using their own .clasp.json",
+        "Fork development: Multiple team members work on feature branches with separate script instances",
+        "Safe collaboration: .clasp.json in .gitignore prevents accidentally pushing to wrong script"
+      ]
+    },
+    {
+      "id": "advanced-026",
+      "task": "Deploy with version control best practices",
+      "answer": "clasp push && clasp create-version \"v2.1.0\" && clasp create-deployment --versionNumber <number> --description \"Release v2.1.0\"",
+      "description": "Complete workflow: push code, create version with semantic versioning, deploy that specific version.",
+      "whenToUse": "When following deployment best practices with proper version tracking.",
+      "scenarios": [
+        "Release process: Push changes, tag version 'v2.1.0', deploy that version to production",
+        "Audit trail: Create versions with descriptions matching Git tags for traceability",
+        "Rollback safety: Always deploy from versions, never from HEAD, so you can easily rollback"
+      ]
+    },
+    {
+      "id": "advanced-027",
+      "task": "Watch and auto-push with force to override confirmations",
+      "answer": "clasp push --watch --force",
+      "description": "Combines watch mode with force flag to auto-push changes without any prompts or confirmations.",
+      "whenToUse": "During solo rapid development when you want zero friction between code and deployment.",
+      "scenarios": [
+        "Prototype iteration: Rapidly testing ideas with instant push and no interruptions",
+        "Solo project: You're the only developer and don't need safety prompts",
+        "Live coding: Demonstrating code changes in real-time during presentations or teaching"
+      ]
+    }
+  ]
+}

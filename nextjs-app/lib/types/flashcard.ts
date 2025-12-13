@@ -14,6 +14,12 @@ export interface FlashcardSet {
   name: string
   description: string | null
   card_count: number
+  category?: string
+  categoryLabel?: string
+  difficulty?: string
+  estimatedTime?: string
+  icon?: string
+  color?: string
 }
 
 export interface UserProgress {

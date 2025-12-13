@@ -1,0 +1,206 @@
+{
+  "id": "terminal-intermediate",
+  "title": "Terminal Intermediate",
+  "description": "More powerful terminal commands for everyday development",
+  "difficulty": "intermediate",
+  "category": "terminal",
+  "estimatedTime": "25 min",
+  "cardCount": 15,
+  "cards": [
+    {
+      "id": "ti-1",
+      "task": "Search for files named '*.json' in the current directory and subdirectories",
+      "answer": "find . -name \"*.json\"",
+      "description": "Recursively searches for files matching a pattern",
+      "whenToUse": "When you need to find files by name or pattern",
+      "scenarios": [
+        "You're looking for all JSON config files in a project",
+        "You need to find a file but don't remember which folder it's in",
+        "You want to see all files of a certain type"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-2",
+      "task": "Search for the text 'TODO' in all files in the current directory",
+      "answer": "grep -r \"TODO\" .",
+      "description": "Searches for text patterns inside files recursively",
+      "whenToUse": "When you need to find specific text within files",
+      "scenarios": [
+        "You're looking for all TODO comments in your code",
+        "You need to find where a function is used",
+        "You want to find all files containing an error message"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-3",
+      "task": "Show the first 10 lines of a file called 'log.txt'",
+      "answer": "head log.txt",
+      "description": "Displays the beginning of a file (default 10 lines)",
+      "whenToUse": "When you want to preview the start of a large file",
+      "scenarios": [
+        "You want to check the header of a CSV file",
+        "You need to see the beginning of a log file",
+        "You want to peek at a file without opening the whole thing"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-4",
+      "task": "Show the last 20 lines of a file called 'log.txt'",
+      "answer": "tail -20 log.txt",
+      "description": "Displays the end of a file with a specified number of lines",
+      "whenToUse": "When you need to see the most recent entries in a file",
+      "scenarios": [
+        "You want to see the latest log entries",
+        "You need to check recent errors in a log file",
+        "You want to see how a file ends"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-5",
+      "task": "Watch a log file for new entries in real-time",
+      "answer": "tail -f log.txt",
+      "description": "Continuously displays new lines as they're added to a file",
+      "whenToUse": "When you want to monitor a file that's being updated",
+      "scenarios": [
+        "You're watching server logs while testing",
+        "You want to see errors as they happen",
+        "You're debugging and need to monitor output"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-6",
+      "task": "Create nested directories 'projects/clasp/my-app' in one command",
+      "answer": "mkdir -p projects/clasp/my-app",
+      "description": "Creates a directory and any necessary parent directories",
+      "whenToUse": "When you need to create multiple nested folders at once",
+      "scenarios": [
+        "You're setting up a project structure",
+        "You need to create a deep folder path",
+        "You want to create folders without checking if parents exist"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-7",
+      "task": "Delete a directory and all its contents",
+      "answer": "rm -rf directory-name",
+      "description": "Forcefully removes a directory and everything inside it (use with caution!)",
+      "whenToUse": "When you need to delete a folder that contains files",
+      "scenarios": [
+        "You're removing an old project folder",
+        "You need to clean up a failed installation",
+        "You want to start fresh by deleting everything"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-8",
+      "task": "Copy a directory and all its contents to a new location",
+      "answer": "cp -r source-folder destination-folder",
+      "description": "Recursively copies a directory and all files inside",
+      "whenToUse": "When you need to duplicate an entire folder",
+      "scenarios": [
+        "You want to back up a project folder",
+        "You're creating a copy of a project to experiment with",
+        "You need to duplicate a template folder"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-9",
+      "task": "Show disk usage of the current directory",
+      "answer": "du -sh .",
+      "description": "Displays the total size of a directory in human-readable format",
+      "whenToUse": "When you want to know how much space a folder is using",
+      "scenarios": [
+        "You're checking how big your project has grown",
+        "You need to find what's taking up disk space",
+        "You want to compare folder sizes"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-10",
+      "task": "Run two commands in sequence (second runs only if first succeeds)",
+      "answer": "command1 && command2",
+      "description": "Chains commands so the second only runs if the first exits successfully",
+      "whenToUse": "When you want to run commands in sequence with error checking",
+      "scenarios": [
+        "You want to cd into a directory and then run a command",
+        "You need to build and then deploy only if build succeeds",
+        "You're chaining git add and git commit"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-11",
+      "task": "Redirect command output to a file (overwrite)",
+      "answer": "command > output.txt",
+      "description": "Sends the output of a command to a file, replacing any existing content",
+      "whenToUse": "When you want to save command output to a file",
+      "scenarios": [
+        "You want to save a directory listing to a file",
+        "You need to capture error output for debugging",
+        "You're generating a report from command output"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-12",
+      "task": "Append command output to a file (without overwriting)",
+      "answer": "command >> output.txt",
+      "description": "Adds the output of a command to the end of a file",
+      "whenToUse": "When you want to add to an existing file without erasing it",
+      "scenarios": [
+        "You're building up a log file over multiple runs",
+        "You want to append data to a config file",
+        "You're collecting output from multiple commands"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-13",
+      "task": "Show environment variable PATH",
+      "answer": "echo $PATH",
+      "description": "Displays the value of an environment variable",
+      "whenToUse": "When you need to check or debug environment variables",
+      "scenarios": [
+        "You want to see where the system looks for commands",
+        "You're debugging why a command isn't found",
+        "You need to check if a path is in your PATH variable"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-14",
+      "task": "Find which program runs when you type a command (e.g., 'node')",
+      "answer": "which node",
+      "description": "Shows the full path to an executable",
+      "whenToUse": "When you want to know which version of a program is being used",
+      "scenarios": [
+        "You have multiple versions installed and want to know which one runs",
+        "You're debugging path issues",
+        "You want to confirm a program is installed"
+      ],
+      "set_id": "terminal-intermediate"
+    },
+    {
+      "id": "ti-15",
+      "task": "Show running processes",
+      "answer": "ps aux",
+      "description": "Lists all running processes with details",
+      "whenToUse": "When you need to see what's running on your system",
+      "scenarios": [
+        "You want to find a process that's using too much CPU",
+        "You need to find the process ID to kill a stuck program",
+        "You're checking if a server is running"
+      ],
+      "set_id": "terminal-intermediate"
+    }
+  ]
+}

@@ -1,0 +1,226 @@
+{
+  "id": "clasp-scenarios",
+  "title": "Real-World Scenarios",
+  "description": "Practice with realistic nonprofit and workplace situations",
+  "difficulty": "intermediate",
+  "estimatedTime": "40 min",
+  "cardCount": 18,
+  "cards": [
+    {
+      "id": "scenario-001",
+      "task": "Your nonprofit's Donor Management System has a critical bug in production. Users report that donation receipts aren't being sent. You need to immediately pull down the latest version from the cloud to debug locally.",
+      "answer": "clasp pull",
+      "description": "Downloads the current production code from Google Apps Script to your local machine so you can investigate the donation receipt bug in your local development environment.",
+      "whenToUse": "When you need to sync the latest cloud changes to your local environment for debugging, especially in emergency situations where others may have made changes in the online editor.",
+      "scenarios": [
+        "Emergency debugging: A critical bug is reported in production and you need to get the exact code that's running",
+        "Post-collaboration sync: Team members made hotfixes directly in the Apps Script editor and you need those changes locally",
+        "Version verification: Confirming what code is actually deployed before making additional changes"
+      ]
+    },
+    {
+      "id": "scenario-002",
+      "task": "You've fixed the donation receipt bug in your Donor Management System locally. Now you need to deploy version 12 to production with the description 'Fix donation receipt email bug - urgent hotfix'.",
+      "answer": "clasp create-deployment --versionNumber 12 --description 'Fix donation receipt email bug - urgent hotfix'",
+      "description": "Creates a new deployment of version 12 with a descriptive message so your team knows this is the hotfix for the receipt issue.",
+      "whenToUse": "When pushing a critical fix to production with a specific version number and clear documentation of what changed.",
+      "scenarios": [
+        "Hotfix deployment: Immediately deploying a critical bug fix with clear documentation",
+        "Version-specific release: Deploying a tested version rather than the latest HEAD",
+        "Audit trail: Creating deployments with descriptions that document what changed and why"
+      ]
+    },
+    {
+      "id": "scenario-003",
+      "task": "Your Volunteer Scheduling Tool (script ID: 1VolSchedule2024def456uvw012) was created in the online editor by a colleague. You need to start working on it locally with your preferred IDE and Git workflow.",
+      "answer": "clasp clone-script 1VolSchedule2024def456uvw012",
+      "description": "Downloads the Volunteer Scheduling Tool project to your local machine, creating the necessary .clasp.json configuration file that links your local directory to the remote script.",
+      "whenToUse": "When transitioning a script from web-based development to local development, or when joining a project that was started by someone else.",
+      "scenarios": [
+        "Team onboarding: Cloning a colleague's project to contribute code from your local environment",
+        "Workflow migration: Moving from the online editor to a local IDE with Git version control",
+        "Project takeover: Taking ownership of a script created by a departing team member"
+      ]
+    },
+    {
+      "id": "scenario-004",
+      "task": "You need to start building a new Grant Report Generator for your organization. It should be a standalone script titled 'Q4 2024 Grant Reports'.",
+      "answer": "clasp create-script --type standalone --title 'Q4 2024 Grant Reports'",
+      "description": "Creates a new standalone Apps Script project with the specified title, generating the necessary configuration files in your current directory.",
+      "whenToUse": "When starting a brand new Apps Script project from scratch with local development in mind.",
+      "scenarios": [
+        "New automation: Building a new reporting tool from the ground up",
+        "Standalone utility: Creating a script that runs independently, not bound to any document",
+        "Project initialization: Setting up a new project with proper naming and type from the start"
+      ]
+    },
+    {
+      "id": "scenario-005",
+      "task": "Your Email Campaign Automation script needs access to the Gmail API to send bulk emails. Enable this API for the project.",
+      "answer": "clasp enable-api gmail",
+      "description": "Adds the Gmail API to your Apps Script project's advanced services, allowing your code to send emails programmatically.",
+      "whenToUse": "When your script needs to access Google services beyond the basic Apps Script APIs.",
+      "scenarios": [
+        "Email automation: Enabling Gmail API for sending campaign emails to donors",
+        "Service integration: Adding APIs as new features require advanced Google services",
+        "Permission setup: Granting your script access to necessary Google Workspace tools"
+      ]
+    },
+    {
+      "id": "scenario-006",
+      "task": "You're working on the Event Registration Form and want to automatically push every code change as you save files during development.",
+      "answer": "clasp push --watch",
+      "description": "Starts a watch process that automatically uploads your local files to Google Apps Script whenever you save changes.",
+      "whenToUse": "During active development when you want instant synchronization between your local editor and the Apps Script environment.",
+      "scenarios": [
+        "Rapid development: Testing changes quickly in the Apps Script environment without manual push commands",
+        "Live testing: Seeing immediate results of code changes in connected Google Sheets or Forms",
+        "Continuous sync: Maintaining real-time parity between local and cloud during intensive development sessions"
+      ]
+    },
+    {
+      "id": "scenario-007",
+      "task": "Your Fundraising Dashboard deployment @HEAD has a critical bug. You need to check all current deployments to find the deployment ID so you can undeploy it.",
+      "answer": "clasp list-deployments",
+      "description": "Lists all active deployments of your Fundraising Dashboard, showing their deployment IDs, versions, and descriptions.",
+      "whenToUse": "When you need to see what versions are currently deployed and get their IDs for management operations.",
+      "scenarios": [
+        "Emergency response: Finding the buggy deployment ID to quickly undeploy it",
+        "Version audit: Checking which versions are live before making deployment decisions",
+        "Deployment inventory: Understanding your current production landscape"
+      ]
+    },
+    {
+      "id": "scenario-008",
+      "task": "After reviewing deployments, you found that deployment AKfycbwXYZ123 of your Fundraising Dashboard is the buggy version. Remove this deployment immediately.",
+      "answer": "clasp delete-deployment AKfycbwXYZ123",
+      "description": "Removes the specific deployment, making it immediately inaccessible to users while preserving the script code and other deployments.",
+      "whenToUse": "When you need to quickly retire a specific deployment that has critical issues.",
+      "scenarios": [
+        "Emergency rollback: Immediately removing a broken deployment from production",
+        "Version retirement: Taking down an old version after migration is complete",
+        "Bug containment: Stopping users from accessing a deployment with known issues"
+      ]
+    },
+    {
+      "id": "scenario-009",
+      "task": "Your Donor Management System has deployment AKfycbyABC789 in production. You've fixed bugs and want to update this specific deployment to version 15 without changing the deployment URL.",
+      "answer": "clasp update-deployment AKfycbyABC789 --versionNumber 15",
+      "description": "Updates the existing deployment to point to version 15, maintaining the same deployment ID and URL that donors are already using.",
+      "whenToUse": "When you want to push updates to a production deployment without requiring users to change their access URL.",
+      "scenarios": [
+        "Seamless updates: Pushing bug fixes without disrupting user bookmarks or embedded URLs",
+        "Production maintenance: Updating live deployments with new features transparently",
+        "Version promotion: Moving a tested version to the production deployment"
+      ]
+    },
+    {
+      "id": "scenario-010",
+      "task": "You're setting up a new developer workstation and need to authenticate clasp to manage your nonprofit's Apps Script projects.",
+      "answer": "clasp login",
+      "description": "Opens a browser to authenticate with Google and creates credentials that allow clasp to manage your Apps Script projects.",
+      "whenToUse": "First-time setup on a new machine or when re-authenticating after logout.",
+      "scenarios": [
+        "New machine setup: Configuring clasp on a new laptop for nonprofit development work",
+        "Authentication refresh: Re-logging in after credentials expire or are cleared",
+        "Account switching: Logging in with the correct organizational account"
+      ]
+    },
+    {
+      "id": "scenario-011",
+      "task": "Your Grant Report Generator (script ID: 1GrantReport2024ghi789rst345) needs the Google Sheets API to read grant data. Enable this API for the project.",
+      "answer": "clasp enable-api sheets",
+      "description": "Adds the Google Sheets API to the Grant Report Generator's advanced services, allowing it to programmatically read and write spreadsheet data.",
+      "whenToUse": "When your script needs advanced Sheets functionality beyond the basic SpreadsheetApp service.",
+      "scenarios": [
+        "Data integration: Enabling Sheets API to pull grant data from multiple spreadsheets",
+        "Advanced features: Using API-specific functionality not available in basic services",
+        "Cross-document access: Reading data from sheets the script isn't bound to"
+      ]
+    },
+    {
+      "id": "scenario-012",
+      "task": "You're debugging the Email Campaign Automation script and want to see the exact code in version 8, which was the last working version before bugs appeared.",
+      "answer": "clasp pull --versionNumber 8",
+      "description": "Downloads version 8 of your Email Campaign script to your local machine, overwriting current local files.",
+      "whenToUse": "When you need to retrieve a specific historical version for debugging or comparison.",
+      "scenarios": [
+        "Regression debugging: Comparing a working version with the current broken code",
+        "Version recovery: Retrieving a known-good version to restart from",
+        "Change investigation: Examining what changed between versions to find bug introduction point"
+      ]
+    },
+    {
+      "id": "scenario-013",
+      "task": "Your team created 5 test deployments of the Volunteer Scheduling Tool during development. Clean up all deployments so you can start fresh for the production release.",
+      "answer": "clasp delete-deployment --all",
+      "description": "Removes all deployments of the current script, giving you a clean slate for new production deployments.",
+      "whenToUse": "When you want to remove all test or old deployments before creating clean production versions.",
+      "scenarios": [
+        "Deployment cleanup: Removing all test deployments before official launch",
+        "Fresh start: Clearing deployment history when restructuring release process",
+        "Development reset: Cleaning up experimental deployments from prototyping phase"
+      ]
+    },
+    {
+      "id": "scenario-014",
+      "task": "You need to open the Event Registration Form script (ID: 1EventReg2024pqr345stu901) in the Apps Script web editor to check the execution logs.",
+      "answer": "clasp open-script 1EventReg2024pqr345stu901",
+      "description": "Opens the Event Registration Form in your browser's Apps Script editor where you can view execution logs and test runs.",
+      "whenToUse": "When you need to access the web-based editor for features like execution logs, triggers, or testing.",
+      "scenarios": [
+        "Log inspection: Checking execution logs to debug runtime errors",
+        "Trigger management: Setting up time-based or event-based triggers in the web UI",
+        "Quick testing: Using the web editor's run button for rapid function testing"
+      ]
+    },
+    {
+      "id": "scenario-015",
+      "task": "Your nonprofit is shutting down the old 'Spring 2023 Fundraiser' script (ID: 1SpringFund2023old456xyz). Permanently delete this project as it's no longer needed.",
+      "answer": "clasp delete-script 1SpringFund2023old456xyz",
+      "description": "Permanently removes the Spring 2023 Fundraiser script from Google Drive. This action cannot be undone.",
+      "whenToUse": "When you need to completely remove a script project that's obsolete and no longer serves any purpose.",
+      "scenarios": [
+        "Project cleanup: Removing completed seasonal campaigns or outdated tools",
+        "Resource management: Cleaning up old test projects to keep your script library organized",
+        "Security: Deleting scripts with outdated permissions or sensitive data no longer needed"
+      ]
+    },
+    {
+      "id": "scenario-016",
+      "task": "You're about to do major refactoring on the Grant Report Generator and want to push changes without being prompted for confirmation each time.",
+      "answer": "clasp push --force",
+      "description": "Uploads your local files to Google Apps Script without prompting for confirmation, even if there are cloud changes.",
+      "whenToUse": "When you're confident in your local changes and want to skip safety prompts during intensive development.",
+      "scenarios": [
+        "Solo development: Working alone on a project where you control all changes",
+        "Rapid iteration: Testing multiple approaches quickly without confirmation delays",
+        "Trusted workflow: When you know your local version is the authoritative source"
+      ]
+    },
+    {
+      "id": "scenario-017",
+      "task": "Your Email Campaign Automation was using the Calendar API for scheduling, but you've refactored to use a different approach. Remove Calendar API access from the project.",
+      "answer": "clasp disable-api calendar",
+      "description": "Removes the Calendar API from the Email Campaign script's advanced services, following the principle of least privilege.",
+      "whenToUse": "When you no longer need a specific API and want to reduce your project's permission scope.",
+      "scenarios": [
+        "Security hardening: Removing unused APIs to minimize permission footprint",
+        "Permission cleanup: Disabling APIs after code refactoring eliminates their usage",
+        "Compliance: Ensuring your script only has access to services it actively uses"
+      ]
+    },
+    {
+      "id": "scenario-018",
+      "task": "Your Fundraising Dashboard needs access to the Drive API to generate PDF reports and save them to a specific folder. Enable this API for the project.",
+      "answer": "clasp enable-api drive",
+      "description": "Adds the Google Drive API to the Fundraising Dashboard's advanced services, allowing it to create and manage files programmatically.",
+      "whenToUse": "When your script needs to perform advanced file operations in Google Drive beyond basic access.",
+      "scenarios": [
+        "Report generation: Creating PDF reports and organizing them in Drive folders",
+        "File management: Programmatically managing document permissions or metadata",
+        "Backup automation: Saving generated files to specific Drive locations for record-keeping"
+      ]
+    }
+  ]
+}

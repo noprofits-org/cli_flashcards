@@ -1,0 +1,106 @@
+{
+  "id": "git-branching-guide",
+  "setId": "git-branching",
+  "title": "Git Branching & Collaboration - Guide",
+  "summary": "Clear patterns for branching, rebasing, merging, stashing, cherry-picking, and tagging releases.",
+  "mentalModel": "Branches are just pointers; keep them short-lived. Rebase to stay linear, merge to mark integration, tag to anchor releases.",
+  "sections": [
+    {
+      "title": "Branch hygiene",
+      "content": [
+        "Create from main: git switch -c feature/<name> origin/main.",
+        "List with git branch -a; prune stale remotes periodically.",
+        "Keep branches focused and short-lived to reduce conflicts."
+      ]
+    },
+    {
+      "title": "Integrating changes",
+      "content": [
+        "Rebase your branch onto origin/main before opening or updating a PR.",
+        "Use git merge --no-ff when you want a merge commit to mark feature integration.",
+        "Cherry-pick single commits when you need one fix without the entire branch."
+      ]
+    },
+    {
+      "title": "Parking work safely",
+      "content": [
+        "git stash push -m \"message\" to save WIP without committing.",
+        "git stash pop to restore and drop the latest stash.",
+        "Use stashes sparingly; prefer small commits on a branch for traceability."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Rebase before PR",
+      "steps": [
+        "git fetch origin",
+        "git rebase origin/main",
+        "Resolve conflicts if any; git rebase --continue",
+        "git push --force-with-lease"
+      ],
+      "tips": [
+        "Use --force-with-lease (not --force) to avoid clobbering teammates’ work.",
+        "Run tests after rebasing to ensure integration is good."
+      ]
+    },
+    {
+      "name": "Tag a release",
+      "steps": [
+        "git tag -a vX.Y.Z -m \"Release vX.Y.Z\"",
+        "git push origin vX.Y.Z"
+      ],
+      "tips": [
+        "Tag the commit that was deployed, not just main.",
+        "Use annotated tags for metadata and future automation."
+      ]
+    },
+    {
+      "name": "Backport a fix",
+      "steps": [
+        "git checkout release/1.2",
+        "git cherry-pick <commitSHA>",
+        "git push origin release/1.2"
+      ],
+      "tips": [
+        "Cherry-pick only self-contained commits to minimize risk.",
+        "If conflicts are messy, consider a minimal patch commit instead of cherry-picking."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Rebase to stay current; merge to mark integration.",
+    "Stash for quick context switches; commit for traceability.",
+    "Tag for releases; cherry-pick for targeted fixes."
+  ],
+  "examples": [
+    {
+      "title": "Abort and retry a messy rebase",
+      "commands": [
+        "git rebase --abort",
+        "git fetch origin",
+        "git rebase origin/main"
+      ],
+      "explanation": "Start over clean if conflicts got tangled; fetch first to ensure you’re current."
+    },
+    {
+      "title": "Cleanup branch history before review",
+      "commands": [
+        "git rebase -i HEAD~5",
+        "Squash fixups, rewrite messages",
+        "git push --force-with-lease"
+      ],
+      "explanation": "Interactive rebase polishes history so reviewers see the essential commits only."
+    }
+  ],
+  "troubleshooting": [
+    "Stuck rebase: resolve conflicts, git add, git rebase --continue; use --abort if you need to restart.",
+    "Wrong branch merge: git reset --hard <oldCommit> and re-merge correctly (only if not shared), or revert the merge commit.",
+    "Conflicts after stash pop: resolve, commit, and drop the stash if still present."
+  ],
+  "recap": [
+    "Branch from main, rebase to stay current, merge to integrate.",
+    "Use cherry-pick for surgical fixes and tags for releases.",
+    "Stash when you must pause; prefer small, purposeful commits."
+  ]
+}

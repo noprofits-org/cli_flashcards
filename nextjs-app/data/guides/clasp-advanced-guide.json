@@ -1,0 +1,94 @@
+{
+  "id": "clasp-advanced-guide",
+  "setId": "clasp-advanced",
+  "title": "CLASP Advanced - Reader’s Guide",
+  "summary": "Deep-dive into power-user commands: multi-env, deployments, logs, OAuth creds, and automation patterns.",
+  "mentalModel": "Think in environments and versions: you create versions from code, map them to deployments (with IDs/URLs), and use flags to control which environment a command touches.",
+  "sections": [
+    {
+      "title": "Environments and versions",
+      "content": [
+        "Use clasp create-version to snapshot code; use update-deployment to point an existing deployment to a new version.",
+        "Keep separate deployments for prod vs. staging; don’t reuse @HEAD for end users.",
+        "Label versions clearly (e.g., v12 - add exports sync)."
+      ]
+    },
+    {
+      "title": "Auth and APIs",
+      "content": [
+        "clasp enable-api <api> to allow advanced Google services your script needs.",
+        "clasp open-credentials-setup + clasp login --creds <file> for custom OAuth clients (needed for clasp run).",
+        "Always check scopes in appsscript.json for least privilege before publishing."
+      ]
+    },
+    {
+      "title": "Logging and diagnostics",
+      "content": [
+        "clasp tail-logs --watch for live logs during development.",
+        "clasp open-logs to use the Cloud Logging UI for filters and exports.",
+        "clasp show-file-status before push to avoid deploying unreviewed files."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Promote staging to production",
+      "steps": [
+        "clasp create-version \"v15 - fix timezones\"",
+        "clasp update-deployment <prodDeploymentId> --versionNumber <v15>",
+        "clasp open-web-app <prodDeploymentId> to verify"
+      ],
+      "tips": [
+        "Keep separate deployment IDs for staging vs production.",
+        "Never point production at @HEAD; always use a version number."
+      ]
+    },
+    {
+      "name": "Run functions remotely",
+      "steps": [
+        "clasp open-credentials-setup  # create OAuth client",
+        "clasp login --creds creds.json",
+        "clasp run-function myFunction --params '[\"foo\", 123]'"
+      ],
+      "tips": [
+        "Ensure the function is top-level (not inside objects/classes).",
+        "Use --params with JSON strings for structured arguments."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Versions are snapshots; deployments are pointers to snapshots.",
+    "Logs: tail-logs for live, open-logs for deep filtering.",
+    "APIs: enable before use; scopes: declare for least privilege."
+  ],
+  "examples": [
+    {
+      "title": "Enable Drive API and deploy",
+      "commands": [
+        "clasp enable-api drive",
+        "clasp create-version \"v4 - add drive export\"",
+        "clasp update-deployment <prodDeploymentId> --versionNumber 4"
+      ],
+      "explanation": "Drive API must be enabled before deployment that uses DriveApp advanced features."
+    },
+    {
+      "title": "Live-debug with tail",
+      "commands": [
+        "clasp tail-logs --watch",
+        "Trigger your web app or function",
+        "Observe logs and errors in real time"
+      ],
+      "explanation": "Tail streaming is faster than refreshing Cloud Logging and keeps you on the CLI."
+    }
+  ],
+  "troubleshooting": [
+    "Deployment shows old code: create a new version and update the deployment; avoid @HEAD.",
+    "clasp run fails auth: use custom creds (login --creds) and ensure function is exported at top level.",
+    "API not found: enable the advanced service first, then repush and redeploy."
+  ],
+  "recap": [
+    "Snapshot with versions, map with deployments, avoid @HEAD for users.",
+    "Tail logs while coding; use Cloud Logging for history.",
+    "Use custom OAuth creds for remote function execution and automation."
+  ]
+}

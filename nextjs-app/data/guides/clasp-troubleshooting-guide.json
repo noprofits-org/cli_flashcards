@@ -1,0 +1,94 @@
+{
+  "id": "clasp-troubleshooting-guide",
+  "setId": "clasp-troubleshooting",
+  "title": "CLASP Troubleshooting - Fix-It Guide",
+  "summary": "Readable fixes for auth, networking, conflicts, and runtime surprises. Focused on quick, actionable commands.",
+  "mentalModel": "Most clasp issues are either auth (tokens/accounts), network (proxies/VPN), or mismatched sources (push/pull/ignores). Triage in that order.",
+  "sections": [
+    {
+      "title": "Auth and network",
+      "content": [
+        "Use clasp show-authorized-user to confirm the active account.",
+        "For corporate networks, clasp login --no-localhost bypasses blocked callbacks.",
+        "If tokens are stale, delete ~/.clasprc.json and login again."
+      ]
+    },
+    {
+      "title": "Conflicts and state",
+      "content": [
+        "Always clasp pull before clasp push when collaborating.",
+        "Use --force sparingly; prefer merge/reapply locally.",
+        "Check .claspignore and rootDir when files don’t appear in the editor."
+      ]
+    },
+    {
+      "title": "Runtime mismatches",
+      "content": [
+        "Bundle TS/ESM to IIFE/ES5: esbuild ... && clasp push --rootDir dist.",
+        "Enable APIs before deploying code that calls them.",
+        "Use tail-logs for live errors, open-logs for history."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Fix auth behind a proxy",
+      "steps": [
+        "rm -f ~/.clasprc.json",
+        "clasp login --no-localhost",
+        "clasp show-authorized-user"
+      ],
+      "tips": [
+        "If SSL is intercepted, manual code entry (--no-localhost) is more reliable.",
+        "Confirm the account before pushing/deploying."
+      ]
+    },
+    {
+      "name": "Recover from a bad push",
+      "steps": [
+        "clasp pull   # get remote",
+        "Reapply your intended changes",
+        "clasp push",
+        "clasp create-version and redeploy if needed"
+      ],
+      "tips": [
+        "If remote should win entirely, pull and discard local changes.",
+        "Document the recovered version in the changelog."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Auth first, network second, file state third.",
+    "Pull before push to avoid conflicts; force only when you own the truth.",
+    "Bundle before push when using modules; Apps Script can’t run CommonJS/ESM directly."
+  ],
+  "examples": [
+    {
+      "title": "Resolve 'module is not defined'",
+      "commands": [
+        "esbuild src/index.ts --bundle --format=iife --outfile=dist/Code.js",
+        "clasp push --rootDir dist"
+      ],
+      "explanation": "Bundles modules into a browser-safe IIFE that Apps Script can execute."
+    },
+    {
+      "title": "Clear SSL/HSTS login issues",
+      "commands": [
+        "clasp login --no-localhost",
+        "If Chrome forces HTTPS: clear HSTS entry for localhost",
+        "Retry login"
+      ],
+      "explanation": "Manual login avoids HTTPS redirect problems caused by strict network policies."
+    }
+  ],
+  "troubleshooting": [
+    "404 or missing files: verify rootDir and .claspignore aren’t excluding sources.",
+    "Permission prompts unexpected: check oauthScopes in appsscript.json.",
+    "Offline errors on VPN: use --no-localhost and ensure *.googleapis.com is reachable."
+  ],
+  "recap": [
+    "Confirm account, then connectivity, then file mapping.",
+    "Bundle modules; enable APIs before deploy.",
+    "Pull first, force rarely, version and redeploy after fixes."
+  ]
+}

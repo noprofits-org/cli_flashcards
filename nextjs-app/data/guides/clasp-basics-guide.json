@@ -1,0 +1,94 @@
+{
+  "id": "clasp-basics-guide",
+  "setId": "clasp-basics",
+  "title": "CLASP Basics - Friendly Guide",
+  "summary": "A readable walkthrough for the foundational clasp commands: set up, sync, deploy, and check status without surprises.",
+  "mentalModel": "Treat clasp like Git for Apps Script: you authenticate once, connect a local folder to a remote script, then push/pull changes and create deployments for users.",
+  "sections": [
+    {
+      "title": "Core ideas",
+      "content": [
+        "Authenticate once per machine, then clasp stores tokens in ~/.clasprc.json.",
+        "Each project has a .clasp.json with the remote scriptId; keep it in version control.",
+        "Push uploads local files; pull downloads the cloud version; deploy creates shareable URLs."
+      ]
+    },
+    {
+      "title": "First-time setup",
+      "content": [
+        "1) Install globally: npm install -g @google/clasp",
+        "2) Authenticate: clasp login (use --no-localhost on locked-down networks)",
+        "3) Clone existing: clasp clone-script <scriptId> OR create new: clasp create-script --title \"My App\""
+      ]
+    },
+    {
+      "title": "Daily workflow",
+      "content": [
+        "Edit locally in your IDE, run clasp push to sync to the Apps Script editor.",
+        "If anyone edits in the web editor, run clasp pull before pushing to avoid conflicts.",
+        "Check status before pushing: clasp show-file-status or git status for your repo."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Sync changes safely",
+      "steps": [
+        "clasp pull   # grab any cloud edits first",
+        "clasp push   # upload your local changes",
+        "clasp open-script # quick sanity check in the web editor"
+      ],
+      "tips": [
+        "If someone edited online after your last pull, resolve locally before force pushing.",
+        "Use --force only when you are sure your local copy should win."
+      ]
+    },
+    {
+      "name": "Create a deployment URL",
+      "steps": [
+        "clasp create-version \"v1 - initial\"",
+        "clasp create-deployment --description \"Production\"",
+        "clasp open-web-app   # open the live URL"
+      ],
+      "tips": [
+        "Use new versions for releases; avoid @HEAD for anything user-facing.",
+        "Keep deployment IDs noted in README or release notes."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    "Push up, pull down: push uploads local to cloud; pull downloads cloud to local.",
+    "Deploy is not push: push updates the editor, deploy creates URLs for users.",
+    "Login once per machine; logout only when switching accounts or securing shared devices."
+  ],
+  "examples": [
+    {
+      "title": "Start a clean project bound to Sheets",
+      "commands": [
+        "clasp create-script --title \"Sheet Helper\" --type sheets",
+        "clasp push",
+        "clasp open-container"
+      ],
+      "explanation": "Creates a container-bound script and opens the parent Sheet to test menu items or functions."
+    },
+    {
+      "title": "Work on an existing script with a teammate",
+      "commands": [
+        "clasp clone-script <scriptId>",
+        "clasp pull",
+        "clasp push"
+      ],
+      "explanation": "Clone once, then always pull before push to avoid overwriting their online edits."
+    }
+  ],
+  "troubleshooting": [
+    "Offline/auth errors on corporate networks: clasp login --no-localhost to bypass blocked callbacks.",
+    "Push conflicts: pull first, merge locally, then push; avoid --force unless necessary.",
+    "Wrong account: clasp show-authorized-user to verify, clasp logout to switch."
+  ],
+  "recap": [
+    "Authenticate, connect a folder, push/pull like Git.",
+    "Deploy to create URLs; push alone does not publish.",
+    "Pull before push when collaborating to avoid overwrites."
+  ]
+}

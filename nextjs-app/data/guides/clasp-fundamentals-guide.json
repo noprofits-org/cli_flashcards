@@ -1,0 +1,94 @@
+{
+  "id": "clasp-fundamentals-guide",
+  "setId": "clasp-fundamentals",
+  "title": "CLASP Fundamentals - Concept Guide",
+  "summary": "Explains the architecture pieces: project types, manifests, scopes, and how clasp maps local files to Apps Script.",
+  "mentalModel": "A clasp project mirrors an Apps Script project: .clasp.json points to the remote scriptId, appsscript.json defines runtime and scopes, and your local src maps to cloud files.",
+  "sections": [
+    {
+      "title": "Project types",
+      "content": [
+        "Standalone scripts: best for web apps and shared utilities.",
+        "Container-bound: tied to Sheets/Docs/Forms/Slides; great for custom menus and triggers.",
+        "Choose --type when creating to bind correctly from the start."
+      ]
+    },
+    {
+      "title": "Manifests and scopes",
+      "content": [
+        "appsscript.json controls runtime (V8), time zone, and oauthScopes.",
+        "Declare minimal scopes; avoid broad defaults to reduce review friction.",
+        "Versioning and deployments respect the manifest you push."
+      ]
+    },
+    {
+      "title": "Local structure",
+      "content": [
+        ".clasp.json sets rootDir; push/pull operate relative to it.",
+        "Use .claspignore like .gitignore to avoid uploading build artifacts and secrets.",
+        "If using TypeScript, push compiled JS (dist) rather than raw TS."
+      ]
+    }
+  ],
+  "commonWorkflows": [
+    {
+      "name": "Setup a TypeScript project cleanly",
+      "steps": [
+        "Set rootDir in .clasp.json to dist/",
+        "Transpile TS to dist/ with bundling (e.g., esbuild --format=iife)",
+        "clasp push --rootDir dist"
+      ],
+      "tips": [
+        "Exclude node_modules and TS sources in .claspignore.",
+        "Ensure appsscript.json lives in dist/ or is copied there during build."
+      ]
+    },
+    {
+      "name": "Scope hygiene before publishing",
+      "steps": [
+        "List current scopes in appsscript.json",
+        "Remove unused scopes; add only what code needs",
+        "Push and create a fresh version before deploying"
+      ],
+      "tips": [
+        "Narrow scopes reduce OAuth review friction for add-ons.",
+        "If unsure, run once in dev and observe requested scopes before release."
+      ]
+    }
+  ],
+  "memoryHooks": [
+    ".clasp.json = where to push; appsscript.json = how it runs.",
+    "Declare scopes, don’t inherit surprises.",
+    "Ignore what you don’t want in the cloud: .claspignore is your friend."
+  ],
+  "examples": [
+    {
+      "title": "Create a container-bound Sheet helper",
+      "commands": [
+        "clasp create-script --title \"Sheet Tools\" --type sheets",
+        "Add onOpen() and custom menu code locally",
+        "clasp push"
+      ],
+      "explanation": "Binding at creation keeps triggers and privileges aligned with the parent Sheet."
+    },
+    {
+      "title": "Add a manifest scope explicitly",
+      "commands": [
+        "Edit appsscript.json to include \"oauthScopes\": [\"https://www.googleapis.com/auth/spreadsheets\"]",
+        "clasp push",
+        "Create version and deploy"
+      ],
+      "explanation": "Explicit scopes make reviews smoother and avoid over-broad defaults."
+    }
+  ],
+  "troubleshooting": [
+    "Pushed files missing: check rootDir and .claspignore patterns.",
+    "Unexpected permission prompts: inspect oauthScopes in appsscript.json.",
+    "Runtime errors about modules: bundle to IIFE/ES5 and push compiled output."
+  ],
+  "recap": [
+    ".clasp.json links local to remote; appsscript.json defines behavior and scopes.",
+    "Pick the right project type up front; container-bound for document workflows.",
+    "Bundle and ignore wisely to keep cloud code clean."
+  ]
+}

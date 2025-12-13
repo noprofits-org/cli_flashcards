@@ -1,0 +1,15 @@
+{
+  "id": "mail-list-suite",
+  "title": "Mail List Manager",
+  "description": "Build a complete mail list management system using Google Sheets, Docs, and a Web App - all connected with CLASP",
+  "icon": "mail",
+  "color": "#4285f4",
+  "estimatedTime": "2.5 hours",
+  "projects": [
+    "setup-installation",
+    "contact-list-sheet",
+    "email-template-doc",
+    "mail-manager-webapp",
+    "integration-suite"
+  ]
+}
