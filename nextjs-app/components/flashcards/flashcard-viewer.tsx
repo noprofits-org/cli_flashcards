@@ -38,7 +38,16 @@ function getPlaceholder(setId: string, isHotkey: boolean): string {
   if (setId.startsWith('terminal')) {
     return 'command ...'
   }
-  return 'clasp ...'
+  if (setId.startsWith('firebase')) {
+    return 'firebase ...'
+  }
+  if (setId.startsWith('gcloud')) {
+    return 'gcloud ...'
+  }
+  if (setId.startsWith('clasp')) {
+    return 'clasp ...'
+  }
+  return 'command ...'
 }
 
 export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, hardMode, retryAttempt }: FlashcardViewerProps) {
