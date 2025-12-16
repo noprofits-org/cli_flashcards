@@ -188,10 +188,14 @@ export default function FlashcardsPage({ params }: PageProps) {
     }
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowLeft') {
+      // Don't intercept arrow keys when user is typing in an input
+      const isTypingInInput = document.activeElement?.tagName === 'INPUT' ||
+                              document.activeElement?.tagName === 'TEXTAREA'
+
+      if (e.key === 'ArrowLeft' && !isTypingInInput) {
         e.preventDefault()
         prevCard()
-      } else if (e.key === 'ArrowRight') {
+      } else if (e.key === 'ArrowRight' && !isTypingInInput) {
         e.preventDefault()
         nextCard()
       } else if (e.key === 'Escape') {
