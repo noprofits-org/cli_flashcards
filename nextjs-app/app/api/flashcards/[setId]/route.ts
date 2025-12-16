@@ -1,16 +1,30 @@
 import { NextResponse } from 'next/server'
 
 // Import all module data statically for build-time optimization
-import terminalBasics from '@/data/terminal-basics.json'
-import terminalIntermediate from '@/data/terminal-intermediate.json'
-import claspBasics from '@/data/clasp-basics.json'
-import claspAdvanced from '@/data/clasp-advanced.json'
+// Terminal modules
+import terminalNavigation from '@/data/terminal-navigation.json'
+import terminalFiles from '@/data/terminal-files.json'
+import terminalViewing from '@/data/terminal-viewing.json'
+import terminalSearch from '@/data/terminal-search.json'
+import terminalNano from '@/data/terminal-nano.json'
+import terminalPipes from '@/data/terminal-pipes.json'
+
+// Git modules
+import gitSetup from '@/data/git-setup.json'
+import gitDaily from '@/data/git-daily.json'
+import gitBranches from '@/data/git-branches.json'
+import gitStash from '@/data/git-stash.json'
+import gitUndo from '@/data/git-undo.json'
+import gitHistory from '@/data/git-history.json'
+
+// CLASP modules
+import claspSetup from '@/data/clasp-setup.json'
+import claspProjects from '@/data/clasp-projects.json'
+import claspWorkflow from '@/data/clasp-workflow.json'
+import claspDeploy from '@/data/clasp-deploy.json'
+import claspLogs from '@/data/clasp-logs.json'
+import claspApis from '@/data/clasp-apis.json'
 import claspScenarios from '@/data/clasp-scenarios.json'
-import claspFundamentals from '@/data/clasp-fundamentals.json'
-import claspTroubleshooting from '@/data/clasp-troubleshooting.json'
-import gitBasics from '@/data/git-basics.json'
-import gitBranching from '@/data/git-branching.json'
-import gitTroubleshooting from '@/data/git-troubleshooting.json'
 
 // Type for flashcard module data
 interface FlashcardModule {
@@ -32,16 +46,28 @@ interface FlashcardModule {
 
 // Map of available modules
 const moduleMap: Record<string, FlashcardModule> = {
-  'terminal-basics': terminalBasics as FlashcardModule,
-  'terminal-intermediate': terminalIntermediate as FlashcardModule,
-  'clasp-basics': claspBasics as FlashcardModule,
-  'clasp-advanced': claspAdvanced as FlashcardModule,
+  // Terminal
+  'terminal-navigation': terminalNavigation as FlashcardModule,
+  'terminal-files': terminalFiles as FlashcardModule,
+  'terminal-viewing': terminalViewing as FlashcardModule,
+  'terminal-search': terminalSearch as FlashcardModule,
+  'terminal-nano': terminalNano as FlashcardModule,
+  'terminal-pipes': terminalPipes as FlashcardModule,
+  // Git
+  'git-setup': gitSetup as FlashcardModule,
+  'git-daily': gitDaily as FlashcardModule,
+  'git-branches': gitBranches as FlashcardModule,
+  'git-stash': gitStash as FlashcardModule,
+  'git-undo': gitUndo as FlashcardModule,
+  'git-history': gitHistory as FlashcardModule,
+  // CLASP
+  'clasp-setup': claspSetup as FlashcardModule,
+  'clasp-projects': claspProjects as FlashcardModule,
+  'clasp-workflow': claspWorkflow as FlashcardModule,
+  'clasp-deploy': claspDeploy as FlashcardModule,
+  'clasp-logs': claspLogs as FlashcardModule,
+  'clasp-apis': claspApis as FlashcardModule,
   'clasp-scenarios': claspScenarios as FlashcardModule,
-  'clasp-fundamentals': claspFundamentals as FlashcardModule,
-  'clasp-troubleshooting': claspTroubleshooting as FlashcardModule,
-  'git-basics': gitBasics as FlashcardModule,
-  'git-branching': gitBranching as FlashcardModule,
-  'git-troubleshooting': gitTroubleshooting as FlashcardModule,
 }
 
 export async function GET(

@@ -10,7 +10,6 @@ export async function GET() {
 
     // Get flashcard sets from the index file
     const sets = indexData.modules.flashcards
-      .filter(module => !module.comingSoon) // Only show available modules
       .map(module => ({
         id: module.id,
         name: module.title,

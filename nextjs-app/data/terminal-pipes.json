@@ -1,0 +1,76 @@
+{
+  "id": "terminal-pipes",
+  "title": "Pipes & Redirection",
+  "description": "Combining commands and controlling output",
+  "difficulty": "intermediate",
+  "category": "terminal",
+  "estimatedTime": "10 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "pipes-1",
+      "task": "Run two commands in sequence (second runs only if first succeeds)",
+      "answer": "command1 && command2",
+      "description": "Chains commands so the second only runs if the first exits successfully",
+      "whenToUse": "When you want to run commands in sequence with error checking",
+      "scenarios": [
+        "You want to cd into a directory and then run a command",
+        "You need to build and then deploy only if build succeeds",
+        "You're chaining git add and git commit"
+      ],
+      "set_id": "terminal-pipes"
+    },
+    {
+      "id": "pipes-2",
+      "task": "Redirect command output to a file (overwrite)",
+      "answer": "command > output.txt",
+      "description": "Sends the output of a command to a file, replacing any existing content",
+      "whenToUse": "When you want to save command output to a file",
+      "scenarios": [
+        "You want to save a directory listing to a file",
+        "You need to capture error output for debugging",
+        "You're generating a report from command output"
+      ],
+      "set_id": "terminal-pipes"
+    },
+    {
+      "id": "pipes-3",
+      "task": "Append command output to a file (without overwriting)",
+      "answer": "command >> output.txt",
+      "description": "Adds the output of a command to the end of a file",
+      "whenToUse": "When you want to add to an existing file without erasing it",
+      "scenarios": [
+        "You're building up a log file over multiple runs",
+        "You want to append data to a config file",
+        "You're collecting output from multiple commands"
+      ],
+      "set_id": "terminal-pipes"
+    },
+    {
+      "id": "pipes-4",
+      "task": "Show environment variable PATH",
+      "answer": "echo $PATH",
+      "description": "Displays the value of an environment variable",
+      "whenToUse": "When you need to check or debug environment variables",
+      "scenarios": [
+        "You want to see where the system looks for commands",
+        "You're debugging why a command isn't found",
+        "You need to check if a path is in your PATH variable"
+      ],
+      "set_id": "terminal-pipes"
+    },
+    {
+      "id": "pipes-5",
+      "task": "Pipe output from one command to another",
+      "answer": "command1 | command2",
+      "description": "Takes the output of the first command and uses it as input for the second",
+      "whenToUse": "When you want to process output through multiple commands",
+      "scenarios": [
+        "You want to filter ls output with grep",
+        "You need to count lines of output with wc -l",
+        "You're searching within command output"
+      ],
+      "set_id": "terminal-pipes"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "clasp-setup",
+  "title": "Setup & Auth",
+  "description": "Getting started with CLASP and authentication",
+  "difficulty": "beginner",
+  "category": "clasp",
+  "estimatedTime": "8 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "setup-1",
+      "task": "Authenticate with your Google Account",
+      "answer": "clasp login",
+      "description": "Authorizes clasp to manage your Google account's Apps Script projects. Creates a credentials file for future use.",
+      "whenToUse": "Required before using any other clasp commands. Run this when you first install clasp or need to switch accounts.",
+      "scenarios": [
+        "First-time setup: After installing clasp globally, run this to authorize access",
+        "New machine: Setting up clasp on a new development computer",
+        "After logout: Re-authenticating after signing out"
+      ],
+      "set_id": "clasp-setup"
+    },
+    {
+      "id": "setup-2",
+      "task": "Sign out from your Google Account",
+      "answer": "clasp logout",
+      "description": "Removes the stored credentials from your local machine, terminating the current session.",
+      "whenToUse": "When switching accounts, securing a shared computer, or troubleshooting auth issues.",
+      "scenarios": [
+        "Account switching: Logging out before authenticating with a different Google account",
+        "Security: Removing credentials from a shared development machine",
+        "Troubleshooting: Clearing stored credentials when experiencing permission errors"
+      ],
+      "set_id": "clasp-setup"
+    },
+    {
+      "id": "setup-3",
+      "task": "Display the authorized Google Account email",
+      "answer": "clasp show-authorized-user",
+      "description": "Shows which Google account is currently authenticated and being used by clasp.",
+      "whenToUse": "When you need to verify which account you're operating under.",
+      "scenarios": [
+        "Account verification: Confirming you're using the correct account before pushing",
+        "Multi-account management: Checking which account is active",
+        "Troubleshooting: Verifying authentication when experiencing permission errors"
+      ],
+      "set_id": "clasp-setup"
+    },
+    {
+      "id": "setup-4",
+      "task": "Authenticate for CI/CD pipeline on a headless server",
+      "answer": "clasp login --no-localhost",
+      "description": "Disables the local redirect server during authentication, requiring manual code entry instead.",
+      "whenToUse": "When setting up clasp in CI/CD pipelines, Docker containers, or remote servers without GUI.",
+      "scenarios": [
+        "GitHub Actions: Authenticating in a CI runner where you can't launch a browser",
+        "Docker container: Setting up clasp in a containerized build environment",
+        "Remote server: Authenticating on a headless Linux server via SSH"
+      ],
+      "set_id": "clasp-setup"
+    },
+    {
+      "id": "setup-5",
+      "task": "Use custom OAuth credentials for running functions",
+      "answer": "clasp login --creds client_secret.json",
+      "description": "Uses a custom OAuth client ID/secret file instead of clasp's default credentials.",
+      "whenToUse": "When you need organization-specific OAuth credentials or when setting up clasp run.",
+      "scenarios": [
+        "Enterprise deployment: Using your company's OAuth client for security compliance",
+        "Function execution: Setting up credentials required for 'clasp run'",
+        "Multiple environments: Different credentials for dev, staging, and production"
+      ],
+      "set_id": "clasp-setup"
+    }
+  ]
+}

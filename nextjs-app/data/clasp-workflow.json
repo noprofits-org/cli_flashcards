@@ -1,0 +1,115 @@
+{
+  "id": "clasp-workflow",
+  "title": "Development Workflow",
+  "description": "Push, pull, and sync your code",
+  "difficulty": "beginner",
+  "category": "clasp",
+  "estimatedTime": "12 min",
+  "cardCount": 8,
+  "cards": [
+    {
+      "id": "wf-1",
+      "task": "Push local files to the script",
+      "answer": "clasp push",
+      "description": "Uploads your local code files to Google Apps Script, syncing your changes to the cloud.",
+      "whenToUse": "After making local code changes that you want to deploy to the cloud.",
+      "scenarios": [
+        "Development workflow: Pushing changes after testing locally",
+        "Initial upload: Pushing code after creating a new local project",
+        "Team sync: Uploading your changes for teammates to pull"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-2",
+      "task": "Auto-push code changes whenever files are saved",
+      "answer": "clasp push --watch",
+      "description": "Monitors local files and automatically pushes changes whenever you save.",
+      "whenToUse": "During active development when you want instant synchronization.",
+      "scenarios": [
+        "Rapid development: Making frequent small changes and testing immediately",
+        "Live debugging: Watching logs while editing locally with auto-sync",
+        "Paired programming: One person codes while another tests in the editor"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-3",
+      "task": "Force push to overwrite cloud changes without confirmation",
+      "answer": "clasp push --force",
+      "description": "Pushes local code and overwrites cloud changes without asking for confirmation.",
+      "whenToUse": "When you're certain your local version is correct and want to overwrite cloud.",
+      "scenarios": [
+        "Undo web edits: Restoring from local after accidental web editor changes",
+        "CI/CD pipeline: Automated deployments where manual confirmation isn't possible",
+        "Solo development: You know you're the only one working on it"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-4",
+      "task": "Pull script files from the cloud",
+      "answer": "clasp pull",
+      "description": "Downloads the latest version of your Apps Script project from Google Drive.",
+      "whenToUse": "When you need to sync cloud changes made in the online editor to your local environment.",
+      "scenarios": [
+        "Sync after web edits: Pulling changes you or a teammate made in the editor",
+        "Collaboration: Retrieving updates from collaborators",
+        "Starting local work: Getting the latest before making changes"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-5",
+      "task": "Pull a specific version number to your local machine",
+      "answer": "clasp pull --versionNumber 15",
+      "description": "Downloads a specific historical version instead of the latest code.",
+      "whenToUse": "When you need to recover or examine a specific saved version.",
+      "scenarios": [
+        "Time travel debugging: Pulling version 15 to see code before refactoring",
+        "Production recovery: Pulling the version currently deployed",
+        "Comparison: Pulling an old version to compare against current code"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-6",
+      "task": "Show the current file status",
+      "answer": "clasp show-file-status",
+      "description": "Displays the synchronization status between your local files and the cloud version.",
+      "whenToUse": "When you want to see what changes will be pushed.",
+      "scenarios": [
+        "Pre-push review: Checking which files changed before pushing",
+        "Sync verification: Confirming local and cloud are in sync",
+        "Change tracking: Identifying which files were modified"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-7",
+      "task": "Open the Apps Script editor in browser",
+      "answer": "clasp open-script",
+      "description": "Opens your Apps Script project in the online editor in your web browser.",
+      "whenToUse": "When you need to access the web editor for settings or features not available in clasp.",
+      "scenarios": [
+        "Visual editing: Opening the editor to use the UI builder",
+        "Project settings: Accessing triggers, libraries, or permissions",
+        "Quick checks: Verifying how your code appears in the online editor"
+      ],
+      "set_id": "clasp-workflow"
+    },
+    {
+      "id": "wf-8",
+      "task": "Open the container-bound document/sheet",
+      "answer": "clasp open-container",
+      "description": "Opens the Google Doc, Sheet, Form, or Slides that your script is bound to.",
+      "whenToUse": "When working with container-bound scripts and you need to access the parent document.",
+      "scenarios": [
+        "Sheet testing: Opening the bound spreadsheet to test custom menus",
+        "Form configuration: Accessing the form your script processes",
+        "Document context: Viewing the document while developing automation"
+      ],
+      "set_id": "clasp-workflow"
+    }
+  ]
+}

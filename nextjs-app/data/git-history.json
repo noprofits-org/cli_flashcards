@@ -1,0 +1,76 @@
+{
+  "id": "git-history",
+  "title": "History & Inspection",
+  "description": "Exploring commits and understanding changes",
+  "difficulty": "beginner",
+  "category": "git",
+  "estimatedTime": "10 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "history-1",
+      "task": "View a compact, annotated commit history",
+      "answer": "git log --oneline --graph --decorate --all",
+      "description": "Shows a condensed commit log with branch pointers and a text-based graph of the DAG.",
+      "whenToUse": "When you need to understand branch structure or recent activity quickly.",
+      "scenarios": [
+        "Review prep: Check what's been merged before starting new work",
+        "Debugging: Visualize where a branch diverged from main",
+        "Release planning: See tags and branch tips to decide what's ready to ship"
+      ],
+      "set_id": "git-history"
+    },
+    {
+      "id": "history-2",
+      "task": "Show recent commits with one line each",
+      "answer": "git log --oneline -10",
+      "description": "Displays the last 10 commits in a compact single-line format.",
+      "whenToUse": "When you want a quick overview of recent commits.",
+      "scenarios": [
+        "Quick check: See what's been committed recently",
+        "Find commit: Locate a specific commit to reference",
+        "Review: Scan recent history before pushing"
+      ],
+      "set_id": "git-history"
+    },
+    {
+      "id": "history-3",
+      "task": "Show what changed in a specific commit",
+      "answer": "git show <commit>",
+      "description": "Displays the commit message, author, date, and the actual diff of changes.",
+      "whenToUse": "When you want to see exactly what a commit changed.",
+      "scenarios": [
+        "Code review: Examine what a specific commit introduced",
+        "Debug: See what changes might have caused an issue",
+        "Learning: Understand how a bug was fixed"
+      ],
+      "set_id": "git-history"
+    },
+    {
+      "id": "history-4",
+      "task": "Compare two branches",
+      "answer": "git diff main..feature-branch",
+      "description": "Shows the differences between two branches.",
+      "whenToUse": "When you want to see what changes a feature branch introduces.",
+      "scenarios": [
+        "PR review: See all changes before merging",
+        "Conflict preview: Anticipate what might conflict",
+        "Progress check: See how much a branch has diverged"
+      ],
+      "set_id": "git-history"
+    },
+    {
+      "id": "history-5",
+      "task": "Squash or reorder recent commits interactively",
+      "answer": "git rebase -i HEAD~<n>",
+      "description": "Opens an interactive rebase for the last n commits so you can squash, reorder, or edit messages.",
+      "whenToUse": "Before pushing a branch or requesting review to produce a clean, logical commit history.",
+      "scenarios": [
+        "PR hygiene: Squash fixup commits into a single coherent change",
+        "Message cleanup: Rewrite commit messages for clarity before review",
+        "History organization: Reorder commits so changes build logically"
+      ],
+      "set_id": "git-history"
+    }
+  ]
+}

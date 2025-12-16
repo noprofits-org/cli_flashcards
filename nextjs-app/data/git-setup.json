@@ -1,0 +1,76 @@
+{
+  "id": "git-setup",
+  "title": "Getting Started",
+  "description": "Setting up Git and creating your first repository",
+  "difficulty": "beginner",
+  "category": "git",
+  "estimatedTime": "10 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "setup-1",
+      "task": "Set your Git identity for all repos",
+      "answer": "git config --global user.name \"Your Name\" && git config --global user.email \"you@example.com\"",
+      "description": "Configures your global author identity so commits on this machine are attributed to the correct name and email.",
+      "whenToUse": "Run once on a new machine or when you need to change the name/email attached to your commits.",
+      "scenarios": [
+        "Fresh setup: New laptop that has Git installed but no author identity configured",
+        "Wrong metadata: Commits show the wrong email on GitHub and need to be corrected for future commits",
+        "Multiple emails: Switching from personal to work identity before contributing to a company repo"
+      ],
+      "set_id": "git-setup"
+    },
+    {
+      "id": "setup-2",
+      "task": "Initialize a new repository with main as default branch",
+      "answer": "git init --initial-branch=main",
+      "description": "Creates a new Git repository in the current directory and sets the default branch to main instead of master.",
+      "whenToUse": "Starting a brand-new project that isn't yet tracked by Git.",
+      "scenarios": [
+        "New project kickoff: Turn an existing folder of code into a Git repo",
+        "Template cloning: After copying starter files without Git history, initialize clean tracking",
+        "Aligning naming: Ensuring the default branch is main to match GitHub's conventions"
+      ],
+      "set_id": "git-setup"
+    },
+    {
+      "id": "setup-3",
+      "task": "Clone a remote repository",
+      "answer": "git clone <repo-url> [folder-name]",
+      "description": "Copies a remote repository (including commit history) to your local machine. Optionally rename the destination folder.",
+      "whenToUse": "Any time you need a local working copy of an existing GitHub repository.",
+      "scenarios": [
+        "Joining a project: Pulling the team repo to start contributing",
+        "Code review locally: Cloning a fork to run the code yourself",
+        "Mirroring: Creating a local mirror before migrating repos between orgs"
+      ],
+      "set_id": "git-setup"
+    },
+    {
+      "id": "setup-4",
+      "task": "Connect a local repo to GitHub",
+      "answer": "git remote add origin <repo-url>",
+      "description": "Registers the GitHub repository URL as the origin remote so you can push and pull.",
+      "whenToUse": "After git init when you're ready to sync the repo to GitHub.",
+      "scenarios": [
+        "First push: Hooking up a new local project to a freshly created GitHub repo",
+        "Changing remotes: Pointing an existing local repo at a new organization URL",
+        "Fork workflow: Setting origin to your fork before pushing branches"
+      ],
+      "set_id": "git-setup"
+    },
+    {
+      "id": "setup-5",
+      "task": "Push the default branch and set upstream",
+      "answer": "git push -u origin main",
+      "description": "Uploads the main branch to GitHub and records origin/main as the upstream for future pulls and pushes.",
+      "whenToUse": "The first time you push main from a new local repository.",
+      "scenarios": [
+        "Project publish: Making the repository visible to collaborators on GitHub",
+        "Upstream tracking: Enabling simple git pull and git push without extra arguments",
+        "CI trigger: Pushing main to kick off GitHub Actions or other pipelines"
+      ],
+      "set_id": "git-setup"
+    }
+  ]
+}

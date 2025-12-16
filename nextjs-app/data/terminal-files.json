@@ -1,0 +1,141 @@
+{
+  "id": "terminal-files",
+  "title": "File Operations",
+  "description": "Creating, copying, moving, and deleting files and folders",
+  "difficulty": "beginner",
+  "category": "terminal",
+  "estimatedTime": "15 min",
+  "cardCount": 10,
+  "cards": [
+    {
+      "id": "files-1",
+      "task": "Create a new directory called 'my-project'",
+      "answer": "mkdir my-project",
+      "description": "Creates a new empty folder",
+      "whenToUse": "When you need to create a new folder",
+      "scenarios": [
+        "You're starting a new project",
+        "You need to organize files into folders",
+        "You're setting up a directory structure"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-2",
+      "task": "Create nested directories 'projects/clasp/my-app' in one command",
+      "answer": "mkdir -p projects/clasp/my-app",
+      "description": "Creates a directory and any necessary parent directories",
+      "whenToUse": "When you need to create multiple nested folders at once",
+      "scenarios": [
+        "You're setting up a project structure",
+        "You need to create a deep folder path",
+        "You want to create folders without checking if parents exist"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-3",
+      "task": "Create a new empty file called 'notes.txt'",
+      "answer": "touch notes.txt",
+      "description": "Creates a new empty file or updates the timestamp of an existing file",
+      "whenToUse": "When you need to create an empty file quickly",
+      "scenarios": [
+        "You need to create a placeholder file",
+        "You want to create a file before editing it",
+        "You're setting up config files"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-4",
+      "task": "Copy a file called 'config.json' to 'config-backup.json'",
+      "answer": "cp config.json config-backup.json",
+      "description": "Creates a copy of a file with a new name",
+      "whenToUse": "When you need to duplicate a file",
+      "scenarios": [
+        "You want to back up a file before editing it",
+        "You need to create a copy to modify",
+        "You're duplicating a template file"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-5",
+      "task": "Copy a directory and all its contents to a new location",
+      "answer": "cp -r source-folder destination-folder",
+      "description": "Recursively copies a directory and all files inside",
+      "whenToUse": "When you need to duplicate an entire folder",
+      "scenarios": [
+        "You want to back up a project folder",
+        "You're creating a copy of a project to experiment with",
+        "You need to duplicate a template folder"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-6",
+      "task": "Move (rename) a file from 'old.txt' to 'new.txt'",
+      "answer": "mv old.txt new.txt",
+      "description": "Moves or renames a file",
+      "whenToUse": "When you need to rename a file or move it to another location",
+      "scenarios": [
+        "You want to rename a file",
+        "You need to move a file to a different folder",
+        "You're reorganizing your project structure"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-7",
+      "task": "Delete a file called 'temp.txt'",
+      "answer": "rm temp.txt",
+      "description": "Permanently removes a file (no trash/recycle bin)",
+      "whenToUse": "When you need to delete a file you no longer need",
+      "scenarios": [
+        "You want to remove a temporary file",
+        "You're cleaning up old files",
+        "You created a file by mistake"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-8",
+      "task": "Delete an empty directory called 'old-folder'",
+      "answer": "rmdir old-folder",
+      "description": "Removes an empty directory",
+      "whenToUse": "When you need to delete an empty folder",
+      "scenarios": [
+        "You created a folder by mistake",
+        "You're cleaning up empty directories",
+        "A folder is no longer needed"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-9",
+      "task": "Delete a directory and all its contents",
+      "answer": "rm -rf directory-name",
+      "description": "Forcefully removes a directory and everything inside it (use with caution!)",
+      "whenToUse": "When you need to delete a folder that contains files",
+      "scenarios": [
+        "You're removing an old project folder",
+        "You need to clean up a failed installation",
+        "You want to start fresh by deleting everything"
+      ],
+      "set_id": "terminal-files"
+    },
+    {
+      "id": "files-10",
+      "task": "Open the current directory in Finder (Mac) or Explorer (Windows)",
+      "answer": "open .",
+      "description": "Opens the current folder in your system's file browser (Mac: open, Windows: explorer, Linux: xdg-open)",
+      "whenToUse": "When you want to see the current folder in a graphical file browser",
+      "scenarios": [
+        "You want to drag and drop files",
+        "You prefer to browse files visually",
+        "You need to open a file with a specific application"
+      ],
+      "set_id": "terminal-files"
+    }
+  ]
+}

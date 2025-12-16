@@ -1,0 +1,76 @@
+{
+  "id": "terminal-search",
+  "title": "Searching",
+  "description": "Finding files and content within your projects",
+  "difficulty": "intermediate",
+  "category": "terminal",
+  "estimatedTime": "10 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "search-1",
+      "task": "Search for files named '*.json' in the current directory and subdirectories",
+      "answer": "find . -name \"*.json\"",
+      "description": "Recursively searches for files matching a pattern",
+      "whenToUse": "When you need to find files by name or pattern",
+      "scenarios": [
+        "You're looking for all JSON config files in a project",
+        "You need to find a file but don't remember which folder it's in",
+        "You want to see all files of a certain type"
+      ],
+      "set_id": "terminal-search"
+    },
+    {
+      "id": "search-2",
+      "task": "Search for the text 'TODO' in all files in the current directory",
+      "answer": "grep -r \"TODO\" .",
+      "description": "Searches for text patterns inside files recursively",
+      "whenToUse": "When you need to find specific text within files",
+      "scenarios": [
+        "You're looking for all TODO comments in your code",
+        "You need to find where a function is used",
+        "You want to find all files containing an error message"
+      ],
+      "set_id": "terminal-search"
+    },
+    {
+      "id": "search-3",
+      "task": "Find which program runs when you type a command (e.g., 'node')",
+      "answer": "which node",
+      "description": "Shows the full path to an executable",
+      "whenToUse": "When you want to know which version of a program is being used",
+      "scenarios": [
+        "You have multiple versions installed and want to know which one runs",
+        "You're debugging path issues",
+        "You want to confirm a program is installed"
+      ],
+      "set_id": "terminal-search"
+    },
+    {
+      "id": "search-4",
+      "task": "Show disk usage of the current directory",
+      "answer": "du -sh .",
+      "description": "Displays the total size of a directory in human-readable format",
+      "whenToUse": "When you want to know how much space a folder is using",
+      "scenarios": [
+        "You're checking how big your project has grown",
+        "You need to find what's taking up disk space",
+        "You want to compare folder sizes"
+      ],
+      "set_id": "terminal-search"
+    },
+    {
+      "id": "search-5",
+      "task": "Show running processes",
+      "answer": "ps aux",
+      "description": "Lists all running processes with details",
+      "whenToUse": "When you need to see what's running on your system",
+      "scenarios": [
+        "You want to find a process that's using too much CPU",
+        "You need to find the process ID to kill a stuck program",
+        "You're checking if a server is running"
+      ],
+      "set_id": "terminal-search"
+    }
+  ]
+}

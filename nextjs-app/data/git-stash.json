@@ -1,0 +1,63 @@
+{
+  "id": "git-stash",
+  "title": "Stashing Work",
+  "description": "Temporarily saving uncommitted changes",
+  "difficulty": "intermediate",
+  "category": "git",
+  "estimatedTime": "8 min",
+  "cardCount": 4,
+  "cards": [
+    {
+      "id": "stash-1",
+      "task": "Stash uncommitted work with a label",
+      "answer": "git stash push -m \"message\"",
+      "description": "Saves tracked changes to a named stash and restores a clean working tree without committing.",
+      "whenToUse": "When you need to switch branches or pull updates without committing WIP changes.",
+      "scenarios": [
+        "Urgent hotfix: Stash ongoing work to apply a production patch",
+        "Review prep: Clean workspace before rebasing or merging",
+        "Context switch: Pause a feature to help on another task without losing progress"
+      ],
+      "set_id": "git-stash"
+    },
+    {
+      "id": "stash-2",
+      "task": "Reapply the most recent stash and drop it",
+      "answer": "git stash pop",
+      "description": "Restores the latest stashed changes to your working tree and removes that stash entry.",
+      "whenToUse": "After returning to the original branch or task and ready to continue the stashed work.",
+      "scenarios": [
+        "Resume work: Continue the feature after handling a hotfix",
+        "Conflict check: Ensure stashed changes still apply cleanly after upstream updates",
+        "Cleanup: Avoid accumulating stale stashes by popping instead of keeping them"
+      ],
+      "set_id": "git-stash"
+    },
+    {
+      "id": "stash-3",
+      "task": "List all stashed changes",
+      "answer": "git stash list",
+      "description": "Shows all stash entries with their index and message.",
+      "whenToUse": "When you have multiple stashes and need to find a specific one.",
+      "scenarios": [
+        "Find old work: Locate a stash you made days ago",
+        "Review stashes: See what's been stashed before cleaning up",
+        "Pick specific: Choose which stash to apply from multiple entries"
+      ],
+      "set_id": "git-stash"
+    },
+    {
+      "id": "stash-4",
+      "task": "Apply a specific stash without removing it",
+      "answer": "git stash apply stash@{n}",
+      "description": "Restores changes from a specific stash entry while keeping it in the stash list.",
+      "whenToUse": "When you want to apply stashed changes to multiple branches or keep the stash as backup.",
+      "scenarios": [
+        "Multiple branches: Apply the same changes to different branches",
+        "Safe restore: Keep the stash as backup until you're sure the changes work",
+        "Selective apply: Apply an older stash instead of the most recent one"
+      ],
+      "set_id": "git-stash"
+    }
+  ]
+}

@@ -1,13 +1,14 @@
 {
-  "id": "git-troubleshooting",
-  "title": "Git Troubleshooting",
-  "description": "Undo mistakes, recover lost work, and debug issues",
+  "id": "git-undo",
+  "title": "Undo & Recovery",
+  "description": "Fixing mistakes and recovering lost work",
   "difficulty": "intermediate",
-  "estimatedTime": "25 min",
+  "category": "git",
+  "estimatedTime": "15 min",
   "cardCount": 10,
   "cards": [
     {
-      "id": "git-troubleshoot-001",
+      "id": "undo-1",
       "task": "Unstage a file without losing its changes",
       "answer": "git restore --staged <path>",
       "description": "Removes a file from the staging area while keeping the working copy intact.",
@@ -16,10 +17,11 @@
         "Commit focus: Unstage unrelated files before crafting a targeted commit",
         "Fixup: Move a file out of staging to amend it before committing",
         "Review cleanup: Keep work in the tree but ensure the next commit stays small"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-002",
+      "id": "undo-2",
       "task": "Discard local changes to a file",
       "answer": "git restore <path>",
       "description": "Reverts the specified file to the last committed state, dropping any local modifications.",
@@ -28,10 +30,11 @@
         "Bad refactor: Throw away changes that introduced new issues",
         "Conflict redo: Reset a file before reapplying a cleaner fix",
         "Review prep: Ensure a file matches HEAD before staging only intended changes"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-003",
+      "id": "undo-3",
       "task": "Remove untracked files and folders",
       "answer": "git clean -fd",
       "description": "Deletes untracked files and directories to give you a clean working tree.",
@@ -40,10 +43,11 @@
         "Build leftovers: Clear dist/ or coverage/ created by local tooling",
         "Reset for rebase: Remove untracked files before rebasing to avoid conflicts",
         "CI parity: Mirror the clean environment your CI uses for consistent tests"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-004",
+      "id": "undo-4",
       "task": "Abort an in-progress merge",
       "answer": "git merge --abort",
       "description": "Stops the current merge process and resets the working tree to the pre-merge state.",
@@ -52,10 +56,11 @@
         "Messy conflicts: Abort and retry with a clearer strategy or fresh pull",
         "Wrong branch: You merged the wrong branch and want to undo immediately",
         "Safety reset: Restore to a known good state before attempting another merge"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-005",
+      "id": "undo-5",
       "task": "Abort an in-progress rebase",
       "answer": "git rebase --abort",
       "description": "Cancels the current rebase and returns the branch to its original state before the rebase started.",
@@ -64,10 +69,11 @@
         "Conflict overload: Abort to rethink how to split or reorder commits",
         "Wrong target: Started a rebase against the incorrect upstream branch",
         "Preserve history: Decide to merge instead of rebasing to keep context"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-006",
+      "id": "undo-6",
       "task": "Undo a specific commit by creating a new inverse commit",
       "answer": "git revert <commit>",
       "description": "Creates a new commit that reverses the changes introduced by the specified commit without rewriting history.",
@@ -76,10 +82,11 @@
         "Production fix: Revert a bad deploy commit quickly on main",
         "Safe rollback: Undo a commit without rewriting shared history",
         "Bug isolation: Remove a suspected commit to confirm it caused a regression"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-007",
+      "id": "undo-7",
       "task": "Hard reset branch to a known good commit",
       "answer": "git reset --hard <commit>",
       "description": "Moves HEAD and the current branch to a specific commit, discarding staged and working tree changes.",
@@ -88,10 +95,11 @@
         "Broken state: Return to the last known good commit after experiments failed",
         "Cleanup: Wipe local changes before reapplying a cleaner approach",
         "Branch rescue: Reset a feature branch to match origin/main after mistakes"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-008",
+      "id": "undo-8",
       "task": "Recover lost commits from history",
       "answer": "git reflog",
       "description": "Shows the movement of HEAD and branch pointers so you can find commits that were orphaned or overwritten.",
@@ -100,10 +108,11 @@
         "Accidental reset: Locate the commit before a hard reset and checkout to recover",
         "Deleted branch: Find the tip of a deleted branch to recreate it",
         "Misplaced work: Identify a detached HEAD commit to cherry-pick it back"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-009",
+      "id": "undo-9",
       "task": "Find the commit that introduced a bug",
       "answer": "git bisect start <bad> <good>",
       "description": "Starts a binary search between a known bad commit and a known good commit to isolate the first faulty change.",
@@ -112,10 +121,11 @@
         "CI regression: Bisect between the last green build and the first red build",
         "Bug hunt: Narrow down which commit introduced a production issue",
         "Large change window: Efficiently search a long commit range without manual guessing"
-      ]
+      ],
+      "set_id": "git-undo"
     },
     {
-      "id": "git-troubleshoot-010",
+      "id": "undo-10",
       "task": "Inspect who last changed each line of a file",
       "answer": "git blame <file>",
       "description": "Shows line-by-line authorship and commit hashes to help trace the origin of changes.",
@@ -124,7 +134,8 @@
         "Ownership check: Identify who to ask about a confusing section of code",
         "Regression trace: See which commit introduced a suspicious line",
         "Review context: Understand history before refactoring a file"
-      ]
+      ],
+      "set_id": "git-undo"
     }
   ]
 }

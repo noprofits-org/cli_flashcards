@@ -1,0 +1,128 @@
+{
+  "id": "clasp-deploy",
+  "title": "Deployment",
+  "description": "Versioning and deploying your apps",
+  "difficulty": "intermediate",
+  "category": "clasp",
+  "estimatedTime": "15 min",
+  "cardCount": 9,
+  "cards": [
+    {
+      "id": "deploy-1",
+      "task": "Create a new version of the script",
+      "answer": "clasp create-version [description]",
+      "description": "Creates an immutable snapshot of your current script code as a numbered version.",
+      "whenToUse": "When you want to create a stable reference point before deploying.",
+      "scenarios": [
+        "Pre-deployment: Creating a version with a description before deploying",
+        "Release tagging: Marking milestones like 'v2.0 - Added user authentication'",
+        "Safe refactoring: Creating a version before major changes for easy rollback"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-2",
+      "task": "List all versions of a script project",
+      "answer": "clasp list-versions",
+      "description": "Shows all saved versions with their numbers, descriptions, and creation dates.",
+      "whenToUse": "When you need to review version history or find a specific version number.",
+      "scenarios": [
+        "Version audit: Reviewing the history of your project",
+        "Rollback planning: Finding the version number of a stable release",
+        "Documentation: Getting version information for release notes"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-3",
+      "task": "Create a new deployment",
+      "answer": "clasp create-deployment",
+      "description": "Publishes your script as a deployment that can be used as a web app, API executable, or add-on.",
+      "whenToUse": "When you want to create a production version that end-users can access.",
+      "scenarios": [
+        "Web app release: Deploying a new version for users to access via URL",
+        "API deployment: Creating an API executable for external services",
+        "Add-on publishing: Deploying a new version for testing or production"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-4",
+      "task": "Deploy a specific version number",
+      "answer": "clasp create-deployment --versionNumber 23 --description \"Production release v2.0\"",
+      "description": "Creates a deployment using a specific saved version instead of the latest code.",
+      "whenToUse": "When deploying to production and you want to use a specific tested version.",
+      "scenarios": [
+        "Controlled releases: Deploying version 23 that passed QA, not untested code",
+        "Rollback capability: Creating deployment from the last stable release",
+        "Multi-environment: Deploying version 22 to staging while production stays on v20"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-5",
+      "task": "List all deployment versions for a script",
+      "answer": "clasp list-deployments",
+      "description": "Displays all active deployments showing IDs, versions, and descriptions.",
+      "whenToUse": "When you need to see what versions are currently deployed.",
+      "scenarios": [
+        "Version audit: Checking which versions are live before deploying updates",
+        "Deployment management: Getting deployment IDs to undeploy or redeploy",
+        "Troubleshooting: Verifying users are accessing the intended version"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-6",
+      "task": "Update an existing deployment with new code",
+      "answer": "clasp update-deployment <deploymentId>",
+      "description": "Updates an existing deployment to point to new code while maintaining the same URL.",
+      "whenToUse": "When you want to update a deployed version without changing the URL.",
+      "scenarios": [
+        "Seamless updates: Updating your web app without changing bookmarked URLs",
+        "Production releases: Pushing new features while maintaining the same endpoint",
+        "Bug fixes: Quickly updating a live deployment with a critical fix"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-7",
+      "task": "Remove a deployment version",
+      "answer": "clasp delete-deployment [deploymentId]",
+      "description": "Removes a specific deployment, making it inaccessible to users.",
+      "whenToUse": "When you need to retire an old version or remove a buggy deployment.",
+      "scenarios": [
+        "Version retirement: Undeploying old versions after users migrate to new release",
+        "Emergency rollback: Quickly removing a buggy deployment",
+        "Deployment cleanup: Removing test deployments"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-8",
+      "task": "Remove all deployments at once",
+      "answer": "clasp delete-deployment --all",
+      "description": "Removes every deployment for the script in one command.",
+      "whenToUse": "When you want to clean up all deployments and start fresh.",
+      "scenarios": [
+        "Fresh start: Removing all old test deployments before production deploy",
+        "Project sunset: Decommissioning a project by removing all deployments",
+        "Cleanup: Too many test deployments accumulated"
+      ],
+      "set_id": "clasp-deploy"
+    },
+    {
+      "id": "deploy-9",
+      "task": "Open the deployed web app in browser",
+      "answer": "clasp open-web-app [deploymentId]",
+      "description": "Opens a specific deployment of your web app in your browser.",
+      "whenToUse": "When you want to quickly test or view a deployed version.",
+      "scenarios": [
+        "Deployment testing: Opening a new deployment to verify it works",
+        "Version comparison: Opening different deployment IDs to compare behavior",
+        "Quick access: Launching your web app without copying the URL manually"
+      ],
+      "set_id": "clasp-deploy"
+    }
+  ]
+}

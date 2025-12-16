@@ -1,0 +1,76 @@
+{
+  "id": "clasp-apis",
+  "title": "APIs & Services",
+  "description": "Managing Google APIs for your script",
+  "difficulty": "intermediate",
+  "category": "clasp",
+  "estimatedTime": "10 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "api-1",
+      "task": "List all available Google APIs",
+      "answer": "clasp list-apis",
+      "description": "Shows all Google APIs that can be enabled for your project along with their current status.",
+      "whenToUse": "When you need to discover which APIs are available or check which are enabled.",
+      "scenarios": [
+        "API discovery: Finding the exact API name needed for enable-api command",
+        "Project audit: Reviewing which APIs are enabled to understand dependencies",
+        "Planning: Checking API availability before designing new features"
+      ],
+      "set_id": "clasp-apis"
+    },
+    {
+      "id": "api-2",
+      "task": "Enable a Google API for the script",
+      "answer": "clasp enable-api <api>",
+      "description": "Adds access to a specific Google API (like Drive, Gmail, Calendar) to your project.",
+      "whenToUse": "When your script needs Google services beyond the basic built-in Apps Script services.",
+      "scenarios": [
+        "Advanced features: Enabling Drive API for advanced file management",
+        "External integrations: Enabling Admin SDK for G Suite domain management",
+        "Service expansion: Adding Calendar API for scheduling automation"
+      ],
+      "set_id": "clasp-apis"
+    },
+    {
+      "id": "api-3",
+      "task": "Disable a Google API for the script",
+      "answer": "clasp disable-api <api>",
+      "description": "Removes access to a specific Google API from your project's advanced services.",
+      "whenToUse": "When you no longer need a particular API and want to reduce permissions.",
+      "scenarios": [
+        "Security hardening: Removing unused APIs to follow principle of least privilege",
+        "Permission cleanup: Disabling APIs after refactoring code",
+        "Troubleshooting: Temporarily disabling an API to isolate issues"
+      ],
+      "set_id": "clasp-apis"
+    },
+    {
+      "id": "api-4",
+      "task": "Open the OAuth 2.0 credentials setup",
+      "answer": "clasp open-credentials-setup",
+      "description": "Opens the Google Cloud Console page for creating OAuth 2.0 credentials.",
+      "whenToUse": "When you need to set up credentials for clasp run or use custom OAuth clients.",
+      "scenarios": [
+        "Advanced setup: Creating OAuth credentials before using 'clasp run'",
+        "Custom authentication: Setting up organization-specific OAuth clients",
+        "API enablement: Accessing the console to enable additional Google APIs"
+      ],
+      "set_id": "clasp-apis"
+    },
+    {
+      "id": "api-5",
+      "task": "Set up StackDriver logging configuration",
+      "answer": "clasp setup-logs",
+      "description": "Configures Stackdriver (Cloud Logging) for your script, enabling enhanced logging capabilities.",
+      "whenToUse": "When you need advanced logging features beyond the basic Apps Script logs.",
+      "scenarios": [
+        "Production monitoring: Setting up enhanced logging for a production web app",
+        "Log retention: Configuring longer log retention for compliance",
+        "Advanced debugging: Enabling detailed log levels for troubleshooting"
+      ],
+      "set_id": "clasp-apis"
+    }
+  ]
+}

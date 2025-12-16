@@ -1,0 +1,89 @@
+{
+  "id": "git-daily",
+  "title": "Daily Workflow",
+  "description": "The add-commit-push cycle you'll use every day",
+  "difficulty": "beginner",
+  "category": "git",
+  "estimatedTime": "12 min",
+  "cardCount": 6,
+  "cards": [
+    {
+      "id": "daily-1",
+      "task": "Check the working tree status quickly",
+      "answer": "git status -sb",
+      "description": "Shows a short, branch-aware summary of staged, unstaged, and untracked changes.",
+      "whenToUse": "Before committing or stashing to see exactly what will be included.",
+      "scenarios": [
+        "Pre-commit review: Confirm only the intended files are staged",
+        "Dirty workspace check: Ensure working tree is clean before switching branches",
+        "CI failure triage: Verify local state matches expected changes"
+      ],
+      "set_id": "git-daily"
+    },
+    {
+      "id": "daily-2",
+      "task": "Stage files for the next commit",
+      "answer": "git add <path>",
+      "description": "Moves selected changes into the staging area so they are included in the next commit.",
+      "whenToUse": "After editing files and before running git commit.",
+      "scenarios": [
+        "Selective staging: Add only the files that belong to the current feature",
+        "Partial work: Stage one directory at a time to keep commits focused",
+        "Fixup: Stage a single file to amend or supplement the previous commit"
+      ],
+      "set_id": "git-daily"
+    },
+    {
+      "id": "daily-3",
+      "task": "Stage all changes including new files",
+      "answer": "git add -A",
+      "description": "Stages all changes: modified, deleted, and new untracked files.",
+      "whenToUse": "When you want to commit everything in your working directory.",
+      "scenarios": [
+        "Complete feature: Ready to commit all changes for a feature",
+        "Quick save: Stage everything before switching branches",
+        "Cleanup commit: Adding all files after a refactor"
+      ],
+      "set_id": "git-daily"
+    },
+    {
+      "id": "daily-4",
+      "task": "Create a commit with a message",
+      "answer": "git commit -m \"Describe the change\"",
+      "description": "Records the staged snapshot in the repository with a descriptive message.",
+      "whenToUse": "Whenever you want to capture a logical unit of work in history.",
+      "scenarios": [
+        "Feature work: Commit after completing a discrete piece of functionality",
+        "Bug fixes: Capture the exact change that resolves a specific issue",
+        "Checkpoint: Save progress before pulling in upstream changes"
+      ],
+      "set_id": "git-daily"
+    },
+    {
+      "id": "daily-5",
+      "task": "Show what's changed but not yet staged",
+      "answer": "git diff",
+      "description": "Shows line-by-line changes in your working directory that haven't been staged.",
+      "whenToUse": "When you want to review your changes before staging them.",
+      "scenarios": [
+        "Code review: Check what you changed before committing",
+        "Debug: See exactly what modifications you've made",
+        "Selective staging: Decide which changes to stage"
+      ],
+      "set_id": "git-daily"
+    },
+    {
+      "id": "daily-6",
+      "task": "Pull the latest changes while keeping your commits on top",
+      "answer": "git pull --rebase origin main",
+      "description": "Fetches upstream changes and rebases your local commits on top to keep a linear history.",
+      "whenToUse": "Before pushing your work to avoid merge commits and reduce conflict noise.",
+      "scenarios": [
+        "Team updates: Syncing with teammates' changes before opening a pull request",
+        "CI failures: Rebase onto the latest main to pick up fixes before retrying",
+        "Conflict avoidance: Keeping a clean history for easier code review"
+      ],
+      "set_id": "git-daily"
+    }
+  ]
+}

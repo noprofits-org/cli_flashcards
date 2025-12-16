@@ -1,0 +1,102 @@
+{
+  "id": "clasp-projects",
+  "title": "Project Management",
+  "description": "Creating and cloning Apps Script projects",
+  "difficulty": "beginner",
+  "category": "clasp",
+  "estimatedTime": "12 min",
+  "cardCount": 7,
+  "cards": [
+    {
+      "id": "proj-1",
+      "task": "Create a new Apps Script project",
+      "answer": "clasp create-script [options]",
+      "description": "Creates a new Apps Script project in your current directory and on Google Drive. Generates .clasp.json and appsscript.json files.",
+      "whenToUse": "When starting a new Apps Script project from scratch.",
+      "scenarios": [
+        "New standalone project: Creating a script for a custom automation tool",
+        "Container-bound script: Using --type sheets for a script bound to a Google Sheet",
+        "Add-on development: Starting a new Google Workspace add-on"
+      ],
+      "set_id": "clasp-projects"
+    },
+    {
+      "id": "proj-2",
+      "task": "Create a new Apps Script project with a specific title and type",
+      "answer": "clasp create-script --title \"Sales Dashboard\" --type sheets",
+      "description": "Creates a project with a custom title and type. Valid types: standalone, sheets, docs, slides, forms.",
+      "whenToUse": "When you want a descriptive name and need to specify if it's bound to a document.",
+      "scenarios": [
+        "Sheet-bound app: Creating 'Sales Dashboard' bound to Sheets for custom menus",
+        "Team collaboration: Using descriptive titles for easy identification",
+        "Form automation: Creating 'Survey Processor' with --type forms"
+      ],
+      "set_id": "clasp-projects"
+    },
+    {
+      "id": "proj-3",
+      "task": "Create a script bound to a specific Google Sheet",
+      "answer": "clasp create-script --type sheets --parentId 1abc...xyz",
+      "description": "Creates a container-bound script attached to a specific Google Sheet, Form, Doc, or Slides.",
+      "whenToUse": "When building custom functions, menus, or automation for a specific document.",
+      "scenarios": [
+        "Custom sheet functions: Creating a script bound to a sales tracking sheet",
+        "Form processor: Binding a script to a Google Form for custom logic",
+        "Document automation: Creating a script for mail merge functionality"
+      ],
+      "set_id": "clasp-projects"
+    },
+    {
+      "id": "proj-4",
+      "task": "Clone an existing Apps Script project",
+      "answer": "clasp clone-script [scriptId]",
+      "description": "Downloads an existing Apps Script project from Google Drive to your local filesystem.",
+      "whenToUse": "When you want to work locally on a project created in the online editor.",
+      "scenarios": [
+        "Team collaboration: Cloning a colleague's shared script to contribute",
+        "Local development: Moving an existing web-based script to your IDE",
+        "Version control: Setting up Git for an existing script"
+      ],
+      "set_id": "clasp-projects"
+    },
+    {
+      "id": "proj-5",
+      "task": "Clone a specific historical version of a script",
+      "answer": "clasp clone-script scriptId 42",
+      "description": "Clones a specific version number instead of the latest code.",
+      "whenToUse": "When you need to examine or work with an older version of a script.",
+      "scenarios": [
+        "Bug investigation: Cloning version 38 to see code before a bug was introduced",
+        "Audit requirements: Retrieving the exact code version deployed on a specific date",
+        "Rollback preparation: Cloning the last known good version"
+      ],
+      "set_id": "clasp-projects"
+    },
+    {
+      "id": "proj-6",
+      "task": "List all Apps Script projects for current user",
+      "answer": "clasp list-scripts",
+      "description": "Displays all Apps Script projects accessible by your currently authenticated account.",
+      "whenToUse": "When you need to find a script ID or see all your available projects.",
+      "scenarios": [
+        "Script discovery: Finding the script ID of a project you want to clone",
+        "Project inventory: Viewing all your scripts to decide which ones to work on",
+        "Account audit: Checking what script projects exist in your account"
+      ],
+      "set_id": "clasp-projects"
+    },
+    {
+      "id": "proj-7",
+      "task": "Delete an Apps Script project",
+      "answer": "clasp delete-script [scriptId]",
+      "description": "Permanently removes an Apps Script project from Google Drive. Cannot be undone.",
+      "whenToUse": "When you need to completely remove a script project that's no longer needed.",
+      "scenarios": [
+        "Project cleanup: Removing test or prototype projects",
+        "Resource management: Deleting duplicate or obsolete projects",
+        "Security: Removing scripts containing sensitive code"
+      ],
+      "set_id": "clasp-projects"
+    }
+  ]
+}

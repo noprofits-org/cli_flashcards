@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "lastUpdated": "2025-12-06",
+  "version": "3.0.0",
+  "lastUpdated": "2025-12-15",
   "categories": [
     {
       "id": "terminal",
@@ -10,81 +10,237 @@
       "color": "#10b981"
     },
     {
+      "id": "git",
+      "name": "Git",
+      "description": "Version control essentials",
+      "icon": "git-branch",
+      "color": "#f44336"
+    },
+    {
       "id": "clasp",
       "name": "CLASP",
       "description": "Google Apps Script CLI tool",
       "icon": "terminal",
       "color": "#4285f4"
-    },
-    {
-      "id": "git",
-      "name": "Git & GitHub",
-      "description": "Version control essentials",
-      "icon": "git-branch",
-      "color": "#f44336"
     }
   ],
   "modules": {
     "flashcards": [
       {
-        "id": "terminal-basics",
-        "file": "terminal-basics.json",
+        "id": "terminal-navigation",
+        "file": "terminal-navigation.json",
         "category": "terminal",
-        "title": "Terminal Basics",
-        "description": "Essential terminal commands for navigating and managing files",
+        "title": "Navigation",
+        "description": "Moving around the file system with confidence",
         "difficulty": "beginner",
-        "cardCount": 20,
-        "estimatedTime": "25 min",
-        "icon": "square-terminal",
+        "cardCount": 6,
+        "estimatedTime": "10 min",
+        "icon": "compass",
         "color": "#10b981"
       },
       {
-        "id": "terminal-intermediate",
-        "file": "terminal-intermediate.json",
+        "id": "terminal-files",
+        "file": "terminal-files.json",
         "category": "terminal",
-        "title": "Terminal Intermediate",
-        "description": "More powerful terminal commands for everyday development",
-        "difficulty": "intermediate",
-        "cardCount": 15,
-        "estimatedTime": "25 min",
-        "icon": "square-terminal",
+        "title": "File Operations",
+        "description": "Creating, copying, moving, and deleting files and folders",
+        "difficulty": "beginner",
+        "cardCount": 10,
+        "estimatedTime": "15 min",
+        "icon": "folder",
         "color": "#059669"
       },
       {
-        "id": "clasp-basics",
-        "file": "clasp-basics.json",
-        "category": "clasp",
-        "title": "CLASP Basics",
-        "description": "Essential clasp commands for everyday Apps Script development",
+        "id": "terminal-viewing",
+        "file": "terminal-viewing.json",
+        "category": "terminal",
+        "title": "Viewing Files",
+        "description": "Reading and monitoring file contents",
         "difficulty": "beginner",
-        "cardCount": 30,
-        "estimatedTime": "30 min",
-        "icon": "terminal",
+        "cardCount": 5,
+        "estimatedTime": "10 min",
+        "icon": "eye",
+        "color": "#047857"
+      },
+      {
+        "id": "terminal-search",
+        "file": "terminal-search.json",
+        "category": "terminal",
+        "title": "Searching",
+        "description": "Finding files and content within your projects",
+        "difficulty": "intermediate",
+        "cardCount": 5,
+        "estimatedTime": "10 min",
+        "icon": "search",
+        "color": "#065f46"
+      },
+      {
+        "id": "terminal-nano",
+        "file": "terminal-nano.json",
+        "category": "terminal",
+        "title": "Nano Editor",
+        "description": "Terminal text editing with nano",
+        "difficulty": "beginner",
+        "cardCount": 8,
+        "estimatedTime": "12 min",
+        "icon": "edit",
+        "color": "#064e3b"
+      },
+      {
+        "id": "terminal-pipes",
+        "file": "terminal-pipes.json",
+        "category": "terminal",
+        "title": "Pipes & Redirection",
+        "description": "Combining commands and controlling output",
+        "difficulty": "intermediate",
+        "cardCount": 5,
+        "estimatedTime": "10 min",
+        "icon": "git-merge",
+        "color": "#0d9488"
+      },
+      {
+        "id": "git-setup",
+        "file": "git-setup.json",
+        "category": "git",
+        "title": "Getting Started",
+        "description": "Setting up Git and creating your first repository",
+        "difficulty": "beginner",
+        "cardCount": 5,
+        "estimatedTime": "10 min",
+        "icon": "download",
+        "color": "#f44336"
+      },
+      {
+        "id": "git-daily",
+        "file": "git-daily.json",
+        "category": "git",
+        "title": "Daily Workflow",
+        "description": "The add-commit-push cycle you'll use every day",
+        "difficulty": "beginner",
+        "cardCount": 6,
+        "estimatedTime": "12 min",
+        "icon": "refresh-cw",
+        "color": "#e53935"
+      },
+      {
+        "id": "git-branches",
+        "file": "git-branches.json",
+        "category": "git",
+        "title": "Branching",
+        "description": "Creating and managing branches for features and fixes",
+        "difficulty": "intermediate",
+        "cardCount": 8,
+        "estimatedTime": "15 min",
+        "icon": "git-branch",
+        "color": "#d32f2f"
+      },
+      {
+        "id": "git-stash",
+        "file": "git-stash.json",
+        "category": "git",
+        "title": "Stashing Work",
+        "description": "Temporarily saving uncommitted changes",
+        "difficulty": "intermediate",
+        "cardCount": 4,
+        "estimatedTime": "8 min",
+        "icon": "archive",
+        "color": "#c62828"
+      },
+      {
+        "id": "git-undo",
+        "file": "git-undo.json",
+        "category": "git",
+        "title": "Undo & Recovery",
+        "description": "Fixing mistakes and recovering lost work",
+        "difficulty": "intermediate",
+        "cardCount": 10,
+        "estimatedTime": "15 min",
+        "icon": "rotate-ccw",
+        "color": "#b71c1c"
+      },
+      {
+        "id": "git-history",
+        "file": "git-history.json",
+        "category": "git",
+        "title": "History & Inspection",
+        "description": "Exploring commits and understanding changes",
+        "difficulty": "beginner",
+        "cardCount": 5,
+        "estimatedTime": "10 min",
+        "icon": "clock",
+        "color": "#ff5722"
+      },
+      {
+        "id": "clasp-setup",
+        "file": "clasp-setup.json",
+        "category": "clasp",
+        "title": "Setup & Auth",
+        "description": "Getting started with CLASP and authentication",
+        "difficulty": "beginner",
+        "cardCount": 5,
+        "estimatedTime": "8 min",
+        "icon": "key",
         "color": "#4285f4"
       },
       {
-        "id": "clasp-fundamentals",
-        "file": "clasp-fundamentals.json",
+        "id": "clasp-projects",
+        "file": "clasp-projects.json",
         "category": "clasp",
-        "title": "Core Concepts",
-        "description": "Essential knowledge about Apps Script architecture and clasp configuration",
+        "title": "Project Management",
+        "description": "Creating and cloning Apps Script projects",
         "difficulty": "beginner",
-        "cardCount": 12,
-        "estimatedTime": "25 min",
-        "icon": "book",
-        "color": "#34a853"
+        "cardCount": 7,
+        "estimatedTime": "12 min",
+        "icon": "folder-plus",
+        "color": "#1e88e5"
       },
       {
-        "id": "clasp-advanced",
-        "file": "clasp-advanced.json",
+        "id": "clasp-workflow",
+        "file": "clasp-workflow.json",
         "category": "clasp",
-        "title": "CLASP Advanced",
-        "description": "Power user commands, flags, and multi-environment workflows",
-        "difficulty": "advanced",
-        "cardCount": 27,
-        "estimatedTime": "45 min",
+        "title": "Development Workflow",
+        "description": "Push, pull, and sync your code",
+        "difficulty": "beginner",
+        "cardCount": 8,
+        "estimatedTime": "12 min",
+        "icon": "refresh-cw",
+        "color": "#1976d2"
+      },
+      {
+        "id": "clasp-deploy",
+        "file": "clasp-deploy.json",
+        "category": "clasp",
+        "title": "Deployment",
+        "description": "Versioning and deploying your apps",
+        "difficulty": "intermediate",
+        "cardCount": 9,
+        "estimatedTime": "15 min",
         "icon": "rocket",
-        "color": "#ea4335"
+        "color": "#1565c0"
+      },
+      {
+        "id": "clasp-logs",
+        "file": "clasp-logs.json",
+        "category": "clasp",
+        "title": "Debugging & Logs",
+        "description": "Monitoring execution and troubleshooting issues",
+        "difficulty": "intermediate",
+        "cardCount": 7,
+        "estimatedTime": "12 min",
+        "icon": "bug",
+        "color": "#0d47a1"
+      },
+      {
+        "id": "clasp-apis",
+        "file": "clasp-apis.json",
+        "category": "clasp",
+        "title": "APIs & Services",
+        "description": "Managing Google APIs for your script",
+        "difficulty": "intermediate",
+        "cardCount": 5,
+        "estimatedTime": "10 min",
+        "icon": "cloud",
+        "color": "#0288d1"
       },
       {
         "id": "clasp-scenarios",
@@ -97,119 +253,6 @@
         "estimatedTime": "40 min",
         "icon": "briefcase",
         "color": "#fbbc04"
-      },
-      {
-        "id": "clasp-troubleshooting",
-        "file": "clasp-troubleshooting.json",
-        "category": "clasp",
-        "title": "Troubleshooting Guide",
-        "description": "Common errors and how to fix them",
-        "difficulty": "intermediate",
-        "cardCount": 16,
-        "estimatedTime": "30 min",
-        "icon": "wrench",
-        "color": "#9c27b0"
-      },
-      {
-        "id": "git-basics",
-        "file": "git-basics.json",
-        "category": "git",
-        "title": "Git Basics",
-        "description": "Essential Git commands for everyday development",
-        "difficulty": "beginner",
-        "cardCount": 10,
-        "estimatedTime": "25 min",
-        "icon": "git-commit",
-        "color": "#f44336"
-      },
-      {
-        "id": "git-branching",
-        "file": "git-branching.json",
-        "category": "git",
-        "title": "Branching & Collaboration",
-        "description": "Branch management, merging, rebasing, and team workflows",
-        "difficulty": "intermediate",
-        "cardCount": 10,
-        "estimatedTime": "30 min",
-        "icon": "git-branch",
-        "color": "#ff5722"
-      },
-      {
-        "id": "git-troubleshooting",
-        "file": "git-troubleshooting.json",
-        "category": "git",
-        "title": "Git Troubleshooting",
-        "description": "Undo mistakes, recover lost work, and debug issues",
-        "difficulty": "intermediate",
-        "cardCount": 10,
-        "estimatedTime": "25 min",
-        "icon": "rotate-ccw",
-        "color": "#e91e63"
-      },
-      {
-        "id": "clasp-git-integration",
-        "file": "clasp-git-integration.json",
-        "category": "clasp",
-        "title": "Git Integration",
-        "description": "Version control workflows with clasp and Git",
-        "difficulty": "intermediate",
-        "cardCount": 0,
-        "estimatedTime": "20 min",
-        "icon": "git-merge",
-        "color": "#00bcd4",
-        "comingSoon": true
-      },
-      {
-        "id": "clasp-typescript",
-        "file": "clasp-typescript.json",
-        "category": "clasp",
-        "title": "TypeScript Development",
-        "description": "Type-safe Apps Script development with TypeScript",
-        "difficulty": "advanced",
-        "cardCount": 0,
-        "estimatedTime": "35 min",
-        "icon": "code",
-        "color": "#3178c6",
-        "comingSoon": true
-      },
-      {
-        "id": "clasp-testing-debugging",
-        "file": "clasp-testing-debugging.json",
-        "category": "clasp",
-        "title": "Testing & Debugging",
-        "description": "Testing strategies and debugging techniques",
-        "difficulty": "intermediate",
-        "cardCount": 0,
-        "estimatedTime": "30 min",
-        "icon": "bug",
-        "color": "#00bcd4",
-        "comingSoon": true
-      },
-      {
-        "id": "clasp-quick-wins",
-        "file": "clasp-quick-wins.json",
-        "category": "clasp",
-        "title": "Quick Wins",
-        "description": "High-impact commands you'll use daily",
-        "difficulty": "beginner",
-        "cardCount": 0,
-        "estimatedTime": "15 min",
-        "icon": "zap",
-        "color": "#ff9800",
-        "comingSoon": true
-      },
-      {
-        "id": "clasp-workflows",
-        "file": "clasp-workflows.json",
-        "category": "clasp",
-        "title": "Common Workflows",
-        "description": "End-to-end development and deployment patterns",
-        "difficulty": "intermediate",
-        "cardCount": 0,
-        "estimatedTime": "25 min",
-        "icon": "workflow",
-        "color": "#673ab7",
-        "comingSoon": true
       }
     ],
     "learningModules": [
@@ -223,24 +266,6 @@
         "comingSoon": false
       },
       {
-        "id": "fill-blank",
-        "title": "Fill in the Blank",
-        "description": "Type the correct command from memory",
-        "type": "fill-blank",
-        "icon": "edit-3",
-        "color": "#4caf50",
-        "comingSoon": true
-      },
-      {
-        "id": "scenario-sim",
-        "title": "Scenario Simulator",
-        "description": "Walk through multi-step workflows interactively",
-        "type": "simulation",
-        "icon": "play-circle",
-        "color": "#ff5722",
-        "comingSoon": true
-      },
-      {
         "id": "spaced-repetition",
         "title": "Spaced Repetition",
         "description": "Smart review system that tracks your mastery",
@@ -248,24 +273,6 @@
         "icon": "calendar",
         "color": "#9c27b0",
         "comingSoon": false
-      },
-      {
-        "id": "speed-drill",
-        "title": "Speed Drills",
-        "description": "Timed challenges to build command recall",
-        "type": "timed-challenge",
-        "icon": "clock",
-        "color": "#f44336",
-        "comingSoon": true
-      },
-      {
-        "id": "error-doctor",
-        "title": "Error Doctor",
-        "description": "Diagnose and fix common clasp errors",
-        "type": "troubleshooting",
-        "icon": "activity",
-        "color": "#00bcd4",
-        "comingSoon": true
       }
     ]
   },
@@ -341,60 +348,51 @@
   },
   "learningPaths": [
     {
+      "id": "terminal-essentials",
+      "title": "Terminal Essentials",
+      "description": "Master the command line from navigation to automation",
+      "category": "terminal",
+      "modules": ["terminal-navigation", "terminal-files", "terminal-viewing", "terminal-search", "terminal-nano", "terminal-pipes"],
+      "estimatedTime": "1 hour",
+      "icon": "square-terminal"
+    },
+    {
+      "id": "git-essentials",
+      "title": "Git Essentials",
+      "description": "Version control from first commit to team collaboration",
+      "category": "git",
+      "modules": ["git-setup", "git-daily", "git-branches", "git-stash", "git-undo", "git-history"],
+      "estimatedTime": "1 hour 10 min",
+      "icon": "git-branch"
+    },
+    {
       "id": "clasp-beginner",
       "title": "Getting Started with CLASP",
-      "description": "Complete introduction for new users",
+      "description": "Complete introduction for new Apps Script developers",
       "category": "clasp",
-      "modules": ["clasp-fundamentals", "clasp-basics", "clasp-quick-wins"],
-      "estimatedTime": "1.5 hours",
+      "modules": ["clasp-setup", "clasp-projects", "clasp-workflow"],
+      "estimatedTime": "30 min",
       "icon": "graduation-cap"
     },
     {
       "id": "clasp-intermediate",
       "title": "Mastering CLASP",
-      "description": "Level up your development workflow",
+      "description": "Deployment, debugging, and professional workflows",
       "category": "clasp",
-      "modules": ["clasp-scenarios", "clasp-troubleshooting", "clasp-git-integration", "clasp-workflows"],
-      "estimatedTime": "2 hours",
+      "modules": ["clasp-deploy", "clasp-logs", "clasp-apis", "clasp-scenarios"],
+      "estimatedTime": "1 hour 20 min",
       "icon": "trending-up"
-    },
-    {
-      "id": "clasp-advanced",
-      "title": "CLASP Power User",
-      "description": "Advanced techniques and TypeScript development",
-      "category": "clasp",
-      "modules": ["clasp-advanced", "clasp-typescript", "clasp-testing-debugging"],
-      "estimatedTime": "2 hours",
-      "icon": "award"
-    },
-    {
-      "id": "git-essentials",
-      "title": "Git Essentials",
-      "description": "Master version control fundamentals",
-      "category": "git",
-      "modules": ["git-basics", "git-branching", "git-troubleshooting"],
-      "estimatedTime": "1.5 hours",
-      "icon": "git-branch"
-    },
-    {
-      "id": "terminal-essentials",
-      "title": "Terminal Essentials",
-      "description": "Master the command line from basics to power user",
-      "category": "terminal",
-      "modules": ["terminal-basics", "terminal-intermediate"],
-      "estimatedTime": "45 min",
-      "icon": "square-terminal"
     }
   ],
   "stats": {
-    "totalCards": 168,
-    "totalModules": 15,
-    "availableModules": 10,
+    "totalCards": 118,
+    "totalModules": 19,
+    "availableModules": 19,
     "categories": 3,
     "difficulties": {
-      "beginner": 5,
-      "intermediate": 7,
-      "advanced": 3
+      "beginner": 11,
+      "intermediate": 8,
+      "advanced": 0
     }
   }
 }

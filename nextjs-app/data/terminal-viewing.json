@@ -1,0 +1,76 @@
+{
+  "id": "terminal-viewing",
+  "title": "Viewing Files",
+  "description": "Reading and monitoring file contents",
+  "difficulty": "beginner",
+  "category": "terminal",
+  "estimatedTime": "10 min",
+  "cardCount": 5,
+  "cards": [
+    {
+      "id": "view-1",
+      "task": "Display the contents of a file called 'readme.txt'",
+      "answer": "cat readme.txt",
+      "description": "Prints the entire contents of a file to the terminal",
+      "whenToUse": "When you want to quickly view a file's contents",
+      "scenarios": [
+        "You want to read a config file",
+        "You need to check what's in a small text file",
+        "You want to see the contents of .clasp.json"
+      ],
+      "set_id": "terminal-viewing"
+    },
+    {
+      "id": "view-2",
+      "task": "Show the first 10 lines of a file called 'log.txt'",
+      "answer": "head log.txt",
+      "description": "Displays the beginning of a file (default 10 lines)",
+      "whenToUse": "When you want to preview the start of a large file",
+      "scenarios": [
+        "You want to check the header of a CSV file",
+        "You need to see the beginning of a log file",
+        "You want to peek at a file without opening the whole thing"
+      ],
+      "set_id": "terminal-viewing"
+    },
+    {
+      "id": "view-3",
+      "task": "Show the last 20 lines of a file called 'log.txt'",
+      "answer": "tail -20 log.txt",
+      "description": "Displays the end of a file with a specified number of lines",
+      "whenToUse": "When you need to see the most recent entries in a file",
+      "scenarios": [
+        "You want to see the latest log entries",
+        "You need to check recent errors in a log file",
+        "You want to see how a file ends"
+      ],
+      "set_id": "terminal-viewing"
+    },
+    {
+      "id": "view-4",
+      "task": "Watch a log file for new entries in real-time",
+      "answer": "tail -f log.txt",
+      "description": "Continuously displays new lines as they're added to a file",
+      "whenToUse": "When you want to monitor a file that's being updated",
+      "scenarios": [
+        "You're watching server logs while testing",
+        "You want to see errors as they happen",
+        "You're debugging and need to monitor output"
+      ],
+      "set_id": "terminal-viewing"
+    },
+    {
+      "id": "view-5",
+      "task": "Clear the terminal screen",
+      "answer": "clear",
+      "description": "Clears all previous output from the terminal",
+      "whenToUse": "When your terminal is cluttered with old output",
+      "scenarios": [
+        "You want a fresh, clean terminal view",
+        "You're about to run an important command and want to see the output clearly",
+        "Your screen is full of previous command results"
+      ],
+      "set_id": "terminal-viewing"
+    }
+  ]
+}

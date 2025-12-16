@@ -1,0 +1,102 @@
+{
+  "id": "clasp-logs",
+  "title": "Debugging & Logs",
+  "description": "Monitoring execution and troubleshooting issues",
+  "difficulty": "intermediate",
+  "category": "clasp",
+  "estimatedTime": "12 min",
+  "cardCount": 7,
+  "cards": [
+    {
+      "id": "logs-1",
+      "task": "Stream the script execution logs in real-time",
+      "answer": "clasp tail-logs",
+      "description": "Streams execution logs directly to your terminal, showing console.log output and errors as they occur.",
+      "whenToUse": "When debugging your script and you want to see logs without leaving the terminal.",
+      "scenarios": [
+        "Live debugging: Watching logs while testing your script's functionality",
+        "Error monitoring: Watching for errors in a running web app",
+        "Development workflow: Viewing console.log output while developing"
+      ],
+      "set_id": "clasp-logs"
+    },
+    {
+      "id": "logs-2",
+      "task": "Stream logs continuously in real-time",
+      "answer": "clasp tail-logs --watch",
+      "description": "Continuously monitors and displays new log entries as they occur, refreshing every 5 seconds.",
+      "whenToUse": "When debugging a running script or monitoring production web app activity.",
+      "scenarios": [
+        "Live debugging: Watching logs while triggering your web app",
+        "Production monitoring: Keeping logs open to watch for errors",
+        "Trigger testing: Monitoring logs while time-based triggers fire"
+      ],
+      "set_id": "clasp-logs"
+    },
+    {
+      "id": "logs-3",
+      "task": "View logs in JSON format for parsing",
+      "answer": "clasp tail-logs --json",
+      "description": "Outputs logs as JSON instead of human-readable format for programmatic processing.",
+      "whenToUse": "When integrating logs with monitoring tools or parsing them programmatically.",
+      "scenarios": [
+        "Log aggregation: Piping JSON logs to Elasticsearch or Splunk",
+        "Automated analysis: Using jq to filter and analyze error patterns",
+        "CI/CD testing: Parsing JSON logs in test scripts"
+      ],
+      "set_id": "clasp-logs"
+    },
+    {
+      "id": "logs-4",
+      "task": "View simplified logs without timestamps",
+      "answer": "clasp tail-logs --simplified",
+      "description": "Removes timestamps and metadata from log output, showing only the actual messages.",
+      "whenToUse": "When you only care about the log messages themselves.",
+      "scenarios": [
+        "Quick scanning: Removing clutter to quickly scan for error messages",
+        "Copy-paste: Getting clean log messages for documentation",
+        "Pattern matching: Easier to spot repeated messages without noise"
+      ],
+      "set_id": "clasp-logs"
+    },
+    {
+      "id": "logs-5",
+      "task": "Open the Apps Script execution logs in browser",
+      "answer": "clasp open-logs",
+      "description": "Opens the Stackdriver Logging page where you can view detailed execution logs.",
+      "whenToUse": "When you need the full web interface for complex log filtering.",
+      "scenarios": [
+        "Detailed debugging: Accessing the full web interface for complex analysis",
+        "Historical review: Viewing execution logs from days or weeks ago",
+        "Log export: Using the web interface to export logs for reporting"
+      ],
+      "set_id": "clasp-logs"
+    },
+    {
+      "id": "logs-6",
+      "task": "Execute a function in the script",
+      "answer": "clasp run-function [functionName]",
+      "description": "Remotely executes a specific function in your Apps Script project from the command line.",
+      "whenToUse": "When you want to test functions or run one-off scripts without the editor.",
+      "scenarios": [
+        "Function testing: Running and testing individual functions during development",
+        "One-off tasks: Executing data migration or cleanup functions",
+        "CI/CD integration: Running test functions in automated pipelines"
+      ],
+      "set_id": "clasp-logs"
+    },
+    {
+      "id": "logs-7",
+      "task": "Open the Google Cloud Console for the project",
+      "answer": "clasp open-api-console",
+      "description": "Opens the Google Cloud Platform Console for your script's associated cloud project.",
+      "whenToUse": "When you need to manage advanced cloud settings, view API quotas, or configure OAuth.",
+      "scenarios": [
+        "Quota management: Checking API usage limits and requesting increases",
+        "OAuth configuration: Setting up consent screens for add-ons",
+        "Service accounts: Creating service accounts for server-to-server auth"
+      ],
+      "set_id": "clasp-logs"
+    }
+  ]
+}

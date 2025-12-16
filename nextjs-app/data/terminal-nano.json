@@ -1,0 +1,115 @@
+{
+  "id": "terminal-nano",
+  "title": "Nano Editor",
+  "description": "Terminal text editing with nano",
+  "difficulty": "beginner",
+  "category": "terminal",
+  "estimatedTime": "12 min",
+  "cardCount": 8,
+  "cards": [
+    {
+      "id": "nano-1",
+      "task": "Open a file called 'script.js' in the nano text editor",
+      "answer": "nano script.js",
+      "description": "Opens a file in nano, a simple terminal-based text editor",
+      "whenToUse": "When you need to edit a file directly in the terminal",
+      "scenarios": [
+        "You want to quickly edit a config file",
+        "You're creating a new script file",
+        "You need to make a small change without opening a full IDE"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-2",
+      "task": "In nano: Save the current file",
+      "answer": "Ctrl+O",
+      "description": "Writes (saves) the current file in nano (then press Enter to confirm)",
+      "whenToUse": "When you want to save your changes in nano",
+      "scenarios": [
+        "You've finished editing and want to save",
+        "You want to save before making more risky changes",
+        "You're saving periodically to avoid losing work"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-3",
+      "task": "In nano: Exit the editor",
+      "answer": "Ctrl+X",
+      "description": "Exits nano (will prompt to save if there are unsaved changes)",
+      "whenToUse": "When you're done editing and want to close nano",
+      "scenarios": [
+        "You've finished editing a file",
+        "You want to quit without saving (press N when prompted)",
+        "You're done and ready to run other commands"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-4",
+      "task": "In nano: Cut the current line",
+      "answer": "Ctrl+K",
+      "description": "Cuts (removes) the entire current line and stores it for pasting",
+      "whenToUse": "When you want to delete or move a line of text",
+      "scenarios": [
+        "You want to delete a line of code",
+        "You're moving a line to a different location",
+        "You need to remove multiple lines quickly"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-5",
+      "task": "In nano: Paste the cut text",
+      "answer": "Ctrl+U",
+      "description": "Pastes (uncuts) the previously cut text at the cursor position",
+      "whenToUse": "When you want to paste text you previously cut",
+      "scenarios": [
+        "You're moving a line to a new location",
+        "You want to duplicate a line (cut, paste, paste)",
+        "You need to restore a line you accidentally cut"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-6",
+      "task": "In nano: Search for text",
+      "answer": "Ctrl+W",
+      "description": "Opens the search prompt to find text in the file",
+      "whenToUse": "When you need to find specific text in the file",
+      "scenarios": [
+        "You're looking for a function definition",
+        "You want to find all occurrences of a variable",
+        "You need to jump to a specific section"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-7",
+      "task": "In nano: Display help",
+      "answer": "Ctrl+G",
+      "description": "Shows the help screen with all available keyboard shortcuts",
+      "whenToUse": "When you forget a command or want to learn more shortcuts",
+      "scenarios": [
+        "You're new to nano and need guidance",
+        "You forgot how to do something specific",
+        "You want to discover more advanced features"
+      ],
+      "set_id": "terminal-nano"
+    },
+    {
+      "id": "nano-8",
+      "task": "In nano: Go to a specific line number",
+      "answer": "Ctrl+_",
+      "description": "Opens a prompt to jump to a specific line number",
+      "whenToUse": "When you need to navigate to a specific line in a large file",
+      "scenarios": [
+        "An error message tells you the problem is on line 42",
+        "You want to jump to a line you noted earlier",
+        "You're reviewing code at a specific location"
+      ],
+      "set_id": "terminal-nano"
+    }
+  ]
+}

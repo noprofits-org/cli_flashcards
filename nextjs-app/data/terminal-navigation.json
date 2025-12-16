@@ -1,0 +1,89 @@
+{
+  "id": "terminal-navigation",
+  "title": "Navigation",
+  "description": "Moving around the file system with confidence",
+  "difficulty": "beginner",
+  "category": "terminal",
+  "estimatedTime": "10 min",
+  "cardCount": 6,
+  "cards": [
+    {
+      "id": "nav-1",
+      "task": "Print the current directory path",
+      "answer": "pwd",
+      "description": "Displays the full path to your current working directory",
+      "whenToUse": "When you need to know exactly where you are in the file system",
+      "scenarios": [
+        "You opened a new terminal and want to see where you are",
+        "You need to copy the current path to share with someone",
+        "You're lost after navigating through multiple directories"
+      ],
+      "set_id": "terminal-navigation"
+    },
+    {
+      "id": "nav-2",
+      "task": "List files in the current directory",
+      "answer": "ls",
+      "description": "Shows all files and folders in the current directory",
+      "whenToUse": "When you want to see what's in a folder",
+      "scenarios": [
+        "You want to see what files are in your project folder",
+        "You're checking if a file exists before creating it",
+        "You need to find the exact name of a file"
+      ],
+      "set_id": "terminal-navigation"
+    },
+    {
+      "id": "nav-3",
+      "task": "List files with details (size, date, permissions)",
+      "answer": "ls -la",
+      "description": "Shows all files including hidden ones, with detailed information",
+      "whenToUse": "When you need to see file sizes, dates, or hidden files",
+      "scenarios": [
+        "You want to see hidden config files like .clasp.json",
+        "You need to check when a file was last modified",
+        "You want to see file sizes"
+      ],
+      "set_id": "terminal-navigation"
+    },
+    {
+      "id": "nav-4",
+      "task": "Change to a directory called 'projects'",
+      "answer": "cd projects",
+      "description": "Moves you into a subdirectory",
+      "whenToUse": "When you need to navigate into a folder",
+      "scenarios": [
+        "You want to enter your project folder",
+        "You need to access files in a subdirectory",
+        "You're navigating to where your code lives"
+      ],
+      "set_id": "terminal-navigation"
+    },
+    {
+      "id": "nav-5",
+      "task": "Go up one directory level",
+      "answer": "cd ..",
+      "description": "Moves you to the parent directory",
+      "whenToUse": "When you need to go back up in the folder structure",
+      "scenarios": [
+        "You're done working in a subfolder",
+        "You went into the wrong directory",
+        "You need to access a sibling folder"
+      ],
+      "set_id": "terminal-navigation"
+    },
+    {
+      "id": "nav-6",
+      "task": "Go to your home directory",
+      "answer": "cd ~",
+      "description": "Takes you directly to your user's home folder",
+      "whenToUse": "When you want to quickly return to your home directory",
+      "scenarios": [
+        "You want to start fresh from a known location",
+        "You need to access files in your home folder",
+        "You're deeply nested and want to get back quickly"
+      ],
+      "set_id": "terminal-navigation"
+    }
+  ]
+}
