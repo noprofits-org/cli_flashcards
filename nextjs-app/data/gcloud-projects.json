@@ -1,0 +1,128 @@
+{
+  "id": "gcloud-projects",
+  "title": "Projects & IAM",
+  "description": "Manage projects, permissions, and service accounts",
+  "difficulty": "intermediate",
+  "category": "gcloud",
+  "estimatedTime": "12 min",
+  "cardCount": 9,
+  "cards": [
+    {
+      "id": "gc-proj-1",
+      "task": "List all projects you have access to",
+      "answer": "gcloud projects list",
+      "description": "Shows all Google Cloud projects accessible with your current credentials.",
+      "whenToUse": "When finding project IDs or reviewing available projects.",
+      "scenarios": [
+        "Project discovery: Finding the project ID you need",
+        "Access audit: Reviewing which projects you can access",
+        "Account overview: Listing all projects under your account"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-2",
+      "task": "Display metadata for a specific project",
+      "answer": "gcloud projects describe <project-id>",
+      "description": "Shows detailed information about a project including its name, number, and labels.",
+      "whenToUse": "When you need project details like the project number or creation date.",
+      "scenarios": [
+        "Project info: Getting the project number for API calls",
+        "Verification: Confirming project details before making changes",
+        "Documentation: Recording project metadata for reference"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-3",
+      "task": "Create a new Google Cloud project",
+      "answer": "gcloud projects create <project-id>",
+      "description": "Creates a new Google Cloud project with the specified ID.",
+      "whenToUse": "When starting a new application or setting up separate environments.",
+      "scenarios": [
+        "New application: Creating a project for a new app",
+        "Environment setup: Creating staging/production projects",
+        "Isolation: Creating separate projects for different workloads"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-4",
+      "task": "Create a new service account",
+      "answer": "gcloud iam service-accounts create <name> --display-name \"<display-name>\"",
+      "description": "Creates a service account for automated access to Google Cloud services.",
+      "whenToUse": "When setting up automated processes or CI/CD pipelines.",
+      "scenarios": [
+        "CI/CD: Creating an account for deployment pipelines",
+        "Automation: Setting up accounts for scheduled scripts",
+        "Server access: Creating accounts for server-to-server auth"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-5",
+      "task": "List all service accounts in a project",
+      "answer": "gcloud iam service-accounts list",
+      "description": "Shows all service accounts created in the current project.",
+      "whenToUse": "When auditing service accounts or finding account emails.",
+      "scenarios": [
+        "Audit: Reviewing all service accounts for security",
+        "Discovery: Finding the email of a service account",
+        "Cleanup: Identifying unused service accounts"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-6",
+      "task": "Create and download a service account key",
+      "answer": "gcloud iam service-accounts keys create key.json --iam-account=<email>",
+      "description": "Generates a JSON key file for a service account that can be used for authentication.",
+      "whenToUse": "When setting up service account authentication for applications.",
+      "scenarios": [
+        "App authentication: Creating keys for backend services",
+        "CI/CD setup: Generating keys for deployment scripts",
+        "Local development: Creating keys for testing locally"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-7",
+      "task": "Grant a role to a user or service account",
+      "answer": "gcloud projects add-iam-policy-binding <project-id> --member=<member> --role=<role>",
+      "description": "Adds an IAM role binding to grant permissions to a user or service account.",
+      "whenToUse": "When granting access to team members or service accounts.",
+      "scenarios": [
+        "Team access: Granting a developer access to a project",
+        "Service permissions: Giving a service account specific roles",
+        "Elevated access: Granting admin roles for maintenance"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-8",
+      "task": "List all IAM roles available for a resource",
+      "answer": "gcloud iam list-grantable-roles //cloudresourcemanager.googleapis.com/projects/<project-id>",
+      "description": "Shows all IAM roles that can be assigned for a specific resource.",
+      "whenToUse": "When finding the right role to assign for a task.",
+      "scenarios": [
+        "Role discovery: Finding what roles are available",
+        "Permission planning: Reviewing roles before granting access",
+        "Least privilege: Finding the most restrictive suitable role"
+      ],
+      "set_id": "gcloud-projects"
+    },
+    {
+      "id": "gc-proj-9",
+      "task": "View the IAM policy for a project",
+      "answer": "gcloud projects get-iam-policy <project-id>",
+      "description": "Displays all IAM bindings showing who has what access to the project.",
+      "whenToUse": "When auditing access or troubleshooting permission issues.",
+      "scenarios": [
+        "Security audit: Reviewing who has access to a project",
+        "Troubleshooting: Checking why someone can't access resources",
+        "Compliance: Documenting access controls for auditors"
+      ],
+      "set_id": "gcloud-projects"
+    }
+  ]
+}

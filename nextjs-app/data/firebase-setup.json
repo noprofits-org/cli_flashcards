@@ -1,0 +1,89 @@
+{
+  "id": "firebase-setup",
+  "title": "Setup & Authentication",
+  "description": "Install Firebase CLI and manage accounts",
+  "difficulty": "beginner",
+  "category": "firebase",
+  "estimatedTime": "8 min",
+  "cardCount": 6,
+  "cards": [
+    {
+      "id": "fb-setup-1",
+      "task": "Install the Firebase CLI globally",
+      "answer": "npm install -g firebase-tools",
+      "description": "Installs the Firebase command-line tools globally so you can use the 'firebase' command from any directory.",
+      "whenToUse": "First-time setup before using any Firebase CLI features.",
+      "scenarios": [
+        "Initial setup: Installing Firebase tools on a new development machine",
+        "Version upgrade: Reinstalling to get the latest Firebase CLI version",
+        "CI/CD setup: Adding Firebase tools to your build environment"
+      ],
+      "set_id": "firebase-setup"
+    },
+    {
+      "id": "fb-setup-2",
+      "task": "Log in to Firebase from the command line",
+      "answer": "firebase login",
+      "description": "Opens a browser window to authenticate with your Google account and authorize the Firebase CLI.",
+      "whenToUse": "When you need to connect the CLI to your Firebase account for the first time or after logging out.",
+      "scenarios": [
+        "First-time authentication: Connecting CLI to your Google account",
+        "Account switch: Re-authenticating after logging out",
+        "New machine: Setting up Firebase CLI on a different computer"
+      ],
+      "set_id": "firebase-setup"
+    },
+    {
+      "id": "fb-setup-3",
+      "task": "Log out of Firebase CLI",
+      "answer": "firebase logout",
+      "description": "Signs out of the Firebase CLI and removes cached credentials from your machine.",
+      "whenToUse": "When switching accounts or for security on shared machines.",
+      "scenarios": [
+        "Account switching: Logging out before switching to a different Google account",
+        "Security: Removing credentials from a shared or public machine",
+        "Troubleshooting: Clearing credentials to fix authentication issues"
+      ],
+      "set_id": "firebase-setup"
+    },
+    {
+      "id": "fb-setup-4",
+      "task": "Add an additional Google account to Firebase CLI",
+      "answer": "firebase login:add",
+      "description": "Authorizes another Google account for use with the CLI without logging out of the current one.",
+      "whenToUse": "When you work with Firebase projects across multiple Google accounts.",
+      "scenarios": [
+        "Multi-account workflow: Adding work and personal accounts",
+        "Team access: Adding an account with access to different projects",
+        "Client work: Adding a client's account temporarily"
+      ],
+      "set_id": "firebase-setup"
+    },
+    {
+      "id": "fb-setup-5",
+      "task": "List all authorized Firebase accounts",
+      "answer": "firebase login:list",
+      "description": "Shows all Google accounts currently authorized with the Firebase CLI.",
+      "whenToUse": "When you need to see which accounts are available for use.",
+      "scenarios": [
+        "Account management: Checking which accounts are currently authorized",
+        "Troubleshooting: Verifying the correct account is logged in",
+        "Cleanup: Reviewing accounts before removing unused ones"
+      ],
+      "set_id": "firebase-setup"
+    },
+    {
+      "id": "fb-setup-6",
+      "task": "Log in without opening a browser (for remote/CI environments)",
+      "answer": "firebase login --no-localhost",
+      "description": "Provides a URL to authenticate manually, useful for remote servers or CI environments without a browser.",
+      "whenToUse": "When working on a headless server or in a CI/CD pipeline.",
+      "scenarios": [
+        "Remote server: Authenticating on a server via SSH",
+        "CI/CD pipeline: Setting up authentication in automated environments",
+        "Docker container: Logging in from a containerized environment"
+      ],
+      "set_id": "firebase-setup"
+    }
+  ]
+}

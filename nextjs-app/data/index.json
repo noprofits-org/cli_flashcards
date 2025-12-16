@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "4.0.0",
   "lastUpdated": "2025-12-15",
   "categories": [
     {
@@ -21,6 +21,20 @@
       "name": "CLASP",
       "description": "Google Apps Script CLI tool",
       "icon": "terminal",
+      "color": "#4285f4"
+    },
+    {
+      "id": "firebase",
+      "name": "Firebase",
+      "description": "Firebase CLI for app deployment",
+      "icon": "flame",
+      "color": "#ff9800"
+    },
+    {
+      "id": "gcloud",
+      "name": "Google Cloud",
+      "description": "Google Cloud Platform CLI",
+      "icon": "cloud",
       "color": "#4285f4"
     }
   ],
@@ -253,6 +267,102 @@
         "estimatedTime": "40 min",
         "icon": "briefcase",
         "color": "#fbbc04"
+      },
+      {
+        "id": "firebase-setup",
+        "file": "firebase-setup.json",
+        "category": "firebase",
+        "title": "Setup & Authentication",
+        "description": "Install Firebase CLI and manage accounts",
+        "difficulty": "beginner",
+        "cardCount": 6,
+        "estimatedTime": "8 min",
+        "icon": "key",
+        "color": "#ff9800"
+      },
+      {
+        "id": "firebase-deploy",
+        "file": "firebase-deploy.json",
+        "category": "firebase",
+        "title": "Deployment & Hosting",
+        "description": "Deploy and manage your Firebase projects",
+        "difficulty": "beginner",
+        "cardCount": 8,
+        "estimatedTime": "10 min",
+        "icon": "rocket",
+        "color": "#f57c00"
+      },
+      {
+        "id": "firebase-emulators",
+        "file": "firebase-emulators.json",
+        "category": "firebase",
+        "title": "Local Development",
+        "description": "Run Firebase services locally for testing",
+        "difficulty": "intermediate",
+        "cardCount": 7,
+        "estimatedTime": "10 min",
+        "icon": "play-circle",
+        "color": "#ef6c00"
+      },
+      {
+        "id": "firebase-services",
+        "file": "firebase-services.json",
+        "category": "firebase",
+        "title": "Services & Data",
+        "description": "Manage Firestore, Auth, and other services",
+        "difficulty": "intermediate",
+        "cardCount": 9,
+        "estimatedTime": "12 min",
+        "icon": "database",
+        "color": "#e65100"
+      },
+      {
+        "id": "gcloud-setup",
+        "file": "gcloud-setup.json",
+        "category": "gcloud",
+        "title": "Setup & Configuration",
+        "description": "Install gcloud CLI and manage authentication",
+        "difficulty": "beginner",
+        "cardCount": 8,
+        "estimatedTime": "10 min",
+        "icon": "settings",
+        "color": "#4285f4"
+      },
+      {
+        "id": "gcloud-projects",
+        "file": "gcloud-projects.json",
+        "category": "gcloud",
+        "title": "Projects & IAM",
+        "description": "Manage projects, permissions, and service accounts",
+        "difficulty": "intermediate",
+        "cardCount": 9,
+        "estimatedTime": "12 min",
+        "icon": "users",
+        "color": "#1e88e5"
+      },
+      {
+        "id": "gcloud-compute",
+        "file": "gcloud-compute.json",
+        "category": "gcloud",
+        "title": "Compute Engine",
+        "description": "Create and manage virtual machines",
+        "difficulty": "intermediate",
+        "cardCount": 9,
+        "estimatedTime": "12 min",
+        "icon": "server",
+        "color": "#1565c0"
+      },
+      {
+        "id": "gcloud-deploy",
+        "file": "gcloud-deploy.json",
+        "category": "gcloud",
+        "title": "App Engine & Containers",
+        "description": "Deploy applications and manage containers",
+        "difficulty": "intermediate",
+        "cardCount": 10,
+        "estimatedTime": "12 min",
+        "icon": "box",
+        "color": "#0d47a1"
       }
     ],
     "learningModules": [
@@ -382,16 +492,34 @@
       "modules": ["clasp-deploy", "clasp-logs", "clasp-apis", "clasp-scenarios"],
       "estimatedTime": "1 hour 20 min",
       "icon": "trending-up"
+    },
+    {
+      "id": "firebase-essentials",
+      "title": "Firebase Essentials",
+      "description": "Deploy and manage Firebase applications from the CLI",
+      "category": "firebase",
+      "modules": ["firebase-setup", "firebase-deploy", "firebase-emulators", "firebase-services"],
+      "estimatedTime": "40 min",
+      "icon": "flame"
+    },
+    {
+      "id": "gcloud-essentials",
+      "title": "Google Cloud Essentials",
+      "description": "Manage GCP resources from the command line",
+      "category": "gcloud",
+      "modules": ["gcloud-setup", "gcloud-projects", "gcloud-compute", "gcloud-deploy"],
+      "estimatedTime": "45 min",
+      "icon": "cloud"
     }
   ],
   "stats": {
-    "totalCards": 118,
-    "totalModules": 19,
-    "availableModules": 19,
-    "categories": 3,
+    "totalCards": 184,
+    "totalModules": 27,
+    "availableModules": 27,
+    "categories": 5,
     "difficulties": {
-      "beginner": 11,
-      "intermediate": 8,
+      "beginner": 14,
+      "intermediate": 13,
       "advanced": 0
     }
   }

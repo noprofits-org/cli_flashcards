@@ -1,0 +1,115 @@
+{
+  "id": "firebase-deploy",
+  "title": "Deployment & Hosting",
+  "description": "Deploy and manage your Firebase projects",
+  "difficulty": "beginner",
+  "category": "firebase",
+  "estimatedTime": "10 min",
+  "cardCount": 8,
+  "cards": [
+    {
+      "id": "fb-deploy-1",
+      "task": "Initialize a new Firebase project in the current directory",
+      "answer": "firebase init",
+      "description": "Starts an interactive setup wizard to configure Firebase services (Hosting, Functions, Firestore, etc.) for your project.",
+      "whenToUse": "When setting up Firebase in a new or existing project directory.",
+      "scenarios": [
+        "New project: Setting up Firebase for a fresh web application",
+        "Adding services: Adding Firestore or Functions to an existing project",
+        "Configuration: Generating firebase.json and other config files"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-2",
+      "task": "Deploy all configured Firebase services",
+      "answer": "firebase deploy",
+      "description": "Deploys all configured services (Hosting, Functions, Firestore rules, etc.) to your Firebase project.",
+      "whenToUse": "When you want to push all local changes to production.",
+      "scenarios": [
+        "Full deployment: Pushing all changes after major updates",
+        "Initial launch: Deploying a project for the first time",
+        "Sync everything: Ensuring all services are up to date"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-3",
+      "task": "Deploy only Firebase Hosting",
+      "answer": "firebase deploy --only hosting",
+      "description": "Deploys only the static hosting files, skipping Functions, Firestore rules, and other services.",
+      "whenToUse": "When you only changed frontend files and want a faster deployment.",
+      "scenarios": [
+        "Frontend update: Deploying only HTML/CSS/JS changes",
+        "Quick fix: Pushing a hotfix without redeploying functions",
+        "Selective deploy: Avoiding function cold starts from redeployment"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-4",
+      "task": "Deploy only Cloud Functions",
+      "answer": "firebase deploy --only functions",
+      "description": "Deploys only Cloud Functions, skipping hosting and other services.",
+      "whenToUse": "When you've only modified backend functions.",
+      "scenarios": [
+        "Backend update: Deploying API changes without touching frontend",
+        "Function fix: Pushing a bug fix to a specific function",
+        "Faster iteration: Skipping hosting during function development"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-5",
+      "task": "Deploy a specific Cloud Function by name",
+      "answer": "firebase deploy --only functions:myFunction",
+      "description": "Deploys only the specified function, leaving other functions untouched.",
+      "whenToUse": "When you've changed only one function and want the fastest possible deployment.",
+      "scenarios": [
+        "Single function fix: Deploying a hotfix to one function",
+        "Targeted update: Updating only the function you're working on",
+        "Minimize disruption: Avoiding redeployment of stable functions"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-6",
+      "task": "Set the active Firebase project for this directory",
+      "answer": "firebase use <project-id>",
+      "description": "Sets which Firebase project to use for commands in the current directory.",
+      "whenToUse": "When working with multiple Firebase projects or switching between staging/production.",
+      "scenarios": [
+        "Project switching: Changing from development to production project",
+        "Multi-project setup: Selecting which project to deploy to",
+        "Environment management: Switching between staging and prod"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-7",
+      "task": "List all Firebase projects you have access to",
+      "answer": "firebase projects:list",
+      "description": "Shows all Firebase projects associated with your logged-in account.",
+      "whenToUse": "When you need to find a project ID or see available projects.",
+      "scenarios": [
+        "Project discovery: Finding the project ID you need",
+        "Account overview: Seeing all projects under your account",
+        "Troubleshooting: Verifying you have access to a project"
+      ],
+      "set_id": "firebase-deploy"
+    },
+    {
+      "id": "fb-deploy-8",
+      "task": "Create a new Firebase project",
+      "answer": "firebase projects:create <project-id>",
+      "description": "Creates a new Firebase project with the specified ID.",
+      "whenToUse": "When starting a new application that needs Firebase services.",
+      "scenarios": [
+        "New application: Creating a project for a new app",
+        "Environment setup: Creating separate staging/production projects",
+        "Client project: Setting up a new project for a client"
+      ],
+      "set_id": "firebase-deploy"
+    }
+  ]
+}

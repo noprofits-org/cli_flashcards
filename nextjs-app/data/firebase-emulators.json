@@ -1,0 +1,102 @@
+{
+  "id": "firebase-emulators",
+  "title": "Local Development",
+  "description": "Run Firebase services locally for testing",
+  "difficulty": "intermediate",
+  "category": "firebase",
+  "estimatedTime": "10 min",
+  "cardCount": 7,
+  "cards": [
+    {
+      "id": "fb-emu-1",
+      "task": "Start all Firebase emulators",
+      "answer": "firebase emulators:start",
+      "description": "Launches local emulators for all configured Firebase services (Functions, Firestore, Auth, etc.).",
+      "whenToUse": "When developing locally and need to test Firebase features without affecting production.",
+      "scenarios": [
+        "Local development: Testing your app against local Firebase services",
+        "Offline work: Developing without internet connectivity",
+        "Safe testing: Avoiding charges and production data changes"
+      ],
+      "set_id": "firebase-emulators"
+    },
+    {
+      "id": "fb-emu-2",
+      "task": "Start only specific emulators",
+      "answer": "firebase emulators:start --only functions,firestore",
+      "description": "Starts only the specified emulators, useful when you don't need all services.",
+      "whenToUse": "When you only need certain Firebase services for your current task.",
+      "scenarios": [
+        "Backend focus: Running only Functions emulator for API development",
+        "Database work: Running only Firestore for data modeling",
+        "Resource saving: Starting fewer emulators for better performance"
+      ],
+      "set_id": "firebase-emulators"
+    },
+    {
+      "id": "fb-emu-3",
+      "task": "Start emulators and import existing data",
+      "answer": "firebase emulators:start --import=./data",
+      "description": "Starts emulators with pre-existing data loaded from a directory.",
+      "whenToUse": "When you want to start with specific test data or restore a previous state.",
+      "scenarios": [
+        "Test data: Loading seed data for consistent testing",
+        "State restoration: Continuing where you left off in development",
+        "Demo setup: Preparing emulators with demo data for presentations"
+      ],
+      "set_id": "firebase-emulators"
+    },
+    {
+      "id": "fb-emu-4",
+      "task": "Start emulators and export data on shutdown",
+      "answer": "firebase emulators:start --export-on-exit=./data",
+      "description": "Automatically saves emulator data when you stop the emulators.",
+      "whenToUse": "When you want to preserve your local development data between sessions.",
+      "scenarios": [
+        "Data persistence: Saving Firestore data between coding sessions",
+        "Iterative testing: Preserving test user accounts in Auth emulator",
+        "Long projects: Maintaining state across multiple development days"
+      ],
+      "set_id": "firebase-emulators"
+    },
+    {
+      "id": "fb-emu-5",
+      "task": "Start a local development server for hosting",
+      "answer": "firebase serve",
+      "description": "Starts a local server for Firebase Hosting content only (simpler than full emulators).",
+      "whenToUse": "When you only need to preview hosting content without other Firebase services.",
+      "scenarios": [
+        "Static site preview: Testing HTML/CSS/JS changes locally",
+        "Quick preview: Faster startup than full emulator suite",
+        "Frontend only: When backend services aren't needed"
+      ],
+      "set_id": "firebase-emulators"
+    },
+    {
+      "id": "fb-emu-6",
+      "task": "Export current emulator data to a directory",
+      "answer": "firebase emulators:export ./backup",
+      "description": "Saves the current state of all running emulators to a directory.",
+      "whenToUse": "When you want to save your current emulator state for later use.",
+      "scenarios": [
+        "Backup creation: Saving test data before making major changes",
+        "Sharing state: Exporting data to share with teammates",
+        "Snapshot: Creating a checkpoint of your local development data"
+      ],
+      "set_id": "firebase-emulators"
+    },
+    {
+      "id": "fb-emu-7",
+      "task": "Run a script against the emulators",
+      "answer": "firebase emulators:exec \"npm test\"",
+      "description": "Starts emulators, runs a command, then shuts down emulators when done.",
+      "whenToUse": "When running automated tests that need Firebase emulators.",
+      "scenarios": [
+        "CI/CD testing: Running integration tests in pipelines",
+        "Automated testing: Executing test suites against emulators",
+        "Script execution: Running one-off scripts with emulator access"
+      ],
+      "set_id": "firebase-emulators"
+    }
+  ]
+}

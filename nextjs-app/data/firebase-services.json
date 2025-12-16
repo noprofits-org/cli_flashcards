@@ -1,0 +1,128 @@
+{
+  "id": "firebase-services",
+  "title": "Services & Data",
+  "description": "Manage Firestore, Auth, and other services",
+  "difficulty": "intermediate",
+  "category": "firebase",
+  "estimatedTime": "12 min",
+  "cardCount": 9,
+  "cards": [
+    {
+      "id": "fb-svc-1",
+      "task": "Deploy Firestore security rules",
+      "answer": "firebase deploy --only firestore:rules",
+      "description": "Deploys only Firestore security rules without affecting other services.",
+      "whenToUse": "When you've updated security rules and need to push them quickly.",
+      "scenarios": [
+        "Security update: Deploying new access control rules",
+        "Rule fix: Quickly pushing a security rule hotfix",
+        "Permissions change: Updating who can read/write data"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-2",
+      "task": "Deploy Firestore indexes",
+      "answer": "firebase deploy --only firestore:indexes",
+      "description": "Deploys Firestore composite indexes defined in firestore.indexes.json.",
+      "whenToUse": "When you've added new queries that require composite indexes.",
+      "scenarios": [
+        "Query optimization: Adding indexes for complex queries",
+        "Performance fix: Deploying indexes to fix slow queries",
+        "New feature: Adding indexes for new query patterns"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-3",
+      "task": "Export Firestore data to a Cloud Storage bucket",
+      "answer": "gcloud firestore export gs://bucket-name",
+      "description": "Exports all Firestore data to Google Cloud Storage for backup or migration.",
+      "whenToUse": "When creating backups or preparing for data migration.",
+      "scenarios": [
+        "Backup: Creating a full database backup before major changes",
+        "Migration: Exporting data to move to another project",
+        "Compliance: Archiving data for regulatory requirements"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-4",
+      "task": "Import Firestore data from a Cloud Storage bucket",
+      "answer": "gcloud firestore import gs://bucket-name/export-folder",
+      "description": "Imports previously exported Firestore data from Cloud Storage.",
+      "whenToUse": "When restoring from backup or migrating data to a new project.",
+      "scenarios": [
+        "Disaster recovery: Restoring data after accidental deletion",
+        "Migration: Importing data into a new project",
+        "Environment setup: Populating staging with production data"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-5",
+      "task": "View Cloud Functions logs",
+      "answer": "firebase functions:log",
+      "description": "Displays recent logs from your deployed Cloud Functions.",
+      "whenToUse": "When debugging issues with your Cloud Functions in production.",
+      "scenarios": [
+        "Debugging: Viewing console.log output from functions",
+        "Error tracking: Finding error messages from failed executions",
+        "Monitoring: Checking function behavior after deployment"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-6",
+      "task": "Delete a specific Cloud Function",
+      "answer": "firebase functions:delete myFunction",
+      "description": "Removes a specific Cloud Function from your project.",
+      "whenToUse": "When a function is no longer needed and you want to clean up.",
+      "scenarios": [
+        "Cleanup: Removing deprecated or unused functions",
+        "Cost reduction: Deleting functions to reduce billing",
+        "Refactoring: Removing functions replaced by new implementations"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-7",
+      "task": "Open the Firebase console in browser",
+      "answer": "firebase open",
+      "description": "Opens the Firebase console for your current project in a web browser.",
+      "whenToUse": "When you need quick access to the Firebase web console.",
+      "scenarios": [
+        "Quick access: Opening the console without finding the URL",
+        "Visual inspection: Checking data in the Firestore viewer",
+        "Settings: Accessing project settings not available in CLI"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-8",
+      "task": "Deploy Storage security rules",
+      "answer": "firebase deploy --only storage",
+      "description": "Deploys Cloud Storage security rules defined in storage.rules.",
+      "whenToUse": "When you've updated file access permissions in storage.rules.",
+      "scenarios": [
+        "Security update: Deploying new file access rules",
+        "Permission fix: Correcting file upload/download permissions",
+        "New feature: Adding rules for new storage paths"
+      ],
+      "set_id": "firebase-services"
+    },
+    {
+      "id": "fb-svc-9",
+      "task": "List all deployed Cloud Functions",
+      "answer": "firebase functions:list",
+      "description": "Shows all Cloud Functions currently deployed to your project.",
+      "whenToUse": "When you need to see what functions are deployed and their triggers.",
+      "scenarios": [
+        "Inventory: Reviewing all deployed functions",
+        "Verification: Confirming a function was deployed",
+        "Debugging: Checking function triggers and regions"
+      ],
+      "set_id": "firebase-services"
+    }
+  ]
+}

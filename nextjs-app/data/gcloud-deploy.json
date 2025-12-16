@@ -1,0 +1,141 @@
+{
+  "id": "gcloud-deploy",
+  "title": "App Engine & Containers",
+  "description": "Deploy applications and manage containers",
+  "difficulty": "intermediate",
+  "category": "gcloud",
+  "estimatedTime": "12 min",
+  "cardCount": 10,
+  "cards": [
+    {
+      "id": "gc-deploy-1",
+      "task": "Deploy an application to App Engine",
+      "answer": "gcloud app deploy",
+      "description": "Deploys your application code and configuration to Google App Engine.",
+      "whenToUse": "When pushing a new version of your app to production.",
+      "scenarios": [
+        "Initial deployment: Launching your app for the first time",
+        "Updates: Pushing new features to production",
+        "Bug fixes: Deploying hotfixes quickly"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-2",
+      "task": "Create an App Engine application",
+      "answer": "gcloud app create --region=<region>",
+      "description": "Creates an App Engine application in your project in the specified region.",
+      "whenToUse": "When setting up App Engine for the first time in a project.",
+      "scenarios": [
+        "Project setup: Initializing App Engine before first deploy",
+        "Region selection: Choosing where your app will run",
+        "New project: Setting up infrastructure for a new application"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-3",
+      "task": "Open the deployed app in a browser",
+      "answer": "gcloud app browse",
+      "description": "Opens your App Engine application's URL in a web browser.",
+      "whenToUse": "When you want to quickly view your deployed application.",
+      "scenarios": [
+        "Verification: Checking that deployment succeeded",
+        "Quick access: Opening your app without finding the URL",
+        "Demo: Showing the app to stakeholders"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-4",
+      "task": "View App Engine logs",
+      "answer": "gcloud app logs read",
+      "description": "Displays the most recent logs from your App Engine application.",
+      "whenToUse": "When debugging issues or monitoring your application.",
+      "scenarios": [
+        "Debugging: Finding error messages after a crash",
+        "Monitoring: Checking application health",
+        "Verification: Confirming requests are being handled"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-5",
+      "task": "Stream App Engine logs in real-time",
+      "answer": "gcloud app logs tail",
+      "description": "Continuously streams new log entries as they occur.",
+      "whenToUse": "When monitoring live traffic or debugging in real-time.",
+      "scenarios": [
+        "Live debugging: Watching logs while testing features",
+        "Incident response: Monitoring during an outage",
+        "Load testing: Watching behavior under traffic"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-6",
+      "task": "List all deployed App Engine versions",
+      "answer": "gcloud app versions list",
+      "description": "Shows all deployed versions of your App Engine services with traffic allocation.",
+      "whenToUse": "When managing versions or preparing to clean up old deployments.",
+      "scenarios": [
+        "Version audit: Seeing all deployed versions",
+        "Traffic check: Verifying which version is receiving traffic",
+        "Cleanup: Identifying old versions to delete"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-7",
+      "task": "Configure Docker credentials for Google Container Registry",
+      "answer": "gcloud auth configure-docker",
+      "description": "Registers gcloud as a Docker credential helper for pushing to GCR.",
+      "whenToUse": "Before pushing Docker images to Google Container Registry.",
+      "scenarios": [
+        "Initial setup: Configuring Docker to work with GCR",
+        "New machine: Setting up container development environment",
+        "CI/CD: Preparing build environment for container pushes"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-8",
+      "task": "Create a GKE cluster",
+      "answer": "gcloud container clusters create <name> --zone=<zone>",
+      "description": "Creates a new Google Kubernetes Engine cluster for running containers.",
+      "whenToUse": "When setting up Kubernetes infrastructure for containerized apps.",
+      "scenarios": [
+        "Container platform: Setting up Kubernetes for your team",
+        "Microservices: Creating infrastructure for a microservices architecture",
+        "Development: Creating a cluster for testing Kubernetes deployments"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-9",
+      "task": "Get credentials for kubectl to access a GKE cluster",
+      "answer": "gcloud container clusters get-credentials <cluster-name> --zone=<zone>",
+      "description": "Updates kubeconfig so kubectl can connect to your GKE cluster.",
+      "whenToUse": "After creating a cluster or on a new machine to access an existing cluster.",
+      "scenarios": [
+        "Cluster access: Connecting kubectl to your cluster",
+        "New machine: Setting up access on a different computer",
+        "Context switching: Connecting to a different cluster"
+      ],
+      "set_id": "gcloud-deploy"
+    },
+    {
+      "id": "gc-deploy-10",
+      "task": "List all GKE clusters in the project",
+      "answer": "gcloud container clusters list",
+      "description": "Shows all Kubernetes Engine clusters with their status and node count.",
+      "whenToUse": "When reviewing cluster infrastructure or finding cluster details.",
+      "scenarios": [
+        "Inventory: Reviewing all running clusters",
+        "Cost audit: Checking cluster sizes and node counts",
+        "Status check: Verifying clusters are running correctly"
+      ],
+      "set_id": "gcloud-deploy"
+    }
+  ]
+}

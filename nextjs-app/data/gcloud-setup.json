@@ -1,0 +1,115 @@
+{
+  "id": "gcloud-setup",
+  "title": "Setup & Configuration",
+  "description": "Install gcloud CLI and manage authentication",
+  "difficulty": "beginner",
+  "category": "gcloud",
+  "estimatedTime": "10 min",
+  "cardCount": 8,
+  "cards": [
+    {
+      "id": "gc-setup-1",
+      "task": "Initialize and configure the gcloud CLI",
+      "answer": "gcloud init",
+      "description": "Starts an interactive setup to authorize, configure, and set a default project for the gcloud CLI.",
+      "whenToUse": "When setting up gcloud for the first time or reconfiguring from scratch.",
+      "scenarios": [
+        "First-time setup: Configuring gcloud on a new machine",
+        "Fresh start: Reconfiguring gcloud after issues",
+        "New project: Setting up a default project quickly"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-2",
+      "task": "Log in to Google Cloud with your browser",
+      "answer": "gcloud auth login",
+      "description": "Opens a browser to authenticate with your Google account and authorize gcloud CLI access.",
+      "whenToUse": "When you need to authenticate or switch to a different Google account.",
+      "scenarios": [
+        "Initial authentication: First-time login to gcloud",
+        "Account switch: Changing to a different Google account",
+        "Token refresh: Re-authenticating after credentials expire"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-3",
+      "task": "List all authenticated accounts",
+      "answer": "gcloud auth list",
+      "description": "Shows all Google accounts currently authenticated with the gcloud CLI and indicates which is active.",
+      "whenToUse": "When checking which account is active or listing available accounts.",
+      "scenarios": [
+        "Account verification: Checking which account is currently active",
+        "Multi-account: Reviewing all authenticated accounts",
+        "Troubleshooting: Verifying correct account is being used"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-4",
+      "task": "Set the active Google Cloud project",
+      "answer": "gcloud config set project <project-id>",
+      "description": "Sets the default project for all gcloud commands in the current configuration.",
+      "whenToUse": "When switching between projects or setting up a new working environment.",
+      "scenarios": [
+        "Project switching: Moving from development to production project",
+        "Initial setup: Setting your default project after authentication",
+        "Multi-project: Switching context for different work streams"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-5",
+      "task": "Display the current gcloud configuration",
+      "answer": "gcloud config list",
+      "description": "Shows all properties set in your current gcloud configuration including project, region, and zone.",
+      "whenToUse": "When you need to verify your current settings or debug configuration issues.",
+      "scenarios": [
+        "Verification: Confirming which project/region you're targeting",
+        "Debugging: Checking why commands aren't working as expected",
+        "Documentation: Recording current settings for team reference"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-6",
+      "task": "Display gcloud CLI version and components",
+      "answer": "gcloud version",
+      "description": "Shows the installed version of gcloud CLI and all installed components.",
+      "whenToUse": "When checking versions for compatibility or troubleshooting.",
+      "scenarios": [
+        "Version check: Verifying you have the latest gcloud version",
+        "Troubleshooting: Checking versions when commands fail",
+        "Documentation: Recording environment info for bug reports"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-7",
+      "task": "Update gcloud CLI to the latest version",
+      "answer": "gcloud components update",
+      "description": "Updates the gcloud CLI and all installed components to their latest versions.",
+      "whenToUse": "When you want to get new features or fix issues with outdated components.",
+      "scenarios": [
+        "Regular maintenance: Keeping gcloud up to date",
+        "Bug fixes: Updating to resolve known issues",
+        "New features: Getting access to recently released capabilities"
+      ],
+      "set_id": "gcloud-setup"
+    },
+    {
+      "id": "gc-setup-8",
+      "task": "Revoke access for an authenticated account",
+      "answer": "gcloud auth revoke <account>",
+      "description": "Removes authorization for a specific account from the gcloud CLI.",
+      "whenToUse": "When you need to remove an account for security or cleanup purposes.",
+      "scenarios": [
+        "Security: Removing credentials from a shared machine",
+        "Cleanup: Removing accounts you no longer need",
+        "Account rotation: Removing old accounts after switching"
+      ],
+      "set_id": "gcloud-setup"
+    }
+  ]
+}

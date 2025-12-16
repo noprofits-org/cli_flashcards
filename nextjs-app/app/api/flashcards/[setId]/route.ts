@@ -26,6 +26,18 @@ import claspLogs from '@/data/clasp-logs.json'
 import claspApis from '@/data/clasp-apis.json'
 import claspScenarios from '@/data/clasp-scenarios.json'
 
+// Firebase modules
+import firebaseSetup from '@/data/firebase-setup.json'
+import firebaseDeploy from '@/data/firebase-deploy.json'
+import firebaseEmulators from '@/data/firebase-emulators.json'
+import firebaseServices from '@/data/firebase-services.json'
+
+// Google Cloud modules
+import gcloudSetup from '@/data/gcloud-setup.json'
+import gcloudProjects from '@/data/gcloud-projects.json'
+import gcloudCompute from '@/data/gcloud-compute.json'
+import gcloudDeploy from '@/data/gcloud-deploy.json'
+
 // Type for flashcard module data
 interface FlashcardModule {
   id: string
@@ -68,6 +80,16 @@ const moduleMap: Record<string, FlashcardModule> = {
   'clasp-logs': claspLogs as FlashcardModule,
   'clasp-apis': claspApis as FlashcardModule,
   'clasp-scenarios': claspScenarios as FlashcardModule,
+  // Firebase
+  'firebase-setup': firebaseSetup as FlashcardModule,
+  'firebase-deploy': firebaseDeploy as FlashcardModule,
+  'firebase-emulators': firebaseEmulators as FlashcardModule,
+  'firebase-services': firebaseServices as FlashcardModule,
+  // Google Cloud
+  'gcloud-setup': gcloudSetup as FlashcardModule,
+  'gcloud-projects': gcloudProjects as FlashcardModule,
+  'gcloud-compute': gcloudCompute as FlashcardModule,
+  'gcloud-deploy': gcloudDeploy as FlashcardModule,
 }
 
 export async function GET(

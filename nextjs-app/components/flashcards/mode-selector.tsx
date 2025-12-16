@@ -2,7 +2,7 @@
 
 import { FlashcardSet } from '@/lib/types/flashcard'
 import { cn } from '@/lib/utils/cn'
-import { SquareTerminal, Terminal, GitBranch } from 'lucide-react'
+import { SquareTerminal, Terminal, GitBranch, Flame, Cloud } from 'lucide-react'
 
 interface ModeSelectorProps {
   sets: FlashcardSet[]
@@ -16,6 +16,8 @@ const categoryConfig: Record<string, { label: string; icon: React.ReactNode; col
   terminal: { label: 'Terminal', icon: <SquareTerminal className="w-4 h-4" />, color: '#10b981' },
   clasp: { label: 'CLASP', icon: <Terminal className="w-4 h-4" />, color: '#4285f4' },
   git: { label: 'Git', icon: <GitBranch className="w-4 h-4" />, color: '#f44336' },
+  firebase: { label: 'Firebase', icon: <Flame className="w-4 h-4" />, color: '#ff9800' },
+  gcloud: { label: 'Google Cloud', icon: <Cloud className="w-4 h-4" />, color: '#4285f4' },
 }
 
 const difficultyOrder = { beginner: 0, intermediate: 1, advanced: 2 }
@@ -65,7 +67,7 @@ export function ModeSelector({ sets, selectedSetId, selectedCategory, onSelectSe
     <div className="w-full max-w-4xl space-y-6">
       {/* Category Tabs */}
       <div className="flex flex-wrap justify-center gap-2">
-        {['terminal', 'clasp', 'git'].map((cat) => {
+        {['terminal', 'clasp', 'git', 'firebase', 'gcloud'].map((cat) => {
           const config = categoryConfig[cat]
           if (!config) return null
           return (

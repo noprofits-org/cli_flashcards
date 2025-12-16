@@ -1,0 +1,128 @@
+{
+  "id": "gcloud-compute",
+  "title": "Compute Engine",
+  "description": "Create and manage virtual machines",
+  "difficulty": "intermediate",
+  "category": "gcloud",
+  "estimatedTime": "12 min",
+  "cardCount": 9,
+  "cards": [
+    {
+      "id": "gc-compute-1",
+      "task": "List all Compute Engine zones",
+      "answer": "gcloud compute zones list",
+      "description": "Shows all available zones where you can create VM instances.",
+      "whenToUse": "When choosing a zone for new resources or checking zone availability.",
+      "scenarios": [
+        "Zone selection: Finding zones near your users",
+        "Availability check: Seeing which zones are available",
+        "Cost planning: Comparing zones for pricing differences"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-2",
+      "task": "Create a new VM instance",
+      "answer": "gcloud compute instances create <name> --zone=<zone>",
+      "description": "Creates a new virtual machine in the specified zone with default settings.",
+      "whenToUse": "When you need a new server or development machine in the cloud.",
+      "scenarios": [
+        "New server: Spinning up a web server",
+        "Development: Creating a dev/test environment",
+        "Quick prototype: Getting a machine for experimentation"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-3",
+      "task": "List all VM instances in the project",
+      "answer": "gcloud compute instances list",
+      "description": "Shows all VM instances with their status, zone, and IP addresses.",
+      "whenToUse": "When checking what instances are running or finding IP addresses.",
+      "scenarios": [
+        "Inventory: Reviewing all running instances",
+        "Cost audit: Finding instances that might need cleanup",
+        "IP lookup: Finding the IP address of an instance"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-4",
+      "task": "SSH into a VM instance",
+      "answer": "gcloud compute ssh <instance-name> --zone=<zone>",
+      "description": "Opens an SSH connection to the specified VM instance.",
+      "whenToUse": "When you need to access a VM's command line.",
+      "scenarios": [
+        "Administration: Running commands on your server",
+        "Debugging: Investigating issues on a VM",
+        "Deployment: Manually deploying or configuring software"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-5",
+      "task": "Stop a running VM instance",
+      "answer": "gcloud compute instances stop <name> --zone=<zone>",
+      "description": "Shuts down a VM instance while preserving its disk and configuration.",
+      "whenToUse": "When you want to stop billing for compute time but keep the VM.",
+      "scenarios": [
+        "Cost saving: Stopping dev machines overnight",
+        "Maintenance: Stopping before resizing or changing config",
+        "Pause work: Temporarily stopping an unused instance"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-6",
+      "task": "Start a stopped VM instance",
+      "answer": "gcloud compute instances start <name> --zone=<zone>",
+      "description": "Boots up a previously stopped VM instance.",
+      "whenToUse": "When resuming work on a stopped instance.",
+      "scenarios": [
+        "Resume work: Starting a dev machine in the morning",
+        "Scaling up: Bringing instances back online for traffic",
+        "Maintenance complete: Restarting after configuration changes"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-7",
+      "task": "Delete a VM instance",
+      "answer": "gcloud compute instances delete <name> --zone=<zone>",
+      "description": "Permanently deletes a VM instance and its boot disk.",
+      "whenToUse": "When you no longer need an instance and want to stop all charges.",
+      "scenarios": [
+        "Cleanup: Removing temporary or test instances",
+        "Cost reduction: Deleting unused resources",
+        "Project end: Removing infrastructure after project completion"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-8",
+      "task": "Create a snapshot of a disk",
+      "answer": "gcloud compute disks snapshot <disk-name> --zone=<zone>",
+      "description": "Creates a point-in-time backup of a persistent disk.",
+      "whenToUse": "Before making major changes or for regular backups.",
+      "scenarios": [
+        "Backup: Creating a recovery point before updates",
+        "Clone: Preparing to create copies of a disk",
+        "Migration: Snapshotting before moving to a different zone"
+      ],
+      "set_id": "gcloud-compute"
+    },
+    {
+      "id": "gc-compute-9",
+      "task": "Copy a file to a VM instance",
+      "answer": "gcloud compute scp <local-file> <instance>:<remote-path> --zone=<zone>",
+      "description": "Securely copies files between your local machine and a VM instance.",
+      "whenToUse": "When transferring files to or from a VM.",
+      "scenarios": [
+        "Deployment: Copying application files to a server",
+        "Backup: Downloading files from a VM locally",
+        "Configuration: Uploading config files to an instance"
+      ],
+      "set_id": "gcloud-compute"
+    }
+  ]
+}
