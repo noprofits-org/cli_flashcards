@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Check, Copy, Terminal } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
 interface CommandBlockProps {
   command: string
@@ -10,13 +11,7 @@ interface CommandBlockProps {
 }
 
 export function CommandBlock({ command, className }: CommandBlockProps) {
-  const [copied, setCopied] = React.useState(false)
-
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(command)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  const { copied, copy } = useCopyToClipboard()
 
   return (
     <div
@@ -30,7 +25,7 @@ export function CommandBlock({ command, className }: CommandBlockProps) {
         <code className="text-sm font-mono text-green-400 whitespace-pre">{command}</code>
       </div>
       <button
-        onClick={copyToClipboard}
+        onClick={() => copy(command)}
         className="flex items-center gap-1 text-xs text-zinc-400 hover:text-white transition-colors shrink-0"
       >
         {copied ? (

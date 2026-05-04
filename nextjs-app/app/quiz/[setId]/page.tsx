@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils/cn'
+import { useKeyboardShortcuts } from '@/lib/hooks/use-keyboard-shortcuts'
 import { Check, X } from 'lucide-react'
 
 interface QuizQuestion {
@@ -100,30 +101,25 @@ export default function QuizPage({ params }: PageProps) {
     }
   }
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        if (state.showResult) {
-          handleNext()
-        } else if (state.selectedOption) {
-          handleSubmit()
-        }
-      } else if (e.key === 'Escape') {
-        router.push('/')
-      } else if (!state.showResult && ['1', '2', '3', '4'].includes(e.key)) {
-        const index = parseInt(e.key) - 1
-        if (index < questions[state.currentIndex]?.options.length) {
-          handleSelectOption(questions[state.currentIndex].options[index])
-        }
-      } else if (e.key === 'h' || e.key === 'H') {
-        setShowHint(prev => !prev)
+  useKeyboardShortcuts((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (state.showResult) {
+        handleNext()
+      } else if (state.selectedOption) {
+        handleSubmit()
       }
+    } else if (e.key === 'Escape') {
+      router.push('/')
+    } else if (!state.showResult && ['1', '2', '3', '4'].includes(e.key)) {
+      const index = parseInt(e.key) - 1
+      if (index < questions[state.currentIndex]?.options.length) {
+        handleSelectOption(questions[state.currentIndex].options[index])
+      }
+    } else if (e.key === 'h' || e.key === 'H') {
+      setShowHint(prev => !prev)
     }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [state.showResult, state.selectedOption, state.currentIndex, questions])
+  })
 
   if (loading) {
     return (

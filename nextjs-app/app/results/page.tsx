@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { calculatePercentage, getScoreMessage } from '@/lib/utils/flashcard'
+import { useKeyboardShortcuts } from '@/lib/hooks/use-keyboard-shortcuts'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
@@ -13,58 +14,26 @@ function ResultsContent() {
   const searchParams = useSearchParams()
   const [score, setScore] = useState(0)
   const [total, setTotal] = useState(0)
-  const [sessionId, setSessionId] = useState<string | null>(null)
 
   useEffect(() => {
     const scoreParam = searchParams.get('score')
     const totalParam = searchParams.get('total')
-    const sessionIdParam = searchParams.get('sessionId')
 
     if (scoreParam && totalParam) {
-      const scoreNum = parseInt(scoreParam, 10)
-      const totalNum = parseInt(totalParam, 10)
-      setScore(scoreNum)
-      setTotal(totalNum)
-      setSessionId(sessionIdParam)
-
-      // Update session as completed
-      if (sessionIdParam) {
-        updateSession(sessionIdParam, scoreNum, totalNum)
-      }
+      setScore(parseInt(scoreParam, 10))
+      setTotal(parseInt(totalParam, 10))
     }
   }, [searchParams])
-
-  const updateSession = async (id: string, finalScore: number, finalTotal: number) => {
-    try {
-      await fetch('/api/progress/session', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          sessionId: id,
-          score: finalScore,
-          totalAttempts: finalTotal,
-          completed: true,
-        }),
-      })
-    } catch (error) {
-      console.error('Error updating session:', error)
-    }
-  }
 
   const handleRestart = () => {
     router.push('/')
   }
 
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        handleRestart()
-      }
+  useKeyboardShortcuts((e) => {
+    if (e.key === 'Enter') {
+      handleRestart()
     }
-
-    window.addEventListener('keypress', handleKeyPress)
-    return () => window.removeEventListener('keypress', handleKeyPress)
-  }, [])
+  })
 
   const percentage = calculatePercentage(score, total)
   const message = getScoreMessage(percentage)
