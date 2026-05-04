@@ -7,6 +7,7 @@ import { ModeSelector } from '@/components/flashcards/mode-selector'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils/cn'
+import { useKeyboardShortcuts } from '@/lib/hooks/use-keyboard-shortcuts'
 import { PenLine, CircleHelp, Brain, BookOpen, Rocket } from 'lucide-react'
 
 type StudyMode = 'flashcards' | 'quiz' | 'review' | 'reading' | 'projects'
@@ -64,16 +65,11 @@ export default function Home() {
     }
   }
 
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && selectedSetId) {
-        startSet(selectedSetId)
-      }
+  useKeyboardShortcuts((e) => {
+    if (e.key === 'Enter' && selectedSetId) {
+      startSet(selectedSetId)
     }
-
-    window.addEventListener('keypress', handleKeyPress)
-    return () => window.removeEventListener('keypress', handleKeyPress)
-  }, [selectedSetId, studyMode, router])
+  })
 
   if (loading) {
     return (

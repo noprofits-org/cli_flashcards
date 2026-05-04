@@ -1,96 +1,5 @@
 import { NextResponse } from 'next/server'
-
-// Import all module data statically for build-time optimization
-// Terminal modules
-import terminalNavigation from '@/data/terminal-navigation.json'
-import terminalFiles from '@/data/terminal-files.json'
-import terminalViewing from '@/data/terminal-viewing.json'
-import terminalSearch from '@/data/terminal-search.json'
-import terminalNano from '@/data/terminal-nano.json'
-import terminalPipes from '@/data/terminal-pipes.json'
-
-// Git modules
-import gitSetup from '@/data/git-setup.json'
-import gitDaily from '@/data/git-daily.json'
-import gitBranches from '@/data/git-branches.json'
-import gitStash from '@/data/git-stash.json'
-import gitUndo from '@/data/git-undo.json'
-import gitHistory from '@/data/git-history.json'
-
-// CLASP modules
-import claspSetup from '@/data/clasp-setup.json'
-import claspProjects from '@/data/clasp-projects.json'
-import claspWorkflow from '@/data/clasp-workflow.json'
-import claspDeploy from '@/data/clasp-deploy.json'
-import claspLogs from '@/data/clasp-logs.json'
-import claspApis from '@/data/clasp-apis.json'
-import claspScenarios from '@/data/clasp-scenarios.json'
-
-// Firebase modules
-import firebaseSetup from '@/data/firebase-setup.json'
-import firebaseDeploy from '@/data/firebase-deploy.json'
-import firebaseEmulators from '@/data/firebase-emulators.json'
-import firebaseServices from '@/data/firebase-services.json'
-
-// Google Cloud modules
-import gcloudSetup from '@/data/gcloud-setup.json'
-import gcloudProjects from '@/data/gcloud-projects.json'
-import gcloudCompute from '@/data/gcloud-compute.json'
-import gcloudDeploy from '@/data/gcloud-deploy.json'
-
-// Type for flashcard module data
-interface FlashcardModule {
-  id: string
-  title: string
-  description: string
-  difficulty: string
-  estimatedTime: string
-  cardCount: number
-  cards: Array<{
-    id: string
-    task: string
-    answer: string
-    description: string
-    whenToUse: string
-    scenarios: string[]
-  }>
-}
-
-// Map of available modules
-const moduleMap: Record<string, FlashcardModule> = {
-  // Terminal
-  'terminal-navigation': terminalNavigation as FlashcardModule,
-  'terminal-files': terminalFiles as FlashcardModule,
-  'terminal-viewing': terminalViewing as FlashcardModule,
-  'terminal-search': terminalSearch as FlashcardModule,
-  'terminal-nano': terminalNano as FlashcardModule,
-  'terminal-pipes': terminalPipes as FlashcardModule,
-  // Git
-  'git-setup': gitSetup as FlashcardModule,
-  'git-daily': gitDaily as FlashcardModule,
-  'git-branches': gitBranches as FlashcardModule,
-  'git-stash': gitStash as FlashcardModule,
-  'git-undo': gitUndo as FlashcardModule,
-  'git-history': gitHistory as FlashcardModule,
-  // CLASP
-  'clasp-setup': claspSetup as FlashcardModule,
-  'clasp-projects': claspProjects as FlashcardModule,
-  'clasp-workflow': claspWorkflow as FlashcardModule,
-  'clasp-deploy': claspDeploy as FlashcardModule,
-  'clasp-logs': claspLogs as FlashcardModule,
-  'clasp-apis': claspApis as FlashcardModule,
-  'clasp-scenarios': claspScenarios as FlashcardModule,
-  // Firebase
-  'firebase-setup': firebaseSetup as FlashcardModule,
-  'firebase-deploy': firebaseDeploy as FlashcardModule,
-  'firebase-emulators': firebaseEmulators as FlashcardModule,
-  'firebase-services': firebaseServices as FlashcardModule,
-  // Google Cloud
-  'gcloud-setup': gcloudSetup as FlashcardModule,
-  'gcloud-projects': gcloudProjects as FlashcardModule,
-  'gcloud-compute': gcloudCompute as FlashcardModule,
-  'gcloud-deploy': gcloudDeploy as FlashcardModule,
-}
+import { getModule } from '@/lib/data/modules'
 
 export async function GET(
   request: Request,
@@ -98,15 +7,12 @@ export async function GET(
 ) {
   try {
     const { setId } = await context.params
-
-    // Get module data from the map
-    const moduleData = moduleMap[setId]
+    const moduleData = getModule(setId)
 
     if (!moduleData) {
       return NextResponse.json({ error: 'Flashcard set not found' }, { status: 404 })
     }
 
-    // Transform module data to match expected Flashcard interface
     const flashcards = moduleData.cards.map((card, index) => ({
       id: card.id || `${setId}-${index}`,
       set_id: setId,
@@ -115,7 +21,7 @@ export async function GET(
       description: card.description,
       when_to_use: card.whenToUse,
       scenarios: card.scenarios,
-      order_index: index
+      order_index: index,
     }))
 
     return NextResponse.json({
@@ -126,8 +32,8 @@ export async function GET(
         description: moduleData.description,
         difficulty: moduleData.difficulty,
         estimatedTime: moduleData.estimatedTime,
-        totalCards: moduleData.cardCount
-      }
+        totalCards: moduleData.cardCount,
+      },
     })
   } catch (error) {
     console.error('Unexpected error:', error)

@@ -3,10 +3,14 @@
 import { use, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSearchParams } from 'next/navigation'
-import { Flashcard, CardState, AppState } from '@/lib/types/flashcard'
+import { Flashcard, AppState } from '@/lib/types/flashcard'
 import { shuffleArray } from '@/lib/utils/flashcard'
 import { FlashcardViewer } from '@/components/flashcards/flashcard-viewer'
 import { Progress } from '@/components/ui/progress'
+import {
+  useKeyboardShortcuts,
+  isTypingInInput,
+} from '@/lib/hooks/use-keyboard-shortcuts'
 
 interface PageProps {
   params: Promise<{
@@ -21,7 +25,6 @@ export default function FlashcardsPage({ params }: PageProps) {
   const queryHardMode = searchParams.get('hardMode') === 'true'
   const [flashcards, setFlashcards] = useState<Flashcard[]>([])
   const [loading, setLoading] = useState(true)
-  const [sessionId, setSessionId] = useState<string | null>(null)
 
   const [state, setState] = useState<AppState>({
     currentIndex: 0,
@@ -40,7 +43,6 @@ export default function FlashcardsPage({ params }: PageProps) {
 
   useEffect(() => {
     fetchFlashcards()
-    createSession()
   }, [setId])
 
   const fetchFlashcards = async () => {
@@ -63,22 +65,7 @@ export default function FlashcardsPage({ params }: PageProps) {
     }
   }
 
-  const createSession = async () => {
-    try {
-      const response = await fetch('/api/progress/session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ setId, isGuest: true }),
-      })
-      const data = await response.json()
-      setSessionId(data.session?.id || null)
-    } catch (error) {
-      console.error('Error creating session:', error)
-    }
-  }
-
   const handleSubmit = (answer: string, isCorrect: boolean) => {
-    const currentCardState = state.cardStates[state.currentIndex]
     const currentRetry = state.currentRetryAttempt || 0
 
     // Hard mode logic: wrong answer requires 3 correct retries
@@ -163,9 +150,8 @@ export default function FlashcardsPage({ params }: PageProps) {
         currentRetryAttempt: 0,
       }))
     } else {
-      // Navigate to results
       router.push(
-        `/results?score=${state.currentScore}&total=${state.totalAttempts}&sessionId=${sessionId}`
+        `/results?score=${state.currentScore}&total=${state.totalAttempts}`
       )
     }
   }
@@ -180,38 +166,25 @@ export default function FlashcardsPage({ params }: PageProps) {
     }
   }
 
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && state.isAnswered) {
-        nextCard()
-      }
+  useKeyboardShortcuts((e) => {
+    if (e.key === 'Escape') {
+      e.preventDefault()
+      router.push('/')
+      return
     }
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't intercept arrow keys when user is typing in an input
-      const isTypingInInput = document.activeElement?.tagName === 'INPUT' ||
-                              document.activeElement?.tagName === 'TEXTAREA'
-
-      if (e.key === 'ArrowLeft' && !isTypingInInput) {
-        e.preventDefault()
-        prevCard()
-      } else if (e.key === 'ArrowRight' && !isTypingInInput) {
-        e.preventDefault()
-        nextCard()
-      } else if (e.key === 'Escape') {
-        e.preventDefault()
-        router.push('/')
-      }
+    if (e.key === 'Enter' && state.isAnswered) {
+      nextCard()
+      return
     }
-
-    window.addEventListener('keypress', handleKeyPress)
-    window.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      window.removeEventListener('keypress', handleKeyPress)
-      window.removeEventListener('keydown', handleKeyDown)
+    if (isTypingInInput(document.activeElement)) return
+    if (e.key === 'ArrowLeft') {
+      e.preventDefault()
+      prevCard()
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault()
+      nextCard()
     }
-  }, [state.isAnswered, state.currentIndex])
+  })
 
   if (loading) {
     return (

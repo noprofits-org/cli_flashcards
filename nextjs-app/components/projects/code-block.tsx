@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Check, Copy, FileCode } from 'lucide-react'
 import { cn } from '@/lib/utils/cn'
+import { useCopyToClipboard } from '@/lib/hooks/use-copy-to-clipboard'
 
 interface CodeBlockProps {
   code: string
@@ -12,17 +13,10 @@ interface CodeBlockProps {
 }
 
 export function CodeBlock({ code, language, filename, className }: CodeBlockProps) {
-  const [copied, setCopied] = React.useState(false)
-
-  const copyToClipboard = async () => {
-    await navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+  const { copied, copy } = useCopyToClipboard()
 
   return (
     <div className={cn('rounded-lg border-2 border-border overflow-hidden', className)}>
-      {/* Header */}
       <div className="flex items-center justify-between bg-muted px-4 py-2 border-b border-border">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <FileCode className="h-4 w-4" />
@@ -30,7 +24,7 @@ export function CodeBlock({ code, language, filename, className }: CodeBlockProp
           {language && !filename && <span>{language}</span>}
         </div>
         <button
-          onClick={copyToClipboard}
+          onClick={() => copy(code)}
           className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           {copied ? (
@@ -46,7 +40,6 @@ export function CodeBlock({ code, language, filename, className }: CodeBlockProp
           )}
         </button>
       </div>
-      {/* Code */}
       <pre className="p-4 overflow-x-auto bg-card">
         <code className="text-sm font-mono">{code}</code>
       </pre>

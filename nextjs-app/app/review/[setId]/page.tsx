@@ -4,6 +4,7 @@ import { use, useEffect, useState, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { Flashcard } from '@/lib/types/flashcard'
 import { useSpacedRepetition } from '@/lib/hooks/use-spaced-repetition'
+import { useKeyboardShortcuts } from '@/lib/hooks/use-keyboard-shortcuts'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -119,24 +120,18 @@ export default function ReviewPage({ params }: PageProps) {
     }
   }
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        if (isAnswered) {
-          handleNext()
-        } else if (userAnswer.trim()) {
-          handleSubmit(e as unknown as React.FormEvent)
-        }
-      } else if (e.key === 'Escape') {
-        router.push('/')
+  useKeyboardShortcuts((e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (isAnswered) {
+        handleNext()
+      } else if (userAnswer.trim()) {
+        handleSubmit(e as unknown as React.FormEvent)
       }
+    } else if (e.key === 'Escape') {
+      router.push('/')
     }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isAnswered, userAnswer, currentIndex])
+  })
 
   if (loading) {
     return (
