@@ -30,6 +30,9 @@ export default function ReviewPage({ params }: PageProps) {
   const [isAnswered, setIsAnswered] = useState(false)
   const [lastCorrect, setLastCorrect] = useState<boolean | null>(null)
 
+  // Cards answered correctly in THIS session (not the all-time mastery count)
+  const [sessionCorrect, setSessionCorrect] = useState(0)
+
   // Frozen study order for the session - prevents cards from shifting mid-review
   const [sessionStudyOrder, setSessionStudyOrder] = useState<string[]>([])
   const sessionInitialized = useRef(false)
@@ -91,6 +94,7 @@ export default function ReviewPage({ params }: PageProps) {
 
     const correct = isAnswerCorrect(userAnswer, currentCard.answer)
     recordAnswer(currentCard.id, correct)
+    if (correct) setSessionCorrect(prev => prev + 1)
     setLastCorrect(correct)
     setIsAnswered(true)
   }
@@ -102,8 +106,8 @@ export default function ReviewPage({ params }: PageProps) {
       setIsAnswered(false)
       setLastCorrect(null)
     } else {
-      // Review complete
-      router.push(`/results?score=${stats.masteredCards}&total=${stats.totalCards}&mode=review&setId=${setId}`)
+      // Review complete — report this session's real performance, not all-time mastery
+      router.push(`/results?score=${sessionCorrect}&total=${sessionStudyOrder.length}&mode=review&setId=${setId}`)
     }
   }
 
@@ -117,6 +121,7 @@ export default function ReviewPage({ params }: PageProps) {
       setUserAnswer('')
       setIsAnswered(false)
       setLastCorrect(null)
+      setSessionCorrect(0)
     }
   }
 
