@@ -220,9 +220,9 @@ export default function Home() {
             </>
           ) : (
             <div className="text-muted-foreground">
-              <p>No flashcard sets available.</p>
+              <p>Couldn&apos;t load topics.</p>
               <p className="text-sm mt-2">
-                Please run the database migrations to seed the data.
+                Please refresh the page or try again.
               </p>
             </div>
           )}
