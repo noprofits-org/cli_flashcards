@@ -513,13 +513,13 @@
     }
   ],
   "stats": {
-    "totalCards": 184,
+    "totalCards": 202,
     "totalModules": 27,
     "availableModules": 27,
     "categories": 5,
     "difficulties": {
-      "beginner": 14,
-      "intermediate": 13,
+      "beginner": 13,
+      "intermediate": 14,
       "advanced": 0
     }
   }
