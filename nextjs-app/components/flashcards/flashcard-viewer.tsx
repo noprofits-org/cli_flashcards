@@ -17,9 +17,11 @@ interface FlashcardViewerProps {
   retryAttempt: number
 }
 
-// Check if answer is a hotkey (e.g., "Ctrl+O", "Ctrl+K")
+// Check if answer is a hotkey (e.g., "Ctrl+O", "Ctrl+K", "Ctrl+_").
+// Any Ctrl + single non-space key — not just letters — so combos like
+// Ctrl+_ (nano go-to-line) get the key-capture UI instead of a type-it box.
 function isHotkeyAnswer(answer: string): boolean {
-  return /^Ctrl\+[A-Z]$/i.test(answer.trim())
+  return /^Ctrl\+\S$/i.test(answer.trim())
 }
 
 // Normalize hotkey format for comparison
