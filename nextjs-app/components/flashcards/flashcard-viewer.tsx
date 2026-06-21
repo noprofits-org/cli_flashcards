@@ -3,10 +3,17 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { Flashcard, CardState } from '@/lib/types/flashcard'
 import { isAnswerCorrect } from '@/lib/utils/flashcard'
+import {
+  isSpeechSupported,
+  isSpeechEnabled,
+  setSpeechEnabled,
+  speak,
+  functionPhrase,
+} from '@/lib/speech'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils/cn'
-import { Check, X, PartyPopper, Keyboard } from 'lucide-react'
+import { Check, X, PartyPopper, Keyboard, Volume2, VolumeX } from 'lucide-react'
 
 interface FlashcardViewerProps {
   flashcard: Flashcard
@@ -60,6 +67,21 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
   const isHotkey = isHotkeyAnswer(flashcard.answer)
   const placeholder = getPlaceholder(flashcard.set_id, isHotkey)
 
+  // Spoken function cue (Web Speech). Read client-side after mount to avoid a
+  // hydration mismatch; speak() itself re-checks the persisted mute flag.
+  const [speechSupported, setSpeechSupported] = useState(false)
+  const [speechOn, setSpeechOn] = useState(true)
+  useEffect(() => {
+    setSpeechSupported(isSpeechSupported())
+    setSpeechOn(isSpeechEnabled())
+  }, [])
+
+  const toggleSpeech = () => {
+    const next = !speechOn
+    setSpeechOn(next)
+    setSpeechEnabled(next)
+  }
+
   // Determine if we should show the answer
   // In hard mode: show answer when wrong (retryAttempt=1 after wrong answer) and during retry attempts 1-2
   // In normal mode: only show after answering
@@ -84,9 +106,11 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
 
       // Check if correct and auto-submit
       const correct = normalizeHotkey(capturedHotkey) === normalizeHotkey(flashcard.answer)
+      // Reinforce the right answer by speaking what the chord does.
+      if (correct) speak(functionPhrase(flashcard.task))
       onSubmit(capturedHotkey, correct)
     }
-  }, [isHotkey, isAnswered, flashcard.answer, onSubmit])
+  }, [isHotkey, isAnswered, flashcard.answer, flashcard.task, onSubmit])
 
   // Listen for hotkeys on the document when this is a hotkey card
   useEffect(() => {
@@ -148,21 +172,37 @@ export function FlashcardViewer({ flashcard, cardState, onSubmit, isAnswered, ha
           <form onSubmit={handleSubmit} className="space-y-4">
             {isHotkey ? (
               // Hotkey capture UI
-              <div
-                className={cn(
-                  'flex items-center justify-center gap-3 p-4 rounded-lg border-2 border-dashed transition-all',
-                  isAnswered
-                    ? 'bg-muted border-muted-foreground/30'
-                    : 'bg-primary/5 border-primary/50 animate-pulse'
+              <>
+                <div
+                  className={cn(
+                    'flex items-center justify-center gap-3 p-4 rounded-lg border-2 border-dashed transition-all',
+                    isAnswered
+                      ? 'bg-muted border-muted-foreground/30'
+                      : 'bg-primary/5 border-primary/50 animate-pulse'
+                  )}
+                >
+                  <Keyboard className="w-5 h-5 text-primary" />
+                  {userAnswer ? (
+                    <span className="font-mono text-lg font-semibold">{userAnswer}</span>
+                  ) : (
+                    <span className="text-muted-foreground">{placeholder}</span>
+                  )}
+                </div>
+                {speechSupported && (
+                  <button
+                    type="button"
+                    onClick={toggleSpeech}
+                    aria-pressed={speechOn}
+                    className="flex items-center gap-1.5 mx-auto text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    {speechOn ? (
+                      <><Volume2 className="w-4 h-4" /> Spoken cue on</>
+                    ) : (
+                      <><VolumeX className="w-4 h-4" /> Spoken cue off</>
+                    )}
+                  </button>
                 )}
-              >
-                <Keyboard className="w-5 h-5 text-primary" />
-                {userAnswer ? (
-                  <span className="font-mono text-lg font-semibold">{userAnswer}</span>
-                ) : (
-                  <span className="text-muted-foreground">{placeholder}</span>
-                )}
-              </div>
+              </>
             ) : (
               // Regular text input
               <Input
