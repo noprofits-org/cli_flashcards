@@ -1,0 +1,39 @@
+# Pre-merge gate: builds the app and runs tests on every PR (and on main).
+# Deployment is owned by Vercel's Git integration — this workflow only
+# validates that incoming changes compile and pass tests.
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+defaults:
+  run:
+    working-directory: nextjs-app
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: nextjs-app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check data stats are in sync
+        run: npm run check:stats
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
