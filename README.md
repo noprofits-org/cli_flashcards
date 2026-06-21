@@ -14,14 +14,14 @@ Open http://localhost:3000.
 
 ## What's in here
 
-The app lives in [`nextjs-app/`](./nextjs-app/) — a Next.js 16 (App Router) site with React 19 and Tailwind 4. All flashcard, guide, and project content is static JSON under `nextjs-app/data/`.
+The app lives in [`nextjs-app/`](./nextjs-app/) — a Next.js 16 (App Router) site with React 19 and Tailwind 4. All flashcard and guide content is static JSON under `nextjs-app/data/`.
 
 ```
 cli_flashcards/
 ├── nextjs-app/
 │   ├── app/           # Pages and API routes (App Router)
-│   ├── components/    # UI components (flashcards, projects, primitives)
-│   ├── data/          # Flashcard, guide, and project content (JSON)
+│   ├── components/    # UI components (flashcards, primitives)
+│   ├── data/          # Flashcard and guide content (JSON)
 │   ├── lib/           # Hooks, types, utilities, data registry
 │   └── README.md      # Setup, deployment, content authoring
 └── README.md          # This file
@@ -33,7 +33,6 @@ cli_flashcards/
 - **Quiz** — Multiple-choice questions generated from the same card pool.
 - **Smart Review** — Spaced repetition (SM-2 variant), progress stored in `localStorage`.
 - **Reading** — Long-form guides for context.
-- **Projects** — Step-by-step tutorials (Mail List Manager suite).
 
 ## Content covered
 
