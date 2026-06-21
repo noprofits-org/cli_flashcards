@@ -8,9 +8,9 @@ import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils/cn'
 import { useKeyboardShortcuts } from '@/lib/hooks/use-keyboard-shortcuts'
-import { PenLine, CircleHelp, Brain, BookOpen, Rocket } from 'lucide-react'
+import { PenLine, CircleHelp, Brain, BookOpen } from 'lucide-react'
 
-type StudyMode = 'flashcards' | 'quiz' | 'review' | 'reading' | 'projects'
+type StudyMode = 'flashcards' | 'quiz' | 'review' | 'reading'
 
 export default function Home() {
   const router = useRouter()
@@ -26,9 +26,7 @@ export default function Home() {
 
   const startSet = (setId: string) => {
     setSelectedSetId(setId)
-    if (studyMode === 'projects') {
-      router.push('/projects')
-    } else if (studyMode === 'quiz') {
+    if (studyMode === 'quiz') {
       router.push(`/quiz/${setId}`)
     } else if (studyMode === 'review') {
       router.push(`/review/${setId}`)
@@ -58,9 +56,7 @@ export default function Home() {
   }
 
   const handleStart = () => {
-    if (studyMode === 'projects') {
-      router.push('/projects')
-    } else if (selectedSetId) {
+    if (selectedSetId) {
       startSet(selectedSetId)
     }
   }
@@ -78,8 +74,6 @@ export default function Home() {
       </div>
     )
   }
-
-  const showSetSelector = studyMode !== 'projects'
 
   return (
     <main className="min-h-screen flex flex-col p-4 md:p-8">
@@ -163,49 +157,19 @@ export default function Home() {
                       <span className="text-xs font-normal opacity-70">Guides & tips</span>
                     </div>
                   </button>
-                  <button
-                    onClick={() => setStudyMode('projects')}
-                    className={cn(
-                      'flex-1 px-4 py-3 rounded-lg text-sm font-semibold transition-all border',
-                      studyMode === 'projects'
-                        ? 'bg-primary/10 text-foreground border-primary/60 ring-2 ring-primary/25 shadow-lg'
-                        : 'text-muted-foreground hover:text-foreground border-transparent'
-                    )}
-                  >
-                    <div className="flex flex-col items-center gap-1">
-                      <Rocket className="w-5 h-5" />
-                      <span>Projects</span>
-                      <span className="text-xs font-normal opacity-70">Build real apps</span>
-                    </div>
-                  </button>
                 </div>
               </div>
 
-              {showSetSelector && (
-                <ModeSelector
-                  sets={sets}
-                  selectedSetId={selectedSetId}
-                  selectedCategory={selectedCategory}
-                  onSelectSet={setSelectedSetId}
-                  onSelectCategory={setSelectedCategory}
-                />
-              )}
+              <ModeSelector
+                sets={sets}
+                selectedSetId={selectedSetId}
+                selectedCategory={selectedCategory}
+                onSelectSet={setSelectedSetId}
+                onSelectCategory={setSelectedCategory}
+              />
 
-              {studyMode === 'projects' && (
-                <div className="text-center py-4">
-                  <p className="text-muted-foreground mb-2">
-                    Build a complete Mail List Manager app with guided tutorials
-                  </p>
-                  <p className="text-sm text-muted-foreground/70">
-                    5 projects · ~2.5 hours · No coding experience required
-                  </p>
-                </div>
-              )}
-
-              <Button onClick={handleStart} size="lg" disabled={!selectedSetId && studyMode !== 'projects'}>
-                {studyMode === 'projects'
-                  ? 'Start Building'
-                  : studyMode === 'quiz'
+              <Button onClick={handleStart} size="lg" disabled={!selectedSetId}>
+                {studyMode === 'quiz'
                   ? 'Start Quiz'
                   : studyMode === 'review'
                   ? 'Start Review'
